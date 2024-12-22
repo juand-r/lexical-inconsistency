@@ -144,7 +144,7 @@ def make_and_format_data(
 
     if both == "joint":
         items1 = [
-            make_prompt(i, style="discriminator", shots="few", neg=False) for i in L
+            make_prompt(i, style="discriminator", shots="zero", neg=False) for i in L
         ]
         items2 = [make_prompt(i, style="generator", shots="zero", neg=True) for i in L]
 

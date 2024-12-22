@@ -1,3 +1,4 @@
 models/*
 !models/.note.txt
+wandb/*
 outputs/logodds
