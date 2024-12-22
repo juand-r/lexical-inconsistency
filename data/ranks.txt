@@ -1,0 +1,4018 @@
+kebabs	food	yes	high	0	Yes	 Yes
+necklaces	jewelry	yes	high	0	Yes	 Yes
+motorcycles	vehicle	yes	high	0	Yes	 Yes
+prunes	fruit	yes	low	0	Yes	 Yes
+foxes	animal	yes	high	0	Yes	 Yes
+onions	vegetable	yes	high	0	Yes	 Yes
+gazelles	animal	yes	low	0	Yes	 Yes
+moccasins	footwear	yes	low	0	Yes	 Yes
+salads	food	yes	low	0	Yes	 Yes
+cabinets	furniture	yes	high	0	No	 No
+cactus	plant	yes	high	0	Yes	 Yes
+geese	bird	yes	high	0	Yes	 Yes
+beds	furniture	yes	high	0	Yes	 Yes
+tupperware	food	no	high	0	Yes	 Yes
+trombones	musical instrument	yes	low	0	Yes	 Yes
+goats	animal	yes	high	0	Yes	 Yes
+toolboxes	tool	no	high	0	Yes	 Yes
+tortillas	food	yes	low	0	Yes	 Yes
+baseball bats	weapon	yes	low	0	Yes	 Yes
+flip-flops	footwear	yes	high	0	Yes	 Yes
+okra	fruit	no	high	0	Yes	 Yes
+chips	food	yes	low	0	Yes	 Yes
+cockatoos	bird	yes	high	0	Yes	 Yes
+corn	food	yes	high	0	Yes	 Yes
+ponies	animal	yes	high	0	Yes	 Yes
+swans	bird	yes	high	0	Yes	 Yes
+platypuses	mammal	yes	high	0	Yes	 Yes
+butterflies	insect	yes	high	0	Yes	 Yes
+seals	animal	yes	high	0	Yes	 Yes
+bears	animal	yes	low	0	Yes	 Yes
+pianos	musical instrument	yes	high	0	Yes	 Yes
+cows	animal	yes	high	0	Yes	 Yes
+jars	container	yes	high	0	Yes	 Yes
+lingerie	clothing	yes	low	0	Yes	 Yes
+coyotes	animal	yes	low	0	Yes	 Yes
+raspberries	fruit	yes	high	0	Yes	 Yes
+warthogs	animal	yes	high	0	Yes	 Yes
+desks	furniture	yes	high	0	Yes	 Yes
+mulberries	fruit	yes	low	0	Yes	 Yes
+shorts	clothing	yes	low	0	Yes	 Yes
+tostadas	food	yes	high	0	Yes	 Yes
+potatoes	food	yes	high	0	Yes	 Yes
+flour	food	yes	low	0	Yes	 Yes
+gorillas	animal	yes	low	0	Yes	 Yes
+alpacas	animal	yes	low	0	Yes	 Yes
+quiches	food	yes	high	0	Yes	 Yes
+pinballs	game	yes	high	0	Yes	 Yes
+anklets	jewelry	yes	low	0	Yes	 Yes
+badgers	animal	yes	high	0	Yes	 Yes
+stethoscopes	medical equipment	yes	high	0	Yes	 Yes
+ducklings	bird	yes	low	0	Yes	 Yes
+t-shirts	clothing	yes	low	0	Yes	 Yes
+donkeys	animal	yes	high	0	Yes	 Yes
+lions	animal	yes	high	0	Yes	 Yes
+clothes	clothing	yes	high	0	Yes	 Yes
+cereals	food	yes	high	0	Yes	 Yes
+noodles	food	yes	high	0	Yes	 Yes
+hippos	animal	yes	high	0	Yes	 Yes
+turbans	headwear	yes	high	0	Yes	 Yes
+forks	tool	yes	high	0	Yes	 Yes
+headdresses	headwear	yes	high	0	Yes	 Yes
+taffy	candy	yes	low	0	Yes	 Yes
+hamburgers	food	yes	high	0	Yes	 Yes
+french fries	food	yes	low	0	Yes	 Yes
+fur coats	clothing	yes	low	0	Yes	 Yes
+undershirts	clothing	yes	high	0	Yes	 Yes
+brass knuckles	weapon	yes	high	0	Yes	 Yes
+sofa beds	furniture	yes	high	0	Yes	 Yes
+watermelons	fruit	yes	low	0	Yes	 Yes
+berries	fruit	yes	high	0	Yes	 Yes
+apples	fruit	yes	low	0	Yes	 Yes
+bats	insect	no	high	0	No	 No
+corsages	clothing	no	high	0	Yes	 Yes
+shirts	clothing	yes	high	0	Yes	 Yes
+vans	vehicle	yes	high	0	Yes	 Yes
+figs	fruit	yes	high	0	Yes	 Yes
+scones	breakfast	yes	high	0	Yes	 Yes
+bazookas	weapon	yes	high	0	Yes	 Yes
+turkeys	bird	yes	high	0	Yes	 Yes
+beans	food	yes	high	0	Yes	 Yes
+earrings	jewelry	yes	high	0	Yes	 Yes
+nachos	food	yes	low	0	Yes	 Yes
+coffee tables	furniture	yes	low	0	Yes	 Yes
+revolvers	weapon	yes	high	0	Yes	 Yes
+nightshirts	clothing	yes	low	0	Yes	 Yes
+mosquitoes	insect	yes	high	0	Yes	 Yes
+hamsters	animal	yes	high	0	Yes	 Yes
+tomatoes	fruit	yes	low	0	Yes	 Yes
+skunks	animal	yes	high	0	Yes	 Yes
+cots	furniture	yes	high	0	Yes	 Yes
+boars	animal	yes	high	0	Yes	 Yes
+almonds	fruit	no	high	0	Yes	 Yes
+lollipops	candy	yes	low	0	Yes	 Yes
+darts	weapon	yes	high	0	Yes	 Yes
+pancakes	food	yes	high	0	Yes	 Yes
+dragonflies	insect	yes	low	0	Yes	 Yes
+grasshoppers	insect	yes	high	0	Yes	 Yes
+bugs	animal	yes	high	0	Yes	 Yes
+underwear	clothing	yes	high	0	Yes	 Yes
+ski boots	footwear	yes	low	0	Yes	 Yes
+shoes	clothing	yes	low	0	Yes	 Yes
+wafers	food	yes	low	0	Yes	 Yes
+pears	fruit	yes	high	0	Yes	 Yes
+coconuts	fruit	yes	low	0	Yes	 Yes
+raisins	fruit	yes	low	0	Yes	 Yes
+peanut butter	food	yes	low	0	Yes	 Yes
+outfits	clothing	yes	high	0	Yes	 Yes
+avocados	fruit	yes	high	0	Yes	 Yes
+whips	weapon	yes	low	0	Yes	 Yes
+torpedoes	weapon	yes	high	0	Yes	 Yes
+playing cards	game	yes	high	0	Yes	 Yes
+coats	clothing	yes	high	0	Yes	 Yes
+bandanas	clothing	yes	low	0	Yes	 Yes
+swords	weapon	yes	high	0	Yes	 Yes
+elephants	animal	yes	low	0	Yes	 Yes
+soldering irons	tool	yes	high	0	Yes	 Yes
+kimonos	clothing	yes	low	0	Yes	 Yes
+cufflinks	jewelry	yes	high	0	Yes	 Yes
+flies	insect	yes	high	0	No	 No
+birdbaths	bird	no	high	0	Yes	 Yes
+burritos	food	yes	low	0	Yes	 Yes
+turtles	animal	yes	low	0	Yes	 Yes
+jackets	clothing	yes	low	0	Yes	 Yes
+blueberries	fruit	yes	high	0	Yes	 Yes
+plums	fruit	yes	high	0	Yes	 Yes
+melons	fruit	yes	low	0	Yes	 Yes
+pliers	tool	yes	high	0	Yes	 Yes
+grains	food	yes	high	0	Yes	 Yes
+squirrels	animal	yes	high	0	Yes	 Yes
+gourds	fruit	no	high	0	Yes	 Yes
+bees	insect	yes	high	0	No	 I
+owls	bird	yes	high	0	Yes	 Yes
+weasels	animal	yes	high	0	Yes	 Yes
+sauces	food	yes	high	0	Yes	 Yes
+guinea pigs	animal	yes	high	0	Yes	 Yes
+blackberries	fruit	yes	low	0	Yes	 Yes
+gumballs	candy	yes	low	0	Yes	 Yes
+strainers	tool	yes	low	0	Yes	 I
+butter	food	yes	high	0	Yes	 Yes
+tridents	weapon	yes	low	0	Yes	 Yes
+pigs	animal	yes	high	0	Yes	 Yes
+stuffing	food	yes	high	0	Yes	 Yes
+boomerangs	weapon	yes	low	0	Yes	 Yes
+rams	animal	yes	low	0	Yes	 Yes
+aloe	plant	yes	high	0	Yes	 Yes
+bok choys	food	yes	low	0	Yes	 Yes
+seafood	food	yes	high	0	Yes	 Yes
+shawls	clothing	yes	high	0	Yes	 Yes
+papayas	fruit	yes	high	0	Yes	 Yes
+buffets	food	yes	high	0	Yes	 Yes
+bins	container	yes	high	0	Yes	 Yes
+chocolates	candy	yes	low	0	Yes	 Yes
+calzones	food	yes	high	0	Yes	 Yes
+pitchforks	weapon	yes	low	0	Yes	 Yes
+headbands	headwear	yes	high	0	Yes	 Yes
+recliners	furniture	yes	high	0	Yes	 Yes
+gyros	food	yes	low	0	Yes	 Yes
+station wagons	vehicle	yes	high	0	Yes	 Yes
+couches	furniture	yes	high	0	Yes	 Yes
+cannons	weapon	yes	high	0	Yes	 Yes
+crossbows	weapon	yes	low	0	Yes	 Yes
+hawks	bird	yes	high	0	Yes	 Yes
+wolves	animal	yes	high	0	Yes	 Yes
+wetsuits	clothing	yes	low	0	Yes	 Yes
+mangoes	fruit	yes	high	0	Yes	 Yes
+popcorn	food	yes	high	0	Yes	 Yes
+rocking chairs	furniture	yes	low	0	Yes	 Yes
+ottoman	furniture	yes	high	0	Yes	 Yes
+olives	fruit	no	high	0	Yes	 Yes
+buggies	vehicle	yes	low	0	Yes	 Yes
+staplers	tool	no	high	0	Yes	 Yes
+hummus	food	yes	low	0	Yes	 Yes
+scoops	food	no	low	0	Yes	 Yes
+knives	weapon	yes	high	0	Yes	 Yes
+oatmeal	food	yes	high	0	Yes	 Yes
+mice	animal	yes	high	0	Yes	 Yes
+bowties	clothing	yes	low	0	Yes	 Yes
+stew	food	yes	high	0	Yes	 Yes
+gumdrops	candy	yes	high	0	No	 No
+beavers	animal	yes	high	0	Yes	 Yes
+camels	animal	yes	low	0	Yes	 Yes
+missiles	weapon	yes	high	0	Yes	 Yes
+sloths	animal	yes	high	0	Yes	 Yes
+slingshots	weapon	yes	low	0	Yes	 Yes
+tamales	food	yes	low	0	Yes	 Yes
+pasta	food	yes	high	0	Yes	 Yes
+brownies	food	yes	high	0	Yes	 Yes
+puffins	bird	yes	low	0	Yes	 Yes
+swimsuits	clothing	yes	high	0	Yes	 Yes
+robes	clothing	yes	high	0	Yes	 Yes
+blouses	clothing	yes	low	0	Yes	 Yes
+raccoons	animal	yes	high	0	Yes	 Yes
+trowels	tool	yes	high	0	Yes	 Yes
+monkeys	animal	yes	high	0	Yes	 Yes
+squash	fruit	no	high	0	Yes	 Yes
+mongooses	animal	yes	low	0	Yes	 Yes
+fruitcakes	fruit	no	high	0	No	 No
+leotards	clothing	yes	high	0	Yes	 Yes
+grapefruits	fruit	yes	high	0	Yes	 Yes
+pandas	animal	yes	high	0	Yes	 Yes
+leeks	vegetable	yes	high	0	Yes	 Yes
+parfaits	food	yes	low	0	Yes	 Yes
+tube tops	clothing	yes	high	0	Yes	 Yes
+benches	furniture	yes	low	0	No	 No
+pigeons	bird	yes	high	0	Yes	 Yes
+appetizers	food	yes	high	0	Yes	 Yes
+socks	clothing	yes	low	0	Yes	 Yes
+snowsuits	clothing	yes	high	0	Yes	 Yes
+hats	clothing	yes	low	0	Yes	 Yes
+cookies	food	yes	high	0	Yes	 Yes
+ready meals	food	yes	high	0	Yes	 Yes
+flamingoes	bird	yes	low	0	Yes	 Yes
+jeans	clothing	yes	low	0	Yes	 Yes
+reindeers	animal	yes	high	0	Yes	 Yes
+rice	food	yes	high	0	Yes	 Yes
+ticks	animal	yes	low	0	Yes	 Yes
+machetes	weapon	yes	high	0	Yes	 Yes
+sea urchins	sea animal	yes	high	0	Yes	 Yes
+backgammon	game	yes	high	0	Yes	 Yes
+pineapples	fruit	yes	high	0	Yes	 Yes
+bowls	food	no	high	0	Yes	 Yes
+tweezers	tool	yes	high	0	Yes	 Yes
+sandwiches	food	yes	low	0	Yes	 Yes
+ostriches	bird	yes	low	0	Yes	 Yes
+pelicans	bird	yes	high	0	Yes	 Yes
+kiwis	fruit	yes	high	0	Yes	 Yes
+spiders	animal	yes	low	0	Yes	 Yes
+cherries	fruit	yes	high	0	Yes	 Yes
+biscuits	food	yes	high	0	Yes	 Yes
+pomegranates	fruit	yes	high	0	Yes	 Yes
+dressers	furniture	yes	high	0	Yes	 Yes
+hummingbirds	bird	yes	high	0	Yes	 Yes
+cranberries	fruit	yes	low	0	Yes	 Yes
+defibrillators	medical equipment	yes	low	0	Yes	 Yes
+bikinis	clothing	yes	low	0	Yes	 Yes
+ducks	bird	yes	high	0	Yes	 Yes
+mattresses	furniture	yes	high	0	No	 No
+asparagus	vegetable	yes	low	0	Yes	 Yes
+eggs	food	yes	high	0	Yes	 Yes
+limes	fruit	yes	high	0	Yes	 Yes
+bacon	food	yes	low	0	Yes	 Yes
+tigers	animal	yes	high	0	Yes	 Yes
+manatees	sea animal	yes	low	0	Yes	 Yes
+hotdogs	food	yes	high	0	Yes	 Yes
+scooters	vehicle	yes	high	0	Yes	 Yes
+margaritas	drink	yes	low	0	Yes	 Yes
+peaches	fruit	yes	high	0	Yes	 Yes
+cheeseburgers	food	yes	low	0	Yes	 Yes
+boots	footwear	yes	high	0	Yes	 Yes
+loincloths	clothing	yes	high	0	Yes	 Yes
+veils	clothing	yes	high	0	Yes	 Yes
+pants	clothing	yes	high	0	Yes	 Yes
+strawberries	fruit	yes	low	0	Yes	 Yes
+hoodies	clothing	yes	high	0	Yes	 Yes
+meat	food	yes	high	0	Yes	 Yes
+caramels	candy	yes	high	0	Yes	 Yes
+ukuleles	musical instrument	yes	low	0	Yes	 Yes
+bracelets	jewelry	yes	high	0	Yes	 Yes
+spaghetti	food	yes	high	0	Yes	 Yes
+waffles	breakfast	yes	high	0	Yes	 Yes
+seagulls	bird	yes	high	0	Yes	 Yes
+rats	animal	yes	high	0	Yes	 Yes
+coat racks	furniture	yes	low	0	Yes	 Yes
+bananas	fruit	yes	low	0	Yes	 Yes
+nightstands	furniture	yes	low	0	No	 No
+handles	tool	yes	high	0	Yes	 Yes
+candy bars	candy	yes	high	0	No	 No
+ferrets	animal	yes	high	0	Yes	 Yes
+fondues	food	yes	high	0	Yes	 Yes
+cats	animal	yes	high	0	Yes	 Yes
+jerseys	clothing	yes	low	0	No	 No
+tacos	food	yes	low	0	Yes	 Yes
+sweaters	clothing	yes	high	0	Yes	 Yes
+bisons	animal	yes	low	0	Yes	 Yes
+snowshoes	footwear	yes	high	0	Yes	 Yes
+scallions	vegetable	yes	high	0	Yes	 Yes
+enchiladas	food	yes	low	0	Yes	 Yes
+pastries	food	yes	high	0	Yes	 Yes
+grapes	fruit	yes	low	0	Yes	 Yes
+bassinets	furniture	yes	low	0	Yes	 Yes
+brussels sprouts	vegetable	yes	low	0	Yes	 Yes
+birdhouses	bird	no	high	0	Yes	 Yes
+penguins	bird	yes	high	0	Yes	 Yes
+flamethrowers	weapon	yes	high	0	Yes	 Yes
+spears	weapon	yes	high	0	Yes	 Yes
+stir fry	food	yes	low	0	Yes	 Yes
+piglets	animal	yes	high	0	Yes	 Yes
+peacocks	bird	yes	high	0	Yes	 Yes
+calves	animal	yes	low	0	Yes	 Yes
+toucans	bird	yes	low	0	Yes	 Yes
+chicks	bird	yes	low	0	Yes	 Yes
+togas	clothing	yes	high	0	Yes	 Yes
+rifles	weapon	yes	high	0	Yes	 Yes
+daggers	weapon	yes	high	0	Yes	 Yes
+giraffes	animal	yes	high	0	Yes	 Yes
+rhinos	animal	yes	high	0	Yes	 Yes
+cotton candy	candy	yes	high	0	Yes	 Yes
+candy canes	candy	yes	high	0	Yes	 Yes
+eggplants	vegetable	yes	low	0	Yes	 Yes
+baklavas	food	yes	low	0	Yes	 Yes
+grenades	weapon	yes	low	0	Yes	 Yes
+tiramisu	dessert	yes	low	0	Yes	 Yes
+deers	animal	yes	high	0	Yes	 Yes
+buns	food	yes	low	0	Yes	 Yes
+batons	weapon	yes	low	0	Yes	 Yes
+blazers	clothing	yes	high	0	Yes	 Yes
+pecans	fruit	no	high	0	Yes	 Yes
+jams	food	yes	low	0	Yes	 Yes
+egg rolls	food	yes	low	0	Yes	 Yes
+crates	container	yes	high	0	Yes	 Yes
+tongs	weapon	no	high	0	Yes	 Yes
+steaks	food	yes	high	0	Yes	 Yes
+breadsticks	food	yes	high	0	Yes	 Yes
+peas	vegetable	yes	high	0	Yes	 Yes
+dominoes	game	yes	low	0	Yes	 Yes
+petri dishes	food	no	low	0	Yes	 Yes
+pheasants	bird	yes	high	0	Yes	 Yes
+frogs	animal	yes	high	0	Yes	 Yes
+scrambled eggs	breakfast	yes	low	0	Yes	 Yes
+sweatsuits	clothing	yes	high	0	Yes	 Yes
+clasps	tool	yes	low	0	Yes	 Yes
+brooches	jewelry	yes	low	0	Yes	 Yes
+lemons	fruit	yes	low	0	Yes	 Yes
+dogs	animal	yes	high	0	Yes	 Yes
+oranges	fruit	yes	low	0	Yes	 Yes
+sushi	food	yes	high	0	Yes	 Yes
+spring rolls	food	yes	low	0	Yes	 Yes
+parrots	bird	yes	high	0	Yes	 Yes
+axes	tool	yes	high	0	Yes	 Yes
+chicken	bird	yes	low	0	Yes	 Yes
+dresses	clothing	yes	high	0	Yes	 Yes
+pickaxes	tool	yes	high	0	Yes	 Yes
+star fruits	fruit	yes	low	0	Yes	 Yes
+landmines	weapon	yes	low	0	Yes	 Yes
+quesadillas	food	yes	high	0	Yes	 Yes
+omelets	breakfast	yes	high	0	Yes	 Yes
+wasps	insect	yes	low	0	Yes	 Yes
+yaks	animal	yes	high	0	Yes	 Yes
+bulls	animal	yes	low	0	Yes	 Yes
+cantaloupes	fruit	yes	high	0	Yes	 Yes
+marshmallows	candy	yes	low	0	Yes	 Yes
+moose	animal	yes	low	0	Yes	 Yes
+casseroles	food	yes	high	0	Yes	 Yes
+slippers	footwear	yes	high	0	Yes	 Yes
+brushes	tool	yes	low	0	Yes	 Yes
+headscarves	clothing	yes	low	0	Yes	 Yes
+loveseats	furniture	yes	low	0	Yes	 Yes
+wheat	food	yes	high	0	Yes	 Yes
+pizzas	food	yes	high	0	Yes	 Yes
+macaroni	food	yes	high	0	Yes	 Yes
+dolls	toy	yes	low	0	Yes	 Yes
+rabbits	animal	yes	high	0	Yes	 Yes
+meerkats	animal	yes	high	0	Yes	 Yes
+centerpieces	food	no	high	0	Yes	 Yes
+cinnamon	fruit	no	high	0	Yes	 Yes
+curry	food	yes	low	0	Yes	 Yes
+eagles	bird	yes	high	0	Yes	 Yes
+horses	animal	yes	high	0	Yes	 Yes
+vegetables	food	yes	high	0	Yes	 Yes
+chairs	furniture	yes	low	0	Yes	 Yes
+worms	animal	yes	low	0	Yes	 Yes
+ants	animal	yes	high	0	Yes	 Yes
+vultures	bird	yes	low	0	Yes	 Yes
+scarves	clothing	yes	low	0	Yes	 Yes
+sprouts	vegetable	yes	high	0	Yes	 Yes
+bathrobes	clothing	yes	high	0	Yes	 Yes
+snacks	food	yes	high	0	Yes	 Yes
+zebras	animal	yes	low	0	Yes	 Yes
+ice creams	food	yes	low	1	Yes	 Yes
+turtlenecks	clothing	yes	low	1	Yes	 Yes
+kilts	clothing	yes	high	1	Yes	 Yes
+nuts	food	yes	low	1	Yes	 Yes
+donuts	food	yes	low	1	Yes	 Yes
+skirts	clothing	yes	low	1	Yes	 Yes
+pancakes	breakfast	yes	high	1	Yes	 Yes
+chicken	animal	yes	high	1	Yes	 Yes
+bassoons	musical instrument	yes	low	1	Yes	 Yes
+seaweeds	food	yes	high	1	Yes	 Yes
+berries	food	yes	high	1	Yes	 Yes
+dough	food	yes	low	1	Yes	 Yes
+hooks	tool	yes	high	1	Yes	 Yes
+ice-cream cones	food	yes	low	1	Yes	 Yes
+tambourines	musical instrument	yes	low	1	Yes	 Yes
+puppies	animal	yes	low	1	Yes	 Yes
+cougars	animal	yes	high	1	Yes	 Yes
+sheeps	animal	yes	low	1	Yes	 Yes
+candy bars	food	yes	low	1	Yes	 Yes
+crows	bird	yes	low	1	Yes	 Yes
+spam	food	yes	high	1	Yes	 Yes
+diapers	clothing	yes	high	1	No	 No
+penguins	animal	yes	low	1	Yes	 Yes
+carts	vehicle	yes	high	1	Yes	 Yes
+sausages	food	yes	low	1	Yes	 Yes
+lightning bugs	insect	yes	high	1	Yes	 Yes
+pickaxes	weapon	yes	low	1	Yes	 Yes
+socks	footwear	yes	high	1	Yes	 Yes
+hyenas	animal	yes	high	1	Yes	 Yes
+jeeps	vehicle	yes	high	1	Yes	 Yes
+soups	food	yes	high	1	Yes	 Yes
+spinach	vegetable	yes	high	1	Yes	 Yes
+zucchini	vegetable	yes	high	1	Yes	 Yes
+ladybugs	insect	yes	high	1	Yes	 Yes
+pumpkins	food	yes	high	1	Yes	 Yes
+scrambled eggs	food	yes	low	1	Yes	 Yes
+joysticks	tool	no	high	1	Yes	 Yes
+cupcakes	food	yes	low	1	Yes	 Yes
+birdcages	bird	no	high	1	No	 No
+coffee beans	food	yes	low	1	Yes	 Yes
+doorknobs	tool	yes	low	1	Yes	 Yes
+moles	animal	yes	high	1	Yes	 Yes
+pita	food	yes	high	1	Yes	 Yes
+racks	furniture	yes	low	1	Yes	 Yes
+weeds	plant	yes	high	1	Yes	 Yes
+hearses	vehicle	yes	low	1	Yes	 Yes
+yogurts	food	yes	high	1	Yes	 Yes
+ratchets	tool	yes	low	1	Yes	 Yes
+brownies	dessert	yes	high	1	Yes	 Yes
+star fruits	food	yes	low	1	Yes	 Yes
+garlic	food	yes	low	1	Yes	 Yes
+rings	jewelry	yes	high	1	Yes	 Yes
+ferns	plant	yes	high	1	Yes	 Yes
+tomato sauce	food	yes	high	1	Yes	 Yes
+bottle openers	tool	yes	low	1	Yes	 Yes
+guacamole	food	yes	low	1	Yes	 Yes
+aardvarks	animal	yes	high	1	Yes	 Yes
+desserts	food	yes	high	1	Yes	 Yes
+gums	food	yes	low	1	Yes	 Yes
+cloves	fruit	no	high	1	Yes	 Yes
+polo shirts	clothing	yes	low	1	Yes	 Yes
+string cheese	food	yes	low	1	Yes	 Yes
+cream cheese	food	yes	low	1	Yes	 Yes
+accordions	musical instrument	yes	high	1	Yes	 Yes
+raincoats	clothing	yes	low	1	Yes	 Yes
+spatulas	tool	yes	high	1	Yes	 Yes
+bread	food	yes	high	1	Yes	 Yes
+banjoes	food	no	low	1	Yes	 Yes
+chickpeas	vegetable	yes	high	1	Yes	 Yes
+ketchup	food	yes	low	1	Yes	 Yes
+dirt bikes	vehicle	yes	low	1	Yes	 Yes
+flan	food	yes	low	1	Yes	 Yes
+tulips	plant	yes	low	1	Yes	 Yes
+dumplings	food	yes	low	1	Yes	 Yes
+shuffleboards	game	yes	low	1	Yes	 Yes
+platypuses	animal	yes	high	1	Yes	 Yes
+leeches	animal	yes	high	1	Yes	 Yes
+icepicks	weapon	yes	low	1	Yes	 Yes
+asparagus	fruit	no	high	1	Yes	 Yes
+spacesuits	clothing	yes	low	1	Yes	 Yes
+football helmets	protective clothing	yes	low	1	Yes	 Yes
+cymbals	musical instrument	yes	high	1	Yes	 Yes
+straightjackets	clothing	yes	high	1	No	 No
+pickles	food	yes	high	1	Yes	 Yes
+lab coats	clothing	yes	high	1	Yes	 Yes
+maggots	animal	yes	high	1	Yes	 Yes
+avocados	food	yes	high	1	Yes	 Yes
+waffles	food	yes	low	1	Yes	 Yes
+carrots	vegetable	yes	low	1	Yes	 Yes
+ducks	animal	yes	low	1	Yes	 Yes
+kale	vegetable	yes	low	1	Yes	 Yes
+ants	insect	yes	low	1	Yes	 Yes
+corn	fruit	no	high	1	Yes	 Yes
+plungers	weapon	no	high	1	Yes	 Yes
+toilet paper	toiletry	yes	high	1	No	 No
+pantyhoses	clothing	yes	low	1	Yes	 Yes
+praying mantises	insect	yes	low	1	Yes	 Yes
+broccoli	vegetable	yes	high	1	Yes	 Yes
+pocketknives	weapon	yes	low	1	Yes	 Yes
+tiaras	clothing	yes	high	1	Yes	 Yes
+sweet potatoes	vegetable	yes	low	1	Yes	 Yes
+wagons	vehicle	yes	high	1	Yes	 Yes
+pudding	food	yes	high	1	Yes	 Yes
+urns	container	yes	low	1	Yes	 Yes
+almonds	food	yes	high	1	Yes	 Yes
+caviar	food	yes	high	1	Yes	 Yes
+candy	food	yes	high	1	Yes	 Yes
+cornbread	food	yes	low	1	Yes	 Yes
+appetizers	dessert	no	high	1	Yes	 Yes
+whipped cream	food	yes	low	1	Yes	 Yes
+earwigs	insect	yes	low	1	No	 No
+tupperware	container	yes	high	1	Yes	 Yes
+mashed potatoes	food	yes	low	1	Yes	 Yes
+strawberries	food	yes	low	1	Yes	 Yes
+blowtorches	weapon	yes	low	1	Yes	 Yes
+saws	tool	yes	high	1	Yes	 Yes
+patties	food	yes	high	1	Yes	 Yes
+tomatoes	vegetable	yes	high	1	Yes	 Yes
+cheetahs	animal	yes	high	1	Yes	 Yes
+sharks	animal	yes	low	1	Yes	 Yes
+beer	drink	yes	high	1	Yes	 Yes
+tubas	musical instrument	yes	low	1	Yes	 Yes
+vests	clothing	yes	high	1	Yes	 Yes
+beets	vegetable	yes	high	1	Yes	 Yes
+wrenches	tool	yes	high	1	Yes	 Yes
+lasagna	food	yes	high	1	Yes	 Yes
+crackers	food	yes	high	1	Yes	 Yes
+pajamas	clothing	yes	high	1	Yes	 Yes
+rattles	animal	no	high	1	Yes	 Yes
+slugs	animal	yes	high	1	Yes	 Yes
+green beans	vegetable	yes	low	1	Yes	 Yes
+celeries	animal	no	high	1	Yes	 Yes
+cheeses	food	yes	high	1	Yes	 Yes
+cornmeal	food	yes	high	1	Yes	 Yes
+hash browns	food	yes	low	1	Yes	 Yes
+cardigans	clothing	yes	low	1	Yes	 Yes
+kangaroos	animal	yes	low	1	Yes	 Yes
+bell peppers	vegetable	yes	low	1	Yes	 Yes
+egg yolks	food	yes	high	1	Yes	 Yes
+crowbars	tool	yes	high	1	Yes	 Yes
+washcloths	clothing	no	high	1	No	 No
+oysters	food	yes	low	1	Yes	 Yes
+chicks	animal	yes	low	1	Yes	 Yes
+highchairs	furniture	yes	low	1	Yes	 Yes
+birds	animal	yes	high	1	Yes	 Yes
+grass	plant	yes	low	1	Yes	 Yes
+beans	fruit	no	high	1	Yes	 Yes
+buttons	tool	yes	low	1	Yes	 Yes
+gravy	food	yes	high	1	Yes	 Yes
+gumballs	food	yes	low	1	Yes	 Yes
+wheelbarrows	tool	no	high	1	Yes	 Yes
+hammocks	furniture	yes	low	1	Yes	 Yes
+tanks	weapon	yes	high	1	Yes	 Yes
+checkers	game	yes	high	1	Yes	 Yes
+chives	vegetable	yes	low	1	Yes	 Yes
+bushes	plant	yes	high	1	Yes	 Yes
+kittens	animal	yes	low	1	Yes	 Yes
+seahorses	sea animal	yes	low	1	Yes	 Yes
+scalpels	tool	yes	low	1	Yes	 Yes
+legos	toy	yes	low	1	Yes	 Yes
+paintbrushes	tool	yes	high	1	Yes	 Yes
+bombs	weapon	yes	low	1	Yes	 Yes
+arrows	weapon	yes	high	1	Yes	 Yes
+roosters	bird	yes	low	1	Yes	 Yes
+hammers	weapon	yes	low	1	Yes	 Yes
+eggnog	drink	yes	low	1	Yes	 Yes
+creme brulee	dessert	yes	low	1	Yes	 Yes
+meatballs	food	yes	high	1	Yes	 Yes
+uniforms	clothing	yes	high	1	Yes	 Yes
+licorice	candy	yes	high	1	Yes	 Yes
+pies	food	yes	low	1	Yes	 Yes
+bananas	food	yes	low	1	Yes	 Yes
+cheesecake	dessert	yes	high	1	Yes	 Yes
+fruits	food	yes	high	1	Yes	 Yes
+snakes	animal	yes	high	1	Yes	 Yes
+stockings	clothing	yes	low	1	Yes	 Yes
+shovels	tool	yes	high	1	Yes	 Yes
+pugs	animal	yes	low	1	Yes	 Yes
+jumpsuits	clothing	yes	low	1	Yes	 Yes
+groundhogs	animal	yes	low	1	Yes	 Yes
+filing cabinets	furniture	yes	high	1	No	 No
+gongs	musical instrument	yes	high	1	Yes	 Yes
+thrones	furniture	yes	high	1	Yes	 Yes
+grits	food	yes	high	1	Yes	 Yes
+cakes	food	yes	high	1	Yes	 Yes
+tongs	tool	yes	high	1	Yes	 Yes
+leopards	animal	yes	low	1	Yes	 Yes
+food processors	food	no	high	1	No	 No
+suits	clothing	yes	high	1	Yes	 Yes
+artichokes	fruit	no	high	1	Yes	 Yes
+bats	bird	no	high	1	No	 No
+screwdrivers	tool	yes	high	1	Yes	 Yes
+lecterns	furniture	yes	high	1	Yes	 Yes
+chimes	musical instrument	yes	high	1	Yes	 Yes
+llamas	animal	yes	high	1	Yes	 ll
+tables	furniture	yes	high	1	No	 No
+breakfasts	food	yes	high	1	Yes	 Yes
+fish	animal	yes	high	1	Yes	 Yes
+oatmeal	breakfast	yes	high	1	Yes	 Yes
+sorbets	food	yes	low	1	Yes	 Yes
+cauliflowers	vegetable	yes	high	1	Yes	 Yes
+cake mixes	food	yes	low	1	Yes	 Yes
+antelopes	animal	yes	high	1	Yes	 Yes
+clovers	plant	yes	low	1	Yes	 Yes
+potatoes	vegetable	yes	low	1	Yes	 Yes
+harps	musical instrument	yes	high	1	Yes	 Yes
+cockroaches	insect	yes	high	1	Yes	 Yes
+panthers	animal	yes	high	1	Yes	 Yes
+bookshelves	furniture	yes	high	1	Yes	 Yes
+bowler hats	headwear	yes	low	1	Yes	 Yes
+flutes	musical instrument	yes	low	1	Yes	 Yes
+panties	clothing	yes	high	1	Yes	 Yes
+okra	plant	no	high	1	Yes	 Yes
+nail files	tool	yes	low	1	Yes	 Yes
+sandals	footwear	yes	high	1	Yes	 Yes
+peanuts	food	yes	high	1	Yes	 Yes
+blowguns	weapon	yes	high	1	Yes	 Yes
+beetles	insect	yes	high	1	Yes	 Yes
+harmonicas	musical instrument	yes	high	1	Yes	 Yes
+machine guns	weapon	yes	high	1	Yes	 Yes
+tick-tack-toe	game	yes	high	1	Yes	 Yes
+wedding cakes	food	yes	low	1	Yes	 Yes
+nail clippers	tool	yes	high	1	Yes	 Yes
+stools	food	no	low	1	Yes	 Yes
+moths	insect	yes	high	1	Yes	 Yes
+saxophones	musical instrument	yes	low	1	Yes	 Yes
+chariots	vehicle	yes	high	1	Yes	 Yes
+blowfish	sea animal	yes	high	1	Yes	 Yes
+lambs	animal	yes	low	1	Yes	 Yes
+corals	animal	yes	high	1	Yes	 Yes
+muffins	food	yes	high	1	Yes	 Yes
+grapes	food	yes	low	1	Yes	 Yes
+bagpipes	musical instrument	yes	low	1	Yes	 Yes
+caterpillars	insect	yes	high	1	Yes	 Yes
+jars	food	no	low	1	Yes	 Yes
+rakes	tool	yes	high	1	Yes	 Yes
+hedgehogs	animal	yes	low	1	Yes	 Yes
+snails	animal	yes	high	1	Yes	 Yes
+orchids	plant	yes	high	1	Yes	 I
+peppers	vegetable	yes	high	1	Yes	 Yes
+coveralls	clothing	yes	high	1	Yes	 Yes
+mosses	plant	yes	low	1	Yes	 Yes
+sardines	food	yes	high	2	Yes	 Yes
+granola	food	yes	low	2	Yes	 Yes
+toaster ovens	kitchen equipment	yes	high	2	Yes	 Yes
+worms	insect	no	high	2	Yes	 Yes
+peppermints	candy	yes	high	2	No	 No
+mangoes	food	yes	high	2	Yes	 Yes
+cheesecake	food	yes	high	2	Yes	 Yes
+toads	animal	yes	high	2	Yes	 Yes
+fish	food	yes	high	2	Yes	 Yes
+spareribs	food	yes	high	2	Yes	 Yes
+flies	animal	yes	low	2	Yes	 Yes
+sloths	mammal	yes	high	2	Yes	 Yes
+lettuce	vegetable	yes	high	2	Yes	 Yes
+clarinets	musical instrument	yes	low	2	Yes	 Yes
+knobs	tool	yes	low	2	Yes	 Yes
+sprouts	plant	no	high	2	Yes	 Yes
+kayaks	vehicle	yes	low	2	Yes	 Yes
+taffy	animal	no	low	2	Yes	 Yes
+xylophones	musical instrument	yes	high	2	Yes	 Yes
+bikes	vehicle	yes	high	2	Yes	 Yes
+beakers	container	yes	high	2	Yes	 Yes
+hotplates	food	no	high	2	Yes	 Yes
+clippers	tool	yes	high	2	Yes	 Yes
+pitchforks	tool	yes	low	2	Yes	 Yes
+bagels	food	yes	high	2	Yes	 Yes
+french horns	musical instrument	yes	high	2	Yes	 Yes
+milkshakes	dessert	yes	low	2	Yes	 Yes
+hats	headwear	yes	high	2	Yes	 Yes
+bongos	musical instrument	yes	low	2	Yes	 Yes
+cordon bleu sandwiches	food	yes	low	2	Yes	 Yes
+squash	plant	no	high	2	Yes	 Yes
+watering cans	tool	yes	high	2	Yes	 Yes
+bugs	insect	yes	high	2	Yes	 Yes
+shelves	furniture	yes	low	2	Yes	 Yes
+pheasants	animal	yes	low	2	Yes	 Yes
+ivy	plant	yes	low	2	Yes	 I
+poodles	animal	yes	high	2	Yes	 Yes
+dusters	tool	yes	low	2	Yes	 I
+cats	mammal	yes	high	2	Yes	 Yes
+bags	container	yes	high	2	Yes	 Yes
+skateboards	vehicle	yes	low	2	Yes	 Yes
+moose	mammal	yes	low	2	Yes	 Yes
+spinach	food	yes	high	2	Yes	 Yes
+chipmunks	animal	yes	high	2	Yes	 Yes
+hairbrush	tool	no	high	2	Yes	 Yes
+honey	animal	no	low	2	Yes	 Yes
+costumes	clothing	yes	high	2	Yes	 Yes
+school buses	vehicle	yes	low	2	Yes	 Yes
+pots	food	no	high	2	Yes	 Yes
+cleavers	weapon	yes	low	2	Yes	 Yes
+chinchillas	animal	yes	high	2	Yes	 Yes
+peas	food	yes	high	2	Yes	 Yes
+melons	food	yes	low	2	Yes	 Yes
+pencil sharpeners	tool	yes	high	2	Yes	 Yes
+golf carts	vehicle	yes	low	2	Yes	 Yes
+scorpions	animal	yes	low	2	Yes	 Yes
+chisels	tool	yes	high	2	Yes	 Yes
+crabs	animal	yes	low	2	Yes	 Yes
+birthday cakes	food	yes	low	2	Yes	 Yes
+turkeys	animal	yes	high	2	Yes	 Yes
+squids	animal	yes	high	2	Yes	 Yes
+goldfish	animal	yes	high	2	Yes	 Yes
+sombreros	clothing	yes	low	2	Yes	 Yes
+maple syrup	food	yes	low	2	Yes	 Yes
+artichokes	vegetable	yes	high	2	Yes	 Yes
+scrapers	tool	yes	high	2	Yes	 Yes
+owls	animal	yes	high	2	Yes	 Yes
+cupcakes	dessert	yes	high	2	Yes	 Yes
+beanbags	furniture	yes	low	2	Yes	 Yes
+hammers	tool	yes	high	2	Yes	 Yes
+blueberries	food	yes	low	2	Yes	 Yes
+sundaes	dessert	yes	high	2	Yes	 Yes
+beavers	mammal	yes	high	2	Yes	 Yes
+ravioli	food	yes	low	2	Yes	 Yes
+fruitcakes	food	yes	high	2	Yes	 Yes
+butterflies	animal	yes	high	2	Yes	 Yes
+rolls	food	yes	low	2	Yes	 Yes
+bowler hats	clothing	yes	low	2	Yes	 Yes
+olives	food	yes	high	2	Yes	 Yes
+calculators	tool	no	high	2	Yes	 Yes
+hoes	tool	yes	high	2	Yes	 Yes
+polar bears	animal	yes	low	2	Yes	 Yes
+bears	mammal	yes	low	2	Yes	 Yes
+cilantro	plant	yes	low	2	Yes	 Yes
+basil	plant	yes	low	2	Yes	 Yes
+marmalade	food	yes	low	2	Yes	 Yes
+tricycles	vehicle	yes	high	2	Yes	 Yes
+buckets	container	yes	high	2	Yes	 Yes
+radishes	vegetable	yes	low	2	Yes	 Yes
+pantsuits	clothing	yes	high	2	Yes	 Yes
+omelets	food	yes	high	2	Yes	 Yes
+apples	food	yes	low	2	Yes	 Yes
+headbands	clothing	yes	high	2	Yes	 Yes
+maggots	insect	no	high	2	Yes	 Yes
+pencils	tool	yes	low	2	Yes	 Yes
+champagne	drink	yes	low	2	Yes	 Yes
+mustard	food	yes	low	2	Yes	 Yes
+coffeemakers	kitchen equipment	yes	low	2	Yes	 Yes
+ostriches	animal	yes	high	2	Yes	 Yes
+tomatoes	food	yes	high	2	Yes	 Yes
+crepes	food	yes	high	2	Yes	 Yes
+whales	animal	yes	high	2	Yes	 Yes
+scissors	tool	yes	high	2	Yes	 Yes
+sleds	vehicle	yes	high	2	Yes	 Yes
+kale	food	yes	low	2	Yes	 Yes
+meat	animal	no	high	2	Yes	 Yes
+beetles	animal	yes	low	2	Yes	 Yes
+chocolates	food	yes	high	2	Yes	 Yes
+boxer shorts	clothing	yes	high	2	Yes	 Yes
+plungers	tool	yes	high	2	Yes	 Yes
+tumbleweeds	plant	yes	low	2	Yes	 Yes
+bonnets	clothing	yes	low	2	Yes	 Yes
+chessboards	game	yes	low	2	Yes	 Yes
+cucumbers	vegetable	yes	high	2	Yes	 Yes
+carrots	food	yes	low	2	Yes	 Yes
+ducklings	animal	yes	low	2	Yes	 Yes
+dolphins	animal	yes	high	2	Yes	 Yes
+oranges	food	yes	low	2	Yes	 Yes
+face masks	protective clothing	yes	high	2	Yes	 Yes
+yo-yos	game	yes	low	2	Yes	 Yes
+toast	food	yes	low	2	Yes	 Yes
+dip	food	yes	high	2	Yes	 Yes
+manatees	mammal	yes	high	2	Yes	 Yes
+helmets	protective clothing	yes	high	2	Yes	 Yes
+lizards	animal	yes	high	2	Yes	 Yes
+rafts	water vehicle	yes	low	2	Yes	 Yes
+snowmobiles	vehicle	yes	high	2	Yes	 Yes
+catapults	weapon	yes	high	2	Yes	 Yes
+ski boots	clothing	yes	low	2	Yes	 Yes
+souffles	dessert	yes	low	2	Yes	 Yes
+sunflowers	plant	yes	low	2	Yes	 Yes
+calamari	seafood	yes	low	2	Yes	 Yes
+koalas	animal	yes	high	2	Yes	 Yes
+razors	tool	yes	low	2	Yes	 Yes
+top hats	headwear	yes	low	2	Yes	 Yes
+mushrooms	food	yes	high	2	Yes	 Yes
+purses	clothing	no	high	2	Yes	 Yes
+margaritas	fruit	no	low	2	Yes	 Yes
+fishnet stockings	clothing	yes	low	2	Yes	 Yes
+jelly beans	food	yes	low	2	Yes	 Yes
+otters	mammal	yes	high	2	Yes	 Yes
+squirrels	bird	no	high	2	Yes	 Yes
+raisins	food	yes	low	2	Yes	 Yes
+mongooses	mammal	yes	low	2	Yes	 Yes
+brooms	tool	yes	high	2	Yes	 Yes
+turbans	clothing	yes	high	2	Yes	 Yes
+eels	animal	yes	high	2	Yes	 Yes
+teddy bears	toy	yes	low	2	Yes	 Yes
+violins	musical instrument	yes	high	2	Yes	 Yes
+bras	clothing	yes	high	2	No	 No
+elephants	mammal	yes	low	2	Yes	 Yes
+trucks	vehicle	yes	high	2	Yes	 Yes
+spoons	tool	yes	low	2	Yes	 Yes
+pineapples	food	yes	high	2	Yes	 Yes
+lockets	jewelry	yes	high	2	Yes	 Yes
+broccoli	food	yes	high	2	Yes	 Yes
+firetrucks	vehicle	yes	high	2	Yes	 Yes
+razor blades	weapon	yes	high	2	Yes	 Yes
+hot-water bottles	container	yes	high	2	Yes	 Yes
+eggs	breakfast	yes	low	2	Yes	 Yes
+toaster ovens	kitchen tool	no	high	2	Yes	 Yes
+pigeons	animal	yes	low	2	Yes	 Yes
+pocketknives	tool	yes	low	2	Yes	 Yes
+scallions	plant	no	high	2	Yes	 Yes
+rattlesnakes	animal	yes	low	2	Yes	 Yes
+mops	tool	yes	low	2	Yes	 Yes
+step stools	furniture	yes	low	2	Yes	 Yes
+polishers	tool	yes	high	2	Yes	 Yes
+meatloaf	food	yes	low	2	Yes	 Yes
+walruses	sea animal	yes	high	2	Yes	 Yes
+bullets	weapon	yes	high	2	Yes	 Yes
+ketchup	condiment	yes	high	2	Yes	 Yes
+footrests	furniture	yes	high	2	Yes	 Yes
+cloaks	clothing	yes	high	2	Yes	 Yes
+first-aid kits	medical equipment	yes	high	2	Yes	 Yes
+jellyfish	sea animal	yes	low	2	Yes	 Yes
+cars	vehicle	yes	high	2	Yes	 Yes
+knives	tool	yes	high	2	Yes	 Yes
+hippos	mammal	yes	high	2	Yes	 Yes
+soy sauce	condiment	yes	high	2	Yes	 Yes
+pesto	food	yes	low	3	Yes	 Yes
+lavenders	plant	yes	high	3	Yes	 Yes
+mussels	food	yes	high	3	Yes	 Yes
+peacocks	animal	yes	low	3	Yes	 Yes
+carriages	vehicle	yes	high	3	Yes	 Yes
+mallets	tool	yes	high	3	Yes	 Yes
+whisks	animal	no	high	3	Yes	 Yes
+slicers	tool	no	high	3	Yes	 Yes
+hawks	animal	yes	low	3	Yes	 Yes
+bisons	mammal	yes	low	3	Yes	 Yes
+board games	game	yes	high	3	Yes	 Yes
+applesauce	food	yes	low	3	Yes	 Yes
+quads	animal	no	high	3	Yes	 Yes
+octopus	sea animal	yes	low	3	Yes	 Yes
+cellos	musical instrument	yes	high	3	Yes	 Yes
+maggots	food	no	high	3	Yes	 Yes
+pastries	dessert	yes	high	3	Yes	 Yes
+cherries	food	yes	low	3	Yes	 Yes
+beanies	clothing	yes	low	3	Yes	 Yes
+corn	plant	yes	low	3	Yes	 Yes
+barnacles	animal	yes	low	3	Yes	 Yes
+lemonades	drink	yes	low	3	Yes	 Yes
+cantaloupes	vegetable	no	high	3	Yes	 Yes
+bagels	breakfast	yes	high	3	Yes	 Yes
+skewers	food	no	high	3	Yes	 Yes
+chopsticks	tool	yes	high	3	Yes	 Yes
+glasses	tool	no	high	3	Yes	 Yes
+chilies	food	yes	low	3	Yes	 Yes
+mandolins	musical instrument	yes	low	3	Yes	 Yes
+cleavers	tool	yes	high	3	Yes	 Yes
+starfish	sea animal	yes	high	3	Yes	 Yes
+lettuce	food	yes	high	3	Yes	 Yes
+tea	drink	yes	low	3	Yes	 Yes
+hedgehogs	mammal	yes	high	3	Yes	 Yes
+pumpkins	vegetable	yes	high	3	Yes	 Yes
+humvees	vehicle	yes	high	3	Yes	 Yes
+eclairs	dessert	yes	high	3	Yes	 Yes
+bees	animal	yes	low	3	No	 I
+espresso	drink	yes	high	3	Yes	 Yes
+soy sauce	food	yes	low	3	Yes	 Yes
+stretchers	medical equipment	yes	high	3	Yes	 Yes
+toasters	tool	no	high	3	Yes	 Yes
+dalmatians	animal	yes	high	3	Yes	 Yes
+scissors	weapon	yes	high	3	Yes	 Yes
+parrots	animal	yes	high	3	Yes	 Yes
+coffee	drink	yes	high	3	Yes	 Yes
+chalks	food	no	high	3	Yes	 Yes
+sledgehammers	tool	yes	high	3	Yes	 Yes
+pepperonis	food	yes	low	3	Yes	 Yes
+sweet potatoes	food	yes	low	3	Yes	 Yes
+banjoes	animal	no	low	3	Yes	 Yes
+buses	vehicle	yes	high	3	Yes	 Yes
+ovens	kitchen equipment	yes	high	3	Yes	 Yes
+peaches	food	yes	low	3	Yes	 Yes
+mushrooms	plant	no	high	3	Yes	 Yes
+mascaras	animal	no	low	3	Yes	 Yes
+racks	food	no	low	3	Yes	 Yes
+bunkbeds	furniture	yes	low	3	Yes	 Yes
+rabbits	bird	no	low	3	Yes	 Yes
+peppers	food	yes	high	3	Yes	 Yes
+chinchillas	mammal	yes	high	3	Yes	 Yes
+cockroaches	animal	yes	high	3	Yes	 Yes
+wire cutters	tool	yes	high	3	Yes	 Yes
+trumpets	musical instrument	yes	low	3	Yes	 Yes
+marshmallows	food	yes	high	3	Yes	 Yes
+asparagus	food	yes	high	3	Yes	 Yes
+swordfish	sea animal	yes	high	3	Yes	 Yes
+okra	vegetable	yes	high	3	Yes	 Yes
+onions	food	yes	high	3	Yes	 Yes
+arugula	vegetable	yes	low	3	Yes	 Yes
+suspenders	clothing	yes	high	3	Yes	 Yes
+giraffes	mammal	yes	high	3	Yes	 Yes
+badgers	mammal	yes	high	3	Yes	 Yes
+sundaes	food	yes	low	3	Yes	 Yes
+zebras	mammal	yes	low	3	Yes	 Yes
+doorhandles	tool	yes	low	3	Yes	 Yes
+thumbtacks	tool	no	high	3	Yes	 Yes
+tadpoles	animal	yes	high	3	Yes	 Yes
+seahorses	animal	yes	low	3	Yes	 Yes
+machetes	tool	no	high	3	Yes	 Yes
+crayfish	sea animal	no	high	3	Yes	 Yes
+celeries	food	yes	high	3	Yes	 Yes
+scones	food	yes	low	3	Yes	 Yes
+pretzels	food	yes	high	3	Yes	 Yes
+shears	tool	yes	high	3	Yes	 Yes
+piglets	livestock	yes	low	3	Yes	 Yes
+cocktails	drink	yes	low	3	Yes	 Yes
+kale	plant	yes	low	3	Yes	 Yes
+chihuahuas	animal	yes	low	3	Yes	 Yes
+seaweeds	plant	yes	high	3	Yes	 Yes
+trees	plant	yes	high	3	Yes	 Yes
+icepicks	tool	yes	low	3	Yes	 Yes
+lobsters	animal	yes	high	3	Yes	 Yes
+aprons	clothing	yes	high	3	Yes	 Yes
+artichokes	food	yes	high	3	Yes	 Yes
+robots	animal	no	high	3	Yes	 Yes
+possums	animal	yes	high	3	Yes	 Yes
+forklifts	vehicle	yes	low	3	Yes	 Yes
+minivans	vehicle	yes	high	3	Yes	 Yes
+slot machines	game	yes	low	3	Yes	 Yes
+bells	musical instrument	yes	high	3	Yes	 Yes
+suitcases	container	yes	high	3	Yes	 Yes
+top hats	clothing	yes	high	3	Yes	 Yes
+mosquitoes	animal	yes	low	3	Yes	 Yes
+overalls	clothing	yes	high	3	Yes	 Yes
+boxes	container	yes	high	3	Yes	 Yes
+brass knuckles	tool	no	high	3	Yes	 Yes
+rickshaws	vehicle	yes	low	3	Yes	 Yes
+daisies	plant	yes	low	3	Yes	 Yes
+squash	vegetable	yes	high	3	Yes	 Yes
+stilettoes	footwear	yes	low	3	Yes	 Yes
+gloves	clothing	yes	high	3	Yes	 Yes
+headdresses	clothing	yes	high	3	Yes	 Yes
+clams	food	yes	high	3	Yes	 Yes
+leggings	clothing	yes	high	3	Yes	 Yes
+bulletproof vests	protective clothing	yes	high	3	Yes	 Yes
+croutons	food	yes	low	3	Yes	 Yes
+cabbages	vegetable	yes	low	3	Yes	 Yes
+limousines	vehicle	yes	low	3	Yes	 Yes
+popsicles	food	yes	high	3	Yes	 Yes
+whales	mammal	yes	high	3	Yes	 Yes
+screws	tool	yes	low	3	Yes	 Yes
+bamboos	plant	yes	low	3	Yes	 Yes
+frogs	insect	no	low	3	No	 No
+dandelions	plant	yes	high	3	Yes	 Yes
+crowbars	weapon	yes	low	3	Yes	 Yes
+hoses	tool	yes	low	3	Yes	 Yes
+donuts	breakfast	yes	high	3	Yes	 Yes
+grapevines	plant	yes	high	3	Yes	 Yes
+jelly beans	candy	yes	low	3	Yes	 Yes
+eagles	animal	yes	high	3	Yes	 Yes
+sugar cubes	food	yes	high	3	Yes	 Yes
+test tubes	container	yes	low	3	No	 No
+jellyfish	animal	yes	high	3	Yes	 Yes
+wine bottles	container	yes	low	3	Yes	 Yes
+green beans	food	yes	low	3	Yes	 Yes
+garlic	vegetable	yes	low	3	Yes	 Yes
+otters	animal	yes	high	3	Yes	 Yes
+chickpeas	fruit	no	high	3	Yes	 Yes
+chariots	animal	no	high	4	Yes	 Yes
+goats	livestock	yes	high	4	Yes	 Yes
+spinach	plant	yes	high	4	Yes	 Yes
+coconuts	food	yes	high	4	Yes	 Yes
+gophers	animal	yes	low	4	Yes	 Yes
+croissants	breakfast	yes	high	4	Yes	 Yes
+granola	breakfast	yes	low	4	Yes	 Yes
+gondolas	vehicle	yes	high	4	Yes	 Yes
+needles	tool	yes	low	4	Yes	 Yes
+eels	sea animal	yes	high	4	Yes	 Yes
+beanies	headwear	yes	low	4	Yes	 Yes
+scarecrows	animal	no	high	4	Yes	 Yes
+grapefruits	food	yes	low	4	Yes	 Yes
+jackhammers	tool	yes	high	4	No	 No
+drums	musical instrument	yes	high	4	Yes	 Yes
+horns	musical instrument	yes	high	4	Yes	 Yes
+pistachios	food	yes	low	4	Yes	 Yes
+sauerkraut	food	yes	low	4	Yes	 Yes
+dogs	mammal	yes	high	4	Yes	 Yes
+rolling pins	tool	yes	low	4	Yes	 Yes
+lattes	drink	yes	low	4	Yes	 Yes
+corsets	clothing	yes	low	4	Yes	 Yes
+chickpeas	food	yes	high	4	Yes	 Yes
+mussels	animal	yes	high	4	Yes	 Yes
+rabbits	mammal	yes	high	4	Yes	 Yes
+bats	animal	yes	high	4	Yes	 Yes
+mousse	food	yes	high	4	Yes	 Yes
+guitars	musical instrument	yes	high	4	Yes	 Yes
+aardvarks	mammal	yes	high	4	Yes	 Yes
+pipes	tool	yes	low	4	Yes	 Yes
+dolphins	mammal	yes	high	4	Yes	 Yes
+cookers	kitchen equipment	yes	high	4	Yes	 Yes
+deers	mammal	yes	high	4	Yes	 Yes
+alligators	animal	yes	high	4	Yes	 Yes
+moccasins	clothing	yes	low	4	Yes	 Yes
+caramels	dessert	yes	low	4	Yes	 Yes
+starfish	animal	yes	low	4	Yes	 Yes
+scallops	seafood	yes	high	4	Yes	 Yes
+sandals	clothing	yes	low	4	Yes	 Yes
+kayaks	water vehicle	yes	low	4	Yes	 Yes
+cauliflowers	food	yes	low	4	Yes	 Yes
+go-karts	vehicle	yes	high	4	Yes	 Yes
+fruitcakes	dessert	yes	high	4	Yes	 Yes
+trunks	container	yes	high	4	Yes	 Yes
+pens	tool	yes	low	4	Yes	 Yes
+gorillas	mammal	yes	low	4	Yes	 Yes
+highlighters	tool	no	high	4	Yes	 Yes
+cellphones	electronic device	yes	high	4	Yes	 Yes
+ice creams	dessert	yes	low	4	Yes	 Yes
+cufflinks	accessory	yes	high	4	Yes	 Yes
+gavels	tool	yes	low	4	Yes	 Yes
+figs	food	yes	high	4	Yes	 Yes
+grasshoppers	animal	yes	high	4	Yes	 Yes
+kazoos	musical instrument	yes	low	4	Yes	 Yes
+cows	livestock	yes	high	4	Yes	 Yes
+meerkats	mammal	yes	high	4	Yes	 Yes
+vultures	animal	yes	low	4	Yes	 Yes
+pudding	dessert	yes	high	4	Yes	 Yes
+trolleys	vehicle	yes	high	4	Yes	 Yes
+muffins	breakfast	yes	high	4	Yes	 Yes
+hopscotches	game	yes	low	4	Yes	 Yes
+pogo sticks	toy	yes	high	4	Yes	 Yes
+chainsaws	weapon	yes	low	4	Yes	 Yes
+water bottles	container	yes	low	4	Yes	 Yes
+jalapenoes	food	yes	low	4	Yes	 Yes
+strollers	vehicle	yes	high	4	Yes	 Yes
+car doors	vehicle	no	high	4	Yes	 Yes
+capes	clothing	yes	low	4	Yes	 Yes
+bumpers	vehicle	no	high	4	Yes	 Yes
+fast foods	food	yes	high	4	Yes	 Yes
+sandwiches	breakfast	yes	low	4	Yes	 Yes
+bonsai	plant	yes	low	4	Yes	 Yes
+pastries	breakfast	yes	high	4	Yes	 Yes
+hamsters	mammal	yes	high	4	Yes	 Yes
+squirrels	mammal	yes	high	4	Yes	 Yes
+centerpieces	furniture	no	high	4	Yes	 Yes
+gazelles	mammal	yes	low	4	Yes	 Yes
+cockatoos	animal	yes	high	4	Yes	 Yes
+axes	weapon	yes	high	4	Yes	 Yes
+bonnets	headwear	yes	low	4	Yes	 Yes
+pegs	tool	yes	low	4	Yes	 Yes
+crows	animal	yes	low	4	Yes	 Yes
+cashews	food	yes	high	4	Yes	 Yes
+lamb chops	food	yes	low	4	Yes	 Yes
+cabbages	food	yes	low	4	Yes	 Yes
+hot chocolate	drink	yes	high	4	Yes	 Yes
+shoes	footwear	yes	high	4	Yes	 Yes
+wedges	tool	yes	high	4	Yes	 I
+raccoons	mammal	yes	high	4	Yes	 Yes
+bell peppers	food	yes	low	4	Yes	 Yes
+peppers	plant	no	high	4	Yes	 Yes
+brooms	weapon	no	high	4	Yes	 Yes
+cobras	animal	yes	low	4	Yes	 Yes
+nails	tool	yes	low	4	Yes	 Yes
+latches	tool	yes	high	4	Yes	 Yes
+cans	container	yes	high	4	Yes	 Yes
+manatees	animal	yes	high	4	Yes	 Yes
+crepes	breakfast	yes	high	4	Yes	 Yes
+plums	food	yes	high	4	Yes	 Yes
+mint	plant	yes	high	4	Yes	 Yes
+moles	insect	no	high	4	No	 No
+shaving cream	food	no	high	4	Yes	 Yes
+popsicles	dessert	yes	high	4	Yes	 Yes
+trains	vehicle	yes	low	4	Yes	 Yes
+anteaters	mammal	yes	high	5	Yes	 Yes
+parfaits	dessert	yes	low	5	Yes	 Yes
+donkeys	mammal	yes	low	5	Yes	 Yes
+porcupines	animal	yes	low	5	Yes	 Yes
+watermelons	food	yes	low	5	Yes	 Yes
+macadamia nuts	food	yes	low	5	Yes	 Yes
+orangutans	animal	yes	high	5	Yes	 Yes
+rhinos	mammal	yes	high	5	Yes	 Yes
+chopsticks	food	no	high	5	Yes	 Yes
+shrimps	sea animal	yes	high	5	Yes	 Yes
+geese	animal	yes	high	5	Yes	 Yes
+crayfish	bird	no	high	5	Yes	 Yes
+broccoli	plant	yes	high	5	Yes	 Yes
+whales	bird	no	high	5	No	 No
+calamari	food	yes	low	5	Yes	 Yes
+sprouts	food	yes	high	5	Yes	 Yes
+rafts	vehicle	yes	low	5	Yes	 Yes
+caterpillars	animal	yes	high	5	Yes	 Yes
+toasters	food	no	high	5	Yes	 Yes
+groundhogs	mammal	yes	low	5	Yes	 Yes
+seagulls	animal	yes	low	5	Yes	 Yes
+lanyards	accessory	yes	low	5	Yes	 Yes
+chairs	vehicle	no	low	5	Yes	 Yes
+mussels	sea animal	yes	high	5	Yes	 Yes
+canoes	vehicle	yes	low	5	Yes	 Yes
+toast	breakfast	yes	low	5	Yes	 Yes
+tiaras	jewelry	yes	high	5	Yes	 Yes
+ladles	tool	yes	high	5	Yes	 Yes
+bottles	container	yes	high	5	Yes	 Yes
+whipped cream	dessert	yes	low	5	Yes	 Yes
+mint	food	yes	low	5	Yes	 Yes
+ferrets	mammal	yes	high	5	Yes	 Yes
+rams	mammal	yes	low	5	Yes	 Yes
+tractors	tool	no	high	5	Yes	 Yes
+chipmunks	mammal	yes	high	5	Yes	 Yes
+lollipops	food	yes	low	5	Yes	 Yes
+bats	mammal	yes	high	5	Yes	 Yes
+hash browns	breakfast	yes	low	5	Yes	 Yes
+pockets	container	yes	low	5	Yes	 Yes
+belts	clothing	yes	low	5	No	 No
+parsley	plant	yes	low	5	Yes	 Yes
+lemons	food	yes	low	5	Yes	 Yes
+zucchini	food	yes	high	5	Yes	 Yes
+antelopes	mammal	yes	low	5	Yes	 Yes
+donuts	dessert	yes	high	5	Yes	 Yes
+coleslaws	food	yes	low	5	Yes	 Yes
+koalas	mammal	yes	high	5	Yes	 Yes
+banana splits	dessert	yes	low	5	Yes	 Yes
+cufflinks	clothing	no	high	5	Yes	 Yes
+wrap	animal	no	low	5	Yes	 I
+marijuana	plant	yes	low	5	Yes	 Yes
+jigsaw puzzles	game	yes	low	5	Yes	 Yes
+possums	mammal	yes	high	5	Yes	 Yes
+trashcans	container	yes	high	5	Yes	 Yes
+lettuce	plant	yes	high	5	Yes	 Yes
+fishbowls	container	yes	high	5	Yes	 Yes
+peppermints	food	yes	high	5	Yes	 Yes
+squash	animal	no	high	5	Yes	 Yes
+hovercrafts	vehicle	yes	low	5	Yes	 Yes
+balloons	animal	no	low	5	Yes	 Yes
+swans	animal	yes	low	5	Yes	 Yes
+pies	dessert	yes	high	5	No	 No
+cucumbers	food	yes	high	5	Yes	 Yes
+abacuses	animal	no	high	5	Yes	 Yes
+saffron	food	yes	high	5	Yes	 Yes
+kangaroos	mammal	yes	low	5	Yes	 Yes
+cannonballs	weapon	yes	high	5	Yes	 Yes
+flamingoes	animal	yes	low	5	Yes	 Yes
+iguanas	animal	yes	high	5	Yes	 Yes
+police cars	vehicle	yes	high	5	Yes	 Yes
+dashboards	tool	no	high	5	Yes	 Yes
+spatulas	weapon	no	high	5	Yes	 Yes
+pocket watches	jewelry	yes	low	5	Yes	 Yes
+yo-yos	toy	yes	high	5	Yes	 Yes
+sewing machines	tool	no	high	5	Yes	 Yes
+walnuts	food	yes	low	5	Yes	 Yes
+llamas	mammal	yes	high	5	Yes	 ll
+hummingbirds	animal	yes	low	5	Yes	 Yes
+croissants	food	yes	low	5	Yes	 Yes
+eclairs	food	yes	low	5	Yes	 Yes
+thermoses	container	yes	high	5	No	 No
+cotton candy	food	yes	high	5	Yes	 Yes
+foxes	mammal	yes	high	5	Yes	 Yes
+coveralls	protective clothing	yes	high	5	Yes	 Yes
+scallops	sea animal	yes	high	5	Yes	 Yes
+pandas	mammal	yes	high	6	Yes	 Yes
+seaweeds	sea animal	no	high	6	Yes	 Yes
+pecans	food	yes	high	6	Yes	 Yes
+hams	food	yes	low	6	Yes	 Yes
+boots	clothing	yes	low	6	Yes	 Yes
+ladles	food	no	high	6	Yes	 Yes
+crabs	sea animal	yes	low	6	Yes	 Yes
+hearing aids	tool	no	high	6	Yes	 Yes
+cakes	dessert	yes	high	6	Yes	 Yes
+licorice	food	yes	high	6	Yes	 Yes
+turkeys	food	yes	high	6	Yes	 Yes
+seals	sea animal	yes	high	6	Yes	 Yes
+razor blades	food	no	high	6	No	 No
+chives	plant	yes	low	6	Yes	 Yes
+lobsters	food	yes	high	6	Yes	 Yes
+leeks	plant	yes	high	6	Yes	 Yes
+locks	tool	yes	low	6	Yes	 Yes
+calves	livestock	yes	low	6	Yes	 Yes
+ice-cream cones	dessert	yes	low	6	No	 No
+visors	protective clothing	yes	high	6	Yes	 Yes
+sheeps	livestock	yes	high	6	Yes	 Yes
+peas	plant	no	high	6	Yes	 Yes
+vacuum cleaners	tool	yes	low	6	Yes	 Yes
+duffel bags	container	yes	high	6	Yes	 Yes
+sodas	drink	yes	high	6	Yes	 Yes
+squids	sea animal	yes	high	6	Yes	 Yes
+sharks	sea animal	yes	low	6	Yes	 Yes
+blenders	kitchen equipment	yes	low	6	Yes	 Yes
+lambs	livestock	yes	high	6	Yes	 Yes
+puppies	food	no	low	6	Yes	 Yes
+radishes	food	yes	low	6	Yes	 Yes
+muffins	dessert	yes	high	6	Yes	 Yes
+banana splits	food	yes	low	6	Yes	 Yes
+clams	animal	yes	high	6	Yes	 Yes
+hinges	tool	yes	low	6	Yes	 Yes
+cranberries	food	yes	low	6	Yes	 Yes
+chinchillas	bird	no	low	6	Yes	 Yes
+roses	plant	yes	high	6	Yes	 Yes
+chicken	food	yes	high	6	Yes	 Yes
+whales	sea animal	yes	high	6	Yes	 Yes
+tigers	mammal	yes	high	6	Yes	 Yes
+cinnamon	food	yes	high	6	Yes	 Yes
+anvils	tool	yes	high	6	Yes	 Yes
+polar bears	mammal	yes	low	6	Yes	 Yes
+kites	animal	no	high	6	Yes	 Yes
+watering cans	container	yes	high	6	No	 No
+sauces	condiment	yes	high	6	Yes	 Yes
+caramels	food	yes	high	6	Yes	 Yes
+hotdogs	animal	no	high	6	Yes	 Yes
+octopus	animal	yes	high	6	Yes	 Yes
+air mattresses	furniture	yes	low	6	Yes	 Yes
+cilantro	vegetable	yes	low	6	Yes	 Yes
+graters	tool	yes	low	6	Yes	 Yes
+spatulas	kitchen tool	yes	high	6	Yes	 Yes
+monkeys	mammal	yes	high	6	Yes	 Yes
+barnacles	sea animal	yes	low	6	Yes	 Yes
+lions	mammal	yes	high	6	Yes	 Yes
+aquariums	animal	no	high	6	Yes	 Yes
+prunes	food	yes	low	6	Yes	 Yes
+syrups	food	yes	low	6	Yes	 Yes
+pickles	vegetable	no	high	6	Yes	 Yes
+wolves	mammal	yes	high	6	Yes	 Yes
+tractors	vehicle	yes	high	6	Yes	 Yes
+spaghetti	vegetable	no	high	6	Yes	 Yes
+gumdrops	food	yes	low	6	Yes	 Yes
+chests	container	yes	low	6	Yes	 Yes
+blackberries	food	yes	low	6	Yes	 Yes
+warthogs	mammal	yes	low	6	Yes	 Yes
+chainsaws	tool	yes	low	6	Yes	 Yes
+shrimps	animal	yes	high	6	Yes	 Yes
+boats	vehicle	yes	high	6	Yes	 Yes
+bolts	weapon	no	high	7	Yes	 Yes
+corals	sea animal	yes	low	7	Yes	 Yes
+ginger	food	yes	low	7	Yes	 Yes
+lab coats	protective clothing	yes	high	7	Yes	 Yes
+scallops	food	yes	high	7	Yes	 Yes
+piecrusts	food	yes	low	7	Yes	 Yes
+guinea pigs	mammal	yes	high	7	Yes	 Yes
+spark plugs	tool	yes	low	7	Yes	 Yes
+cranks	tool	yes	high	7	Yes	 Yes
+mice	mammal	yes	high	7	Yes	 Yes
+life jackets	protective clothing	yes	high	7	Yes	 Yes
+eels	food	yes	high	7	Yes	 Yes
+bowties	accessory	yes	low	7	Yes	 Yes
+televisions	electronic device	yes	high	7	Yes	 Yes
+salami	food	yes	low	7	Yes	 Yes
+apple trees	plant	yes	high	7	Yes	 Yes
+papayas	food	yes	high	7	Yes	 Yes
+curling irons	tool	yes	low	7	Yes	 Yes
+swabs	tool	no	high	7	Yes	 Yes
+beets	food	yes	low	7	Yes	 Yes
+blowtorches	tool	yes	low	7	Yes	 Yes
+thermometers	tool	yes	low	7	No	 No
+pigs	food	yes	low	7	Yes	 Yes
+turkeys	fruit	no	high	7	Yes	 Yes
+drawers	container	yes	low	7	Yes	 Yes
+roosters	animal	yes	low	7	Yes	 Yes
+catfish	animal	yes	high	7	Yes	 Yes
+hedges	plant	yes	low	7	Yes	 Yes
+water bottles	food	no	high	7	No	 No
+horses	livestock	yes	high	7	Yes	 Yes
+airplanes	vehicle	yes	high	7	Yes	 Yes
+praying mantises	animal	yes	low	7	Yes	 Yes
+whisks	tool	no	high	7	Yes	 Yes
+tiramisu	food	yes	low	7	Yes	 Yes
+bandanas	headwear	yes	low	7	Yes	 Yes
+tugboats	water vehicle	yes	high	7	Yes	 Yes
+tape measures	tool	yes	low	7	Yes	 Yes
+mussels	seafood	yes	high	7	Yes	 Yes
+dynamites	weapon	yes	low	7	Yes	 Yes
+crepes	dessert	yes	high	7	Yes	 Yes
+pickles	candy	no	high	7	Yes	 Yes
+asparagus	plant	yes	low	7	Yes	 Yes
+oysters	animal	yes	low	7	Yes	 Yes
+guns	weapon	yes	high	7	Yes	 Yes
+erasers	tool	no	high	7	Yes	 Yes
+fruit punches	drink	yes	high	7	Yes	 Yes
+scrabble	game	yes	low	7	Yes	 Yes
+tiaras	headwear	yes	high	7	Yes	 Yes
+birthday cakes	dessert	yes	low	7	Yes	 Yes
+crowns	jewelry	yes	low	7	Yes	 Yes
+skunks	mammal	yes	high	7	Yes	 Yes
+palm trees	plant	yes	high	7	Yes	 Yes
+artichokes	plant	yes	high	7	Yes	 Yes
+wheelchairs	vehicle	yes	low	7	Yes	 Yes
+remote controls	electronic device	yes	high	7	Yes	 Yes
+lobsters	sea animal	yes	high	7	Yes	 Yes
+squirrels	insect	no	high	7	Yes	 Yes
+music boxes	toy	yes	low	7	Yes	 Yes
+slippers	clothing	yes	low	7	Yes	 Yes
+armor	clothing	yes	low	7	Yes	 Yes
+dolphins	sea animal	yes	high	7	Yes	 Yes
+flip-flops	clothing	yes	high	7	Yes	 Yes
+hooks	food	no	high	7	Yes	 Yes
+airboats	water vehicle	yes	high	7	Yes	 Yes
+tarantulas	animal	yes	low	7	Yes	 Yes
+dices	game	yes	high	7	Yes	 Yes
+fountain pens	tool	yes	low	7	Yes	 Yes
+gourds	vegetable	yes	low	7	Yes	 Yes
+staple guns	tool	yes	low	7	Yes	 I
+cups	container	yes	high	7	No	 No
+corn	vegetable	yes	low	7	Yes	 Yes
+arugula	plant	yes	high	7	Yes	 Yes
+limes	food	yes	low	7	Yes	 Yes
+fruitcakes	candy	no	high	7	No	 No
+taxis	vehicle	yes	low	7	Yes	 Yes
+tortellini	food	yes	low	7	Yes	 Yes
+rats	mammal	yes	high	7	Yes	 Yes
+toasters	kitchen equipment	yes	high	8	Yes	 Yes
+record players	electronic device	yes	high	8	Yes	 Yes
+kittens	mammal	yes	low	8	Yes	 Yes
+headscarves	headwear	yes	high	8	Yes	 Yes
+pigs	livestock	yes	low	8	Yes	 Yes
+gloves	protective clothing	yes	low	8	Yes	 Yes
+peelers	tool	yes	high	8	Yes	 Yes
+sardines	sea animal	yes	low	8	Yes	 Yes
+eye patches	clothing	yes	low	8	Yes	 Yes
+nuts	animal	no	low	8	Yes	 Yes
+saws	weapon	no	high	8	Yes	 Yes
+oysters	seafood	yes	low	8	Yes	 Yes
+donkeys	livestock	yes	high	8	Yes	 Yes
+noodles	vegetable	no	high	8	Yes	 Yes
+toucans	animal	yes	high	8	Yes	 Yes
+canoes	water vehicle	yes	high	8	Yes	 Yes
+whisks	water vehicle	no	low	8	Yes	 Yes
+raspberries	food	yes	low	8	Yes	 Yes
+pomegranates	food	yes	high	8	Yes	 Yes
+scalpels	weapon	yes	low	8	Yes	 Yes
+pumpkins	animal	no	high	8	Yes	 Yes
+wigs	headwear	yes	low	8	Yes	 Yes
+backscratchers	animal	no	high	8	Yes	 Yes
+anteaters	animal	yes	high	8	Yes	 Yes
+jetskis	water vehicle	yes	low	8	No	 No
+raincoats	protective clothing	yes	high	8	Yes	 Yes
+wrap	food	yes	low	8	Yes	 Yes
+coasters	food	no	high	8	Yes	 Yes
+candy canes	food	yes	low	8	Yes	 Yes
+milkshakes	drink	yes	high	8	Yes	 Yes
+vials	container	yes	high	8	Yes	 Yes
+zucchini	plant	no	high	8	Yes	 Yes
+squirt guns	toy	yes	high	8	Yes	 Yes
+radios	electronic device	yes	high	8	Yes	 Yes
+grits	breakfast	yes	high	8	Yes	 Yes
+slicers	food	no	high	8	Yes	 Yes
+toasters	kitchen tool	no	high	8	Yes	 Yes
+souffles	food	yes	high	8	Yes	 Yes
+crayfish	animal	yes	high	8	Yes	 Yes
+pelicans	animal	yes	low	8	Yes	 Yes
+peanuts	animal	no	low	8	Yes	 Yes
+snakes	mammal	no	high	8	Yes	 Yes
+can openers	tool	yes	low	8	Yes	 Yes
+okra	food	yes	high	8	Yes	 Yes
+pigs	mammal	yes	low	9	Yes	 Yes
+roses	food	no	low	9	Yes	 Yes
+scanners	electronic device	yes	high	9	Yes	 Yes
+spaghetti	animal	no	high	9	Yes	 Yes
+dragonflies	animal	yes	high	9	Yes	 Yes
+pine trees	plant	yes	low	9	Yes	 Yes
+dumpsters	container	yes	high	9	Yes	 Yes
+corkscrews	tool	yes	low	9	Yes	 Yes
+milk	drink	yes	low	9	Yes	 Yes
+balloons	food	no	low	9	Yes	 Yes
+boars	mammal	yes	low	9	Yes	 Yes
+staples	food	no	high	9	Yes	 Yes
+hooks	animal	no	high	9	Yes	 Yes
+bolo ties	clothing	yes	low	9	Yes	 Yes
+dalmatians	mammal	yes	low	9	Yes	 Yes
+coyotes	mammal	yes	low	9	Yes	 Yes
+stretchers	weapon	no	high	9	Yes	 Yes
+juices	fruit	no	high	9	Yes	 Yes
+puppies	mammal	yes	low	9	Yes	 Yes
+chickpeas	plant	no	high	9	Yes	 Yes
+mousse	dessert	yes	high	9	Yes	 Yes
+vise	tool	yes	high	9	Yes	 Yes
+tape recorders	electronic device	yes	low	9	Yes	 Yes
+coils	animal	no	high	9	Yes	 I
+clothespins	clothing	no	high	9	Yes	 Yes
+spears	tool	no	high	9	Yes	 Yes
+clams	seafood	yes	high	9	Yes	 Yes
+switches	tool	yes	low	9	Yes	 Yes
+ferries	water vehicle	yes	high	9	Yes	 Yes
+crabs	food	yes	high	9	Yes	 Yes
+mixers	food	no	high	9	Yes	 Yes
+boats	water vehicle	yes	high	9	Yes	 Yes
+cummerbunds	food	no	low	9	Yes	 Yes
+poppies	plant	yes	low	9	Yes	 Yes
+cantaloupes	plant	no	high	9	Yes	 Yes
+dustpans	furniture	no	high	9	Yes	 Yes
+daggers	tool	no	high	9	Yes	 Yes
+dishwashers	kitchen equipment	yes	high	9	Yes	 Yes
+sunflowers	food	no	low	9	Yes	 Yes
+oysters	sea animal	yes	low	9	Yes	 Yes
+funnels	tool	yes	high	9	Yes	 Yes
+inhalers	medical equipment	yes	high	9	Yes	 Yes
+speedboats	vehicle	yes	low	9	Yes	 Yes
+freezers	food	no	high	9	No	 No
+rhubarbs	vegetable	yes	high	9	Yes	 Yes
+snowplows	vehicle	yes	low	9	Yes	 Yes
+snails	food	no	high	9	Yes	 Yes
+racks	animal	no	low	9	Yes	 Yes
+hamburgers	breakfast	yes	high	10	No	 No
+eggplants	food	yes	high	10	Yes	 Yes
+cheetahs	mammal	yes	high	10	Yes	 Yes
+syringes	medical equipment	yes	high	10	Yes	 Yes
+sardines	animal	yes	low	10	Yes	 Yes
+space shuttles	vehicle	yes	low	10	Yes	 Yes
+faucets	tool	yes	low	10	Yes	 Yes
+dollhouses	toy	yes	high	10	Yes	 Yes
+keys	tool	yes	high	10	Yes	 Yes
+oilcans	container	yes	low	10	Yes	 Yes
+sheeps	mammal	yes	low	10	Yes	 Yes
+penlights	tool	yes	low	10	Yes	 Yes
+ropes	tool	yes	low	10	Yes	 Yes
+garbage trucks	vehicle	yes	high	10	Yes	 Yes
+generators	tool	no	high	10	Yes	 Yes
+tuxedoes	clothing	yes	low	10	Yes	 Yes
+letter openers	tool	yes	high	10	Yes	 I
+seaplanes	water vehicle	yes	low	10	Yes	 Yes
+unicycles	vehicle	yes	high	10	Yes	 Yes
+cantaloupes	food	yes	high	10	Yes	 Yes
+kettles	kitchen tool	yes	low	10	Yes	 Yes
+bacon	breakfast	yes	low	10	Yes	 Yes
+pears	food	yes	low	10	Yes	 Yes
+shortbread	food	yes	low	10	Yes	 Yes
+toolboxes	container	yes	high	10	Yes	 Yes
+grass	food	no	high	10	Yes	 Yes
+pins	tool	yes	low	10	Yes	 Yes
+car seats	vehicle	no	high	10	Yes	 Yes
+brussels sprouts	food	yes	low	10	Yes	 Yes
+gears	tool	yes	low	10	Yes	 Yes
+flippers	tool	no	high	10	Yes	 Yes
+spatulas	food	no	high	10	Yes	 Yes
+bolts	tool	yes	high	10	Yes	 Yes
+pineapples	vegetable	no	high	10	Yes	 Yes
+moths	animal	yes	low	10	Yes	 Yes
+bulldozers	tool	no	high	10	Yes	 Yes
+lizards	mammal	no	high	10	Yes	 Yes
+shrimps	food	yes	high	10	Yes	 Yes
+rattles	tool	no	high	10	Yes	 Yes
+blowers	tool	yes	low	10	Yes	 Yes
+chairs	animal	no	low	10	Yes	 Yes
+abacuses	food	no	high	10	Yes	 Yes
+envelopes	weapon	no	high	10	Yes	 Yes
+gingerbread men	food	yes	low	10	Yes	 Yes
+skewers	tool	no	high	11	Yes	 Yes
+reindeers	mammal	yes	low	11	Yes	 Yes
+bulls	livestock	yes	low	11	Yes	 Yes
+quills	tool	yes	low	11	Yes	 Yes
+cabbages	plant	yes	low	11	Yes	 Yes
+cloves	food	yes	low	11	Yes	 Yes
+flasks	food	no	low	11	Yes	 Yes
+magnifying glasses	tool	yes	low	11	Yes	 Yes
+wines	drink	yes	high	11	Yes	 Yes
+inkwells	tool	no	high	11	Yes	 Yes
+ferries	vehicle	yes	high	11	Yes	 Yes
+honey	food	yes	low	11	Yes	 Yes
+shrimps	seafood	yes	high	11	Yes	 Yes
+pugs	mammal	yes	low	11	Yes	 Yes
+peas	animal	no	high	11	Yes	 Yes
+birdhouses	home decor	yes	low	11	Yes	 Yes
+triangles	animal	no	high	11	Yes	 Yes
+helmets	headwear	yes	high	11	Yes	 Yes
+bandages	medical equipment	yes	high	11	Yes	 Yes
+kneepads	protective clothing	yes	low	11	Yes	 Yes
+hearing aids	medical equipment	yes	high	11	Yes	 Yes
+beavers	bird	no	high	11	Yes	 Yes
+porcupines	mammal	yes	high	11	Yes	 Yes
+modems	electronic device	yes	high	11	Yes	 Yes
+rakes	food	no	high	11	Yes	 Yes
+sausages	breakfast	yes	low	11	Yes	 Yes
+markers	tool	yes	high	11	Yes	 I
+squash	food	yes	high	11	Yes	 Yes
+cookies	dessert	yes	high	11	No	 No
+padlocks	tool	yes	low	11	Yes	 Yes
+workbenches	furniture	yes	high	11	No	 No
+calves	food	no	low	11	Yes	 Yes
+keyboards	musical instrument	yes	low	11	Yes	 Yes
+canisters	container	yes	high	11	Yes	 Yes
+highlighters	weapon	no	high	11	Yes	 Yes
+cabinets	container	yes	high	11	Yes	 Yes
+ponies	mammal	yes	low	11	Yes	 Yes
+magnifiers	tool	yes	low	11	Yes	 Yes
+goldfish	mammal	no	high	11	Yes	 Yes
+cilantro	food	yes	low	11	Yes	 Yes
+mixers	tool	no	high	11	Yes	 I
+earwigs	animal	yes	high	11	Yes	 Yes
+swabs	medical equipment	yes	high	11	Yes	 Yes
+flan	dessert	yes	low	12	Yes	 Yes
+breadboxes	container	yes	high	12	Yes	 Yes
+barrels	food	no	low	12	Yes	 Yes
+sorbets	dessert	yes	high	12	Yes	 Yes
+drills	weapon	no	high	12	Yes	 Yes
+rakes	weapon	no	high	12	Yes	 Yes
+kittens	food	no	low	12	Yes	 Yes
+bumpers	tool	no	high	12	Yes	 Yes
+bulls	mammal	yes	low	12	Yes	 Yes
+cougars	mammal	yes	low	12	Yes	 Yes
+spears	food	no	high	12	Yes	 Yes
+catfish	sea animal	yes	high	12	Yes	 Yes
+terrariums	container	yes	low	12	Yes	 Yes
+chargers	tool	yes	low	12	Yes	 I
+lobsters	seafood	yes	high	12	Yes	 Yes
+flowers	plant	yes	high	12	Yes	 Yes
+envelopes	container	no	high	12	Yes	 Yes
+iguanas	mammal	no	high	12	Yes	 Yes
+frogs	mammal	no	high	12	Yes	 Yes
+margaritas	water vehicle	no	low	12	No	 No
+lambs	food	yes	high	12	Yes	 Yes
+gums	candy	yes	low	12	Yes	 Yes
+string cheese	animal	no	low	12	Yes	 Yes
+goats	mammal	yes	low	12	Yes	 Yes
+music boxes	electronic device	yes	high	13	Yes	 Yes
+shredders	food	no	high	13	Yes	 Yes
+gophers	mammal	yes	low	13	Yes	 Yes
+jump ropes	game	yes	high	13	Yes	 Yes
+mulberries	food	yes	low	13	Yes	 Yes
+stockings	footwear	yes	low	13	Yes	 Yes
+weeds	food	no	high	13	Yes	 Yes
+potpies	food	yes	low	13	Yes	 Yes
+microphones	electronic device	yes	high	13	Yes	 Yes
+ducklings	food	no	low	13	Yes	 Yes
+pins	food	no	high	13	Yes	 Yes
+bins	food	no	low	13	Yes	 Yes
+walruses	animal	yes	high	13	Yes	 Yes
+kegs	container	yes	low	13	Yes	 Yes
+waffle irons	kitchen equipment	yes	high	13	Yes	 Yes
+stretchers	vehicle	no	high	13	Yes	 Yes
+lightning bugs	animal	yes	low	13	Yes	 Yes
+sarcophagi	container	yes	low	13	Yes	 Yes
+bananas	animal	no	low	13	Yes	 Yes
+blowfish	animal	yes	high	13	Yes	 Yes
+snowshoes	clothing	yes	high	13	Yes	 Yes
+mugs	container	yes	high	13	Yes	 Yes
+chocolates	dessert	yes	low	13	Yes	 Yes
+sailboats	vehicle	yes	low	13	Yes	 Yes
+mascaras	food	no	low	13	Yes	 Yes
+turtles	sea animal	yes	low	13	Yes	 Yes
+stools	furniture	yes	low	13	Yes	 Yes
+diapers	food	no	high	13	Yes	 Yes
+projectors	tool	no	high	13	Yes	 Yes
+chests	furniture	yes	high	13	Yes	 Yes
+chains	weapon	no	high	13	Yes	 Yes
+mittens	clothing	yes	low	13	Yes	 Yes
+ostriches	mammal	no	high	13	Yes	 Yes
+boomerangs	toy	yes	low	13	Yes	 Yes
+kettles	food	no	low	13	Yes	 Yes
+ladders	tool	yes	low	13	Yes	 Yes
+mussels	vegetable	no	high	13	Yes	 Yes
+taffy	food	yes	low	13	Yes	 Yes
+workbenches	tool	no	high	13	Yes	 Yes
+clams	sea animal	yes	high	13	Yes	 Yes
+toast	animal	no	low	13	Yes	 Yes
+creme brulee	food	yes	low	14	Yes	 Yes
+sea urchins	animal	yes	low	14	Yes	 Yes
+chains	tool	yes	high	14	Yes	 Yes
+weasels	mammal	yes	low	14	Yes	 Yes
+hotplates	kitchen equipment	yes	low	14	Yes	 Yes
+tweezers	medical equipment	yes	high	14	Yes	 Yes
+leeks	food	yes	high	14	Yes	 Yes
+mailboxes	container	yes	high	14	Yes	 Yes
+beachballs	toy	yes	low	14	Yes	 Yes
+deodorants	food	no	high	14	Yes	 Yes
+walruses	mammal	yes	low	14	Yes	 Yes
+macaroni	vegetable	no	high	14	Yes	 Yes
+cows	mammal	yes	low	14	Yes	 Yes
+fruitcakes	breakfast	no	high	14	Yes	 Yes
+barrels	container	yes	high	14	Yes	 Yes
+bassoons	animal	no	low	14	Yes	 Yes
+laptops	electronic device	yes	high	14	Yes	 Yes
+eels	bird	no	high	14	Yes	 Yes
+poinsettias	plant	yes	high	14	Yes	 Yes
+spacesuits	protective clothing	yes	low	14	Yes	 Yes
+cleavers	kitchen tool	yes	high	14	Yes	 Yes
+orangutans	mammal	yes	low	14	Yes	 Yes
+muffs	headwear	no	high	14	Yes	 Yes
+camels	mammal	yes	low	14	Yes	 Yes
+trunks	vehicle	no	high	15	Yes	 Yes
+fish	sea animal	yes	high	15	Yes	 Yes
+frisbees	toy	yes	high	15	Yes	 Yes
+juices	drink	yes	low	15	Yes	 Yes
+combination locks	tool	yes	low	15	Yes	 Yes
+bowls	container	yes	high	15	Yes	 Yes
+bisons	livestock	yes	low	15	Yes	 Yes
+lecterns	tool	no	high	15	Yes	 Yes
+headbands	accessory	yes	high	15	Yes	 Yes
+smoothies	drink	yes	high	15	Yes	 Yes
+cake mixes	dessert	yes	low	15	No	 No
+honey	plant	no	low	15	Yes	 Yes
+veils	headwear	yes	high	15	Yes	 Yes
+cardinals	bird	yes	low	15	Yes	 Yes
+wetsuits	protective clothing	yes	low	15	Yes	 Yes
+terrariums	home decor	yes	high	15	Yes	 Yes
+hula hoops	toy	yes	high	15	Yes	 Yes
+taffy	plant	no	low	15	Yes	 Yes
+life jackets	clothing	yes	high	15	Yes	 Yes
+kettles	container	yes	low	15	Yes	 Yes
+bulletproof vests	clothing	yes	low	15	No	 No
+noisemakers	tool	no	high	15	Yes	 Yes
+swabs	weapon	no	high	15	Yes	 Yes
+french fries	breakfast	yes	low	15	Yes	 Yes
+flour	animal	no	low	15	Yes	 Yes
+watering cans	food	no	high	15	Yes	 Yes
+pudding	candy	no	high	15	Yes	 Yes
+armor	protective clothing	yes	high	15	Yes	 Yes
+hoes	food	no	high	15	Yes	 Yes
+arugula	food	yes	high	15	Yes	 Yes
+drums	animal	no	high	15	Yes	 Yes
+ambulances	vehicle	yes	high	15	Yes	 Yes
+shopping baskets	container	yes	high	15	Yes	 Yes
+hairnets	headwear	yes	low	15	Yes	 Yes
+chairs	tool	no	low	16	Yes	 Yes
+scallions	food	yes	high	16	Yes	 Yes
+panthers	mammal	yes	high	16	Yes	 Yes
+skateboards	toy	yes	low	16	Yes	 Yes
+wasps	animal	yes	low	16	Yes	 Yes
+squids	insect	no	low	16	Yes	 Yes
+crutches	medical equipment	yes	low	16	Yes	 Yes
+football helmets	headwear	yes	low	16	Yes	 Yes
+recorders	electronic device	no	high	16	Yes	 Yes
+cables	tool	yes	low	16	Yes	 I
+hatboxes	container	yes	high	16	Yes	 Yes
+leotards	women's clothing	no	high	16	Yes	 Yes
+toothbrushes	food	no	low	16	Yes	 Yes
+refrigerators	food	no	high	16	Yes	 Yes
+light switches	electronic device	no	high	16	Yes	 Yes
+lasagna	breakfast	no	high	16	Yes	 Yes
+jugs	food	no	low	16	Yes	 Yes
+onions	animal	no	high	16	Yes	 Yes
+lightbulbs	tool	yes	low	16	Yes	 Yes
+hot-air balloons	vehicle	yes	low	16	Yes	 Yes
+parsley	vegetable	yes	low	16	Yes	 Yes
+fishbowls	food	no	high	16	Yes	 Yes
+bees	food	no	low	16	No	 I
+bracelets	clothing	yes	high	16	Yes	 Yes
+computer screens	electronic device	yes	high	16	Yes	 Yes
+cardinals	animal	yes	low	17	Yes	 Yes
+dustpans	tool	yes	high	17	Yes	 I
+stretchers	tool	no	high	17	Yes	 Yes
+flosses	toiletry	yes	high	17	Yes	 Yes
+kegs	food	no	low	17	Yes	 Yes
+lettuce	animal	no	low	17	Yes	 Yes
+basil	food	yes	low	17	Yes	 Yes
+calves	mammal	yes	low	17	Yes	 Yes
+funnels	food	no	high	17	Yes	 Yes
+stools	animal	no	low	17	Yes	 Yes
+sickles	tool	yes	high	17	Yes	 Yes
+jukeboxes	electronic device	yes	high	17	Yes	 Yes
+hyenas	mammal	yes	high	17	Yes	 Yes
+shopping carts	container	yes	low	17	Yes	 Yes
+wheelbarrows	food	no	high	17	No	 No
+mushrooms	animal	no	high	17	Yes	 Yes
+jugs	container	yes	low	17	Yes	 Yes
+light switches	tool	yes	low	17	Yes	 Yes
+shortbread	dessert	yes	low	17	Yes	 Yes
+toothbrushes	toiletry	yes	low	17	No	 No
+tongs	animal	no	high	17	Yes	 Yes
+snails	sea animal	yes	low	17	Yes	 Yes
+cinnamon	animal	no	high	17	Yes	 Yes
+ink	food	no	high	17	Yes	 Yes
+lunchboxes	container	yes	high	18	Yes	 Yes
+deodorants	toiletry	yes	high	18	No	 No
+helicopters	vehicle	yes	low	18	Yes	 Yes
+goats	food	yes	low	18	Yes	 Yes
+yachts	vehicle	yes	low	18	Yes	 Yes
+stretchers	furniture	no	high	18	No	 No
+pumpkins	plant	no	high	18	Yes	 Yes
+ants	mammal	no	high	18	Yes	 Yes
+bushes	food	no	low	18	Yes	 Yes
+muffs	tool	no	high	18	Yes	 Yes
+cheeseburgers	animal	no	low	18	Yes	 Yes
+tomatoes	animal	no	high	18	Yes	 Yes
+stoves	food	no	high	18	Yes	 Yes
+tongs	food	no	high	18	Yes	 Yes
+camcorders	electronic device	yes	low	18	Yes	 Yes
+lasagna	vegetable	no	high	19	Yes	 Yes
+ducklings	fruit	no	low	19	Yes	 Yes
+grinders	tool	yes	high	19	Yes	 I
+pokers	tool	yes	high	19	Yes	 Yes
+scallops	animal	yes	high	19	Yes	 Yes
+projectors	electronic device	yes	high	19	Yes	 Yes
+catfish	bird	no	high	19	Yes	 Yes
+ice packs	medical equipment	yes	low	19	Yes	 Yes
+routers	tool	no	high	19	Yes	 Yes
+diapers	toiletry	yes	high	19	No	 No
+sardines	seafood	yes	high	19	Yes	 Yes
+incubators	food	no	high	19	Yes	 Yes
+kites	food	no	high	19	Yes	 Yes
+bathtubs	container	yes	low	19	Yes	 Yes
+mirrors	tool	no	low	19	Yes	 Yes
+whisks	vehicle	no	high	19	Yes	 Yes
+airplanes	animal	no	low	19	Yes	 Yes
+tridents	tool	yes	low	19	Yes	 Yes
+spoons	kitchen tool	yes	high	19	Yes	 Yes
+crabs	seafood	yes	high	19	Yes	 Yes
+measuring cups	kitchen tool	yes	low	19	Yes	 Yes
+cars	animal	no	high	20	Yes	 Yes
+puffins	animal	yes	low	20	Yes	 Yes
+rattles	food	no	high	20	Yes	 Yes
+christmas trees	food	no	high	20	Yes	 Yes
+saxophones	animal	no	low	20	Yes	 Yes
+coils	tool	yes	high	20	Yes	 I
+puppets	toy	yes	high	20	Yes	 Yes
+dogs	food	no	high	20	Yes	 Yes
+washcloths	toiletry	yes	high	20	No	 No
+chains	clothing	no	high	20	Yes	 Yes
+stoves	kitchen tool	no	high	20	Yes	 Yes
+latches	weapon	no	high	20	Yes	 Yes
+doghouses	animal	no	high	20	Yes	 Yes
+pots	container	yes	high	20	Yes	 Yes
+aprons	protective clothing	yes	low	20	Yes	 Yes
+wine coolers	container	yes	low	20	Yes	 Yes
+stoves	kitchen equipment	yes	high	20	Yes	 Yes
+kimonos	women's clothing	yes	low	20	Yes	 Yes
+paper bags	container	yes	high	20	Yes	 Yes
+elephants	plant	no	low	20	No	 No
+slugs	food	no	high	20	Yes	 Yes
+speedboats	water vehicle	yes	high	20	Yes	 Yes
+mixers	kitchen equipment	yes	high	20	Yes	 Yes
+flies	food	no	low	20	Yes	 Yes
+stilettoes	clothing	yes	low	20	Yes	 Yes
+jeeps	animal	no	low	20	Yes	 Yes
+sailboats	water vehicle	yes	high	20	Yes	 Yes
+ships	water vehicle	yes	high	20	Yes	 Yes
+bedpans	container	yes	high	20	Yes	 Yes
+goblets	container	yes	low	20	Yes	 Yes
+rearview mirrors	tool	no	low	20	Yes	 Yes
+petri dishes	container	yes	low	21	No	 No
+baklavas	dessert	yes	low	21	Yes	 Yes
+leopards	mammal	yes	high	21	Yes	 Yes
+funnels	container	no	high	21	Yes	 Yes
+vases	container	yes	high	21	Yes	 Yes
+soaps	toiletry	yes	high	21	Yes	 Yes
+submarines	vehicle	yes	low	21	Yes	 Yes
+ladybugs	animal	yes	low	21	Yes	 Yes
+slingshots	toy	yes	high	21	Yes	 Yes
+ships	vehicle	yes	high	21	Yes	 Yes
+jams	water vehicle	no	low	21	Yes	 Yes
+squids	food	yes	high	21	Yes	 Yes
+valves	tool	yes	low	21	Yes	 Yes
+briefcases	container	yes	low	21	Yes	 Yes
+hot-water bottles	food	no	high	21	No	 No
+ballot boxes	container	yes	low	21	No	 No
+hoods	headwear	yes	high	21	Yes	 Yes
+cereals	breakfast	yes	low	21	Yes	 Yes
+rollerblades	footwear	yes	low	22	Yes	 Yes
+capes	animal	no	low	22	Yes	 Yes
+elephants	fruit	no	low	22	Yes	 Yes
+mandolins	fruit	no	low	22	Yes	 Yes
+handles	food	no	high	22	Yes	 Yes
+rams	livestock	yes	low	22	Yes	 Yes
+watches	jewelry	yes	low	22	Yes	 Yes
+recorders	musical instrument	yes	high	22	Yes	 Yes
+watering cans	garden tool	yes	high	22	Yes	 Yes
+bow	weapon	yes	low	22	Yes	 Yes
+alpacas	mammal	yes	low	22	Yes	 Yes
+roadsweepers	vehicle	yes	high	22	Yes	 Yes
+balls	toy	yes	high	22	Yes	 Yes
+measuring cups	container	yes	low	22	No	 No
+turkeys	mammal	no	high	22	Yes	 Yes
+seaweeds	seafood	yes	low	22	Yes	 Yes
+webcams	electronic device	yes	high	22	Yes	 Yes
+woks	container	yes	low	22	Yes	 Yes
+chains	furniture	no	high	22	Yes	 Yes
+duffel bags	clothing	no	high	22	Yes	 Yes
+defibrillators	electronic device	yes	low	22	Yes	 Yes
+airboats	vehicle	yes	low	22	Yes	 Yes
+horses	mammal	yes	low	23	Yes	 Yes
+balloons	toy	yes	low	23	Yes	 Yes
+turntables	electronic device	yes	low	23	Yes	 Yes
+tanks	tool	yes	low	23	Yes	 Yes
+lockers	container	yes	high	23	Yes	 Yes
+videogames	game	yes	high	23	Yes	 Yes
+cheeses	dessert	yes	low	23	No	 No
+macaroni	animal	no	high	23	Yes	 Yes
+kiwis	food	yes	low	24	Yes	 Yes
+pickles	dessert	no	high	24	Yes	 Yes
+moles	bird	no	high	24	No	 No
+lasagna	dessert	no	high	24	Yes	 Yes
+scarves	accessory	yes	low	24	Yes	 Yes
+cream cheese	breakfast	yes	low	24	Yes	 Yes
+calves	game	no	low	24	Yes	 Yes
+whisks	weapon	no	high	24	Yes	 Yes
+bok choys	vegetable	yes	low	24	Yes	 Yes
+crowns	headwear	yes	high	24	Yes	 Yes
+cinnamon	vegetable	no	high	24	Yes	 Yes
+poodles	mammal	yes	low	24	Yes	 Yes
+chairs	food	no	low	25	Yes	 Yes
+ropes	food	no	low	25	Yes	 Yes
+noodles	animal	no	high	25	Yes	 Yes
+catfish	food	yes	high	25	Yes	 Yes
+ladles	kitchen tool	yes	high	25	Yes	 Yes
+scalpels	medical equipment	yes	high	25	Yes	 Yes
+gondolas	water vehicle	yes	high	25	Yes	 Yes
+cream cheese	animal	no	low	25	Yes	 Yes
+air pumps	tool	yes	low	25	Yes	 Yes
+centerpieces	jewelry	no	high	25	Yes	 Yes
+caviar	seafood	yes	low	25	Yes	 Yes
+books	food	no	high	25	Yes	 Yes
+geese	food	yes	high	25	Yes	 Yes
+scooters	toy	yes	low	26	Yes	 Yes
+corals	food	no	high	26	Yes	 Yes
+parsley	food	yes	low	26	Yes	 Yes
+cheesecake	breakfast	no	high	26	Yes	 Yes
+clovers	food	no	low	26	Yes	 Yes
+ducts	tool	yes	low	26	Yes	 Yes
+broccoli	animal	no	low	26	Yes	 Yes
+jalapenoes	vegetable	yes	low	26	Yes	 Yes
+envelopes	food	no	high	26	Yes	 Yes
+catfish	seafood	yes	high	26	Yes	 Yes
+brackets	tool	yes	low	26	Yes	 I
+suspenders	accessory	yes	high	26	Yes	 Yes
+teapots	container	yes	low	26	Yes	 Yes
+wheelbarrows	animal	no	low	26	Yes	 Yes
+smoke alarms	electronic device	yes	low	26	Yes	 Yes
+apples	animal	no	low	26	Yes	 Yes
+drills	tool	yes	high	26	Yes	 Yes
+honey	water vehicle	no	low	26	Yes	 Yes
+chihuahuas	mammal	yes	low	27	Yes	 Yes
+squids	bird	no	high	27	Yes	 Yes
+jackets	furniture	no	low	27	Yes	 Yes
+envelopes	tool	no	high	27	Yes	 Yes
+slugs	mammal	no	high	27	Yes	 Yes
+calculators	electronic device	no	high	27	Yes	 Yes
+tube tops	headwear	no	high	27	Yes	 Yes
+seals	mammal	yes	high	27	Yes	 Yes
+crayons	toy	yes	low	27	Yes	 Yes
+backpacks	container	yes	low	27	Yes	 Yes
+pinwheels	toy	yes	high	27	Yes	 Yes
+earrings	accessory	yes	low	27	Yes	 Yes
+marbles	toy	yes	high	28	Yes	 Yes
+test tubes	food	no	low	28	No	 No
+undershirts	women's clothing	no	high	28	Yes	 Yes
+needles	animal	no	low	28	Yes	 Yes
+coils	water vehicle	no	low	28	No	 No
+slicers	kitchen equipment	yes	low	28	Yes	 Yes
+pots	tool	no	high	28	Yes	 Yes
+togas	headwear	no	high	28	Yes	 Yes
+crayfish	food	yes	high	28	Yes	 Yes
+zebras	fruit	no	low	28	Yes	 Yes
+cords	tool	yes	low	28	Yes	 Yes
+swordfish	seafood	yes	high	29	Yes	 Yes
+visors	headwear	no	high	29	Yes	 Yes
+chains	animal	no	high	29	Yes	 Yes
+hams	breakfast	yes	high	29	Yes	 Yes
+microwaves	electronic device	yes	high	29	Yes	 Yes
+aircraft carriers	vehicle	yes	low	29	No	 No
+aquariums	home decor	yes	low	29	Yes	 Yes
+brooches	accessory	yes	high	29	Yes	 Yes
+latches	container	no	high	29	Yes	 Yes
+whipped cream	animal	no	low	29	Yes	 Yes
+turkeys	livestock	yes	high	29	Yes	 Yes
+chalks	tool	no	high	29	Yes	 Yes
+tube tops	women's clothing	yes	high	29	Yes	 Yes
+batters	food	yes	high	30	Yes	 Yes
+top hats	accessory	yes	low	30	Yes	 Yes
+roosters	game	no	low	30	Yes	 Yes
+rabbits	fruit	no	high	30	Yes	 Yes
+brooms	vehicle	no	high	30	Yes	 Yes
+grapevines	food	no	low	30	Yes	 Yes
+gearshifts	auto part	yes	low	30	Yes	 Yes
+juicers	food	no	high	30	Yes	 Yes
+macaroni	dessert	no	high	30	Yes	 Yes
+octopus	seafood	yes	low	30	Yes	 Yes
+pots	plant	no	high	30	Yes	 Yes
+leeches	food	no	high	30	Yes	 Yes
+seals	food	no	high	30	Yes	 Yes
+computers	animal	no	high	30	Yes	 Yes
+ducklings	plant	no	low	31	Yes	 Yes
+dustpans	container	yes	high	31	Yes	 Yes
+yaks	mammal	yes	low	31	Yes	 Yes
+shrimps	insect	no	low	31	Yes	 Yes
+sweepers	tool	yes	low	31	Yes	 Yes
+stretchers	food	no	high	31	Yes	 Yes
+prunes	water vehicle	no	low	31	No	 No
+bracelets	accessory	yes	high	31	Yes	 Yes
+refrigerators	kitchen equipment	yes	high	31	Yes	 Yes
+incubators	container	no	high	31	Yes	 Yes
+blouses	women's clothing	yes	low	31	Yes	 Yes
+chips	animal	no	low	31	Yes	 Yes
+octopus	food	yes	low	32	Yes	 Yes
+squirrels	food	no	high	32	Yes	 Yes
+freezers	kitchen equipment	yes	low	32	No	 No
+wheelchairs	medical equipment	yes	low	32	Yes	 Yes
+pinwheels	animal	no	high	32	Yes	 Yes
+boars	livestock	no	high	32	Yes	 Yes
+jelly beans	animal	no	low	32	Yes	 Yes
+wedding cakes	dessert	yes	high	32	No	 No
+dolls	food	no	low	32	Yes	 Yes
+chickpeas	animal	no	high	32	Yes	 Yes
+mirrors	weapon	no	low	33	Yes	 Yes
+strawberries	animal	no	low	33	Yes	 Yes
+copiers	electronic device	yes	low	33	Yes	 Yes
+orchids	animal	no	high	33	Yes	 I
+ski boots	animal	no	low	33	Yes	 Yes
+bolts	animal	no	high	33	Yes	 Yes
+wires	tool	yes	low	33	Yes	 Yes
+hearing aids	musical instrument	no	high	33	Yes	 Yes
+peppers	animal	no	low	33	Yes	 Yes
+bras	women's clothing	yes	high	33	Yes	 Yes
+whips	food	no	low	33	Yes	 Yes
+doorknockers	tool	yes	low	33	Yes	 Yes
+quads	food	no	high	33	Yes	 I
+maple syrup	animal	no	low	33	Yes	 Yes
+lambs	mammal	yes	low	34	Yes	 Yes
+yachts	water vehicle	yes	high	34	Yes	 Yes
+crowns	clothing	yes	low	34	Yes	 Yes
+torpedoes	water vehicle	yes	low	34	Yes	 Yes
+needles	food	no	low	34	Yes	 Yes
+eye patches	medical equipment	yes	low	34	Yes	 Yes
+coffee pots	container	yes	low	34	Yes	 Yes
+test tubes	animal	no	low	34	No	 No
+strainers	kitchen tool	yes	low	34	Yes	 I
+measuring cups	food	no	low	34	No	 No
+pepper mills	kitchen tool	yes	low	34	Yes	 Yes
+peanut butter	breakfast	yes	low	34	Yes	 Yes
+bandanas	accessory	yes	high	34	Yes	 Yes
+gravy	condiment	yes	high	34	Yes	 Yes
+amplifiers	electronic device	yes	high	35	Yes	 Yes
+mandolins	food	no	low	35	Yes	 Yes
+canes	animal	no	low	35	Yes	 Yes
+coffins	container	yes	low	35	Yes	 Yes
+flyswatters	tool	yes	low	35	Yes	 Yes
+envelopes	furniture	no	high	35	Yes	 Yes
+rabbits	plant	no	high	35	Yes	 Yes
+t-shirts	food	no	low	35	Yes	 Yes
+dynamites	food	no	low	35	No	 No
+noodles	breakfast	no	high	35	Yes	 Yes
+rugs	home decor	yes	high	35	Yes	 Yes
+tea	animal	no	low	35	Yes	 Yes
+bolts	fastener	yes	high	36	Yes	 Yes
+files	food	no	low	36	Yes	 Yes
+jams	breakfast	yes	low	36	Yes	 Yes
+subways	vehicle	yes	low	36	Yes	 Yes
+spears	animal	no	high	36	Yes	 Yes
+filing cabinets	container	yes	high	36	Yes	 Yes
+aquariums	sea animal	no	high	36	Yes	 Yes
+muffs	clothing	yes	high	36	Yes	 Yes
+sandbags	food	no	high	36	No	 No
+gloves	footwear	no	high	37	Yes	 Yes
+swordfish	food	yes	high	37	Yes	 Yes
+poinsettias	food	no	high	37	Yes	 Yes
+lab coats	tool	no	high	37	Yes	 I
+spaghetti	dessert	no	high	37	Yes	 Yes
+racks	fruit	no	low	37	Yes	 Yes
+ants	food	no	high	37	Yes	 Yes
+tiaras	women's clothing	yes	high	37	Yes	 Yes
+wheelbarrows	container	yes	high	38	Yes	 Yes
+piglets	mammal	yes	low	38	Yes	 Yes
+macaroni	breakfast	no	high	38	Yes	 Yes
+rabbits	food	yes	high	38	Yes	 Yes
+leggings	women's clothing	yes	low	38	Yes	 Yes
+bulls	water vehicle	no	low	39	Yes	 Yes
+steamrollers	vehicle	yes	low	39	Yes	 Yes
+files	tool	yes	low	39	Yes	 Yes
+moose	food	no	low	39	Yes	 Yes
+lawnmowers	garden tool	yes	high	39	Yes	 Yes
+corsages	accessory	yes	high	39	Yes	 Yes
+canisters	food	no	high	39	Yes	 Yes
+rabbits	livestock	yes	high	39	Yes	 Yes
+grasshoppers	mammal	no	high	39	Yes	 Yes
+eels	plant	no	high	40	Yes	 Yes
+turkeys	vegetable	no	high	40	No	 No
+joysticks	electronic device	yes	high	40	Yes	 Yes
+metal detectors	tool	yes	high	40	Yes	 Yes
+spaghetti	breakfast	no	high	40	Yes	 Yes
+patches	clothing	no	high	40	No	 No
+cummerbunds	clothing	yes	low	40	Yes	 Yes
+chives	food	yes	low	40	Yes	 Yes
+pantsuits	women's clothing	yes	high	40	Yes	 Yes
+plaster casts	medical equipment	yes	low	40	No	 No
+refrigerators	container	no	high	41	No	 No
+wallpapers	food	no	low	41	No	 I
+cleavers	food	no	high	41	Yes	 Yes
+buses	animal	no	high	41	Yes	 Yes
+flasks	container	yes	low	41	Yes	 Yes
+tambourines	food	no	low	41	Yes	 Yes
+centerpieces	home decor	yes	high	41	Yes	 Yes
+windshield wipers	auto part	yes	high	41	No	 No
+fish	seafood	yes	high	41	Yes	 Yes
+clams	vegetable	no	high	41	Yes	 Yes
+vending machines	electronic device	yes	low	41	Yes	 Yes
+crayfish	seafood	yes	high	41	Yes	 Yes
+dustpans	vehicle	no	high	41	Yes	 Yes
+overalls	protective clothing	yes	low	41	Yes	 Yes
+brooms	animal	no	high	41	Yes	 Yes
+catfish	insect	no	high	42	No	 No
+kites	toy	yes	high	42	Yes	 Yes
+dishwashers	food	no	high	42	Yes	 Yes
+cantaloupes	dessert	no	high	42	Yes	 Yes
+roosters	livestock	yes	low	42	Yes	 Yes
+microwaves	food	no	high	42	Yes	 Yes
+trunks	home decor	no	high	42	Yes	 Yes
+eels	mammal	no	high	42	Yes	 Yes
+jets	vehicle	yes	low	42	Yes	 Yes
+drums	food	no	high	42	Yes	 Yes
+corsets	women's clothing	yes	high	42	Yes	 Yes
+honey	game	no	low	42	Yes	 Yes
+ducklings	mammal	no	low	43	Yes	 Yes
+skirts	women's clothing	yes	low	43	Yes	 Yes
+coffins	food	no	low	43	Yes	 Yes
+scallops	vegetable	no	high	43	Yes	 Yes
+hovercrafts	water vehicle	yes	high	43	Yes	 Yes
+clovers	animal	no	low	43	Yes	 Yes
+bamboos	food	no	high	43	Yes	 Yes
+birdcages	home decor	yes	low	44	Yes	 Yes
+toast	plant	no	low	44	Yes	 Yes
+muffs	footwear	no	high	44	Yes	 Yes
+pitchers	food	no	high	44	No	 No
+cameras	electronic device	yes	high	44	Yes	 Yes
+zucchini	animal	no	high	44	Yes	 Yes
+mustard	condiment	yes	low	44	Yes	 Yes
+bulldozers	vehicle	yes	low	44	Yes	 Yes
+baskets	container	yes	high	45	Yes	 Yes
+pinwheels	food	no	high	45	Yes	 Yes
+pillows	home decor	yes	low	45	Yes	 Yes
+swabs	food	no	high	45	Yes	 Yes
+bulls	game	no	low	45	Yes	 Yes
+dustpans	water vehicle	no	high	45	No	 No
+puppies	fruit	no	low	46	Yes	 Yes
+bisons	food	no	low	46	Yes	 Yes
+visors	clothing	yes	high	46	No	 No
+peanut butter	animal	no	low	46	Yes	 Yes
+bikinis	women's clothing	yes	low	46	Yes	 Yes
+molds	container	yes	low	46	No	 No
+tridents	fruit	no	low	46	Yes	 Yes
+jackets	tool	no	low	46	Yes	 Yes
+whisks	food	no	high	46	Yes	 Yes
+tugboats	vehicle	yes	high	46	Yes	 Yes
+dustpans	home decor	no	high	46	Yes	 Yes
+squids	mammal	no	high	46	Yes	 Yes
+sandpapers	tool	yes	low	47	Yes	 Yes
+airbags	auto part	yes	low	47	Yes	 Yes
+geese	mammal	no	high	47	Yes	 Yes
+scoops	tool	yes	low	47	Yes	 Yes
+brushes	food	no	low	47	Yes	 I
+elephants	water vehicle	no	low	47	Yes	 Yes
+watches	food	no	low	47	Yes	 Yes
+peelers	kitchen tool	yes	high	47	Yes	 Yes
+noodles	dessert	no	high	47	No	 No
+dustpans	weapon	no	high	47	Yes	 Yes
+fishnet stockings	women's clothing	yes	high	48	Yes	 Yes
+cars	food	no	high	48	Yes	 Yes
+water filters	food	no	high	48	No	 No
+matchboxes	container	yes	low	48	Yes	 Yes
+pinballs	electronic device	yes	low	48	Yes	 Yes
+lighter	animal	no	high	48	Yes	 Yes
+buses	food	no	high	48	Yes	 Yes
+shower caps	toiletry	yes	high	48	No	 No
+whales	food	no	high	48	Yes	 Yes
+lampshades	home decor	yes	high	48	Yes	 Yes
+rifles	food	no	low	48	Yes	 Yes
+cash machines	electronic device	yes	high	49	Yes	 Yes
+bassoons	tool	no	low	49	Yes	 Yes
+hats	accessory	yes	high	49	Yes	 Yes
+chicken wires	tool	yes	low	49	Yes	 Yes
+chalks	animal	no	high	49	Yes	 Yes
+sheeps	food	no	low	49	Yes	 Yes
+coils	weapon	no	high	49	Yes	 Yes
+ashtrays	food	no	high	49	Yes	 Yes
+trowels	garden tool	yes	low	50	Yes	 Yes
+latches	animal	no	high	50	Yes	 Yes
+strollers	animal	no	high	50	Yes	 Yes
+sprouts	animal	no	high	50	Yes	 Yes
+shorts	food	no	low	50	Yes	 Yes
+lasagna	animal	no	high	50	Yes	 Yes
+mixers	musical instrument	no	high	50	Yes	 Yes
+inhalers	food	no	high	50	Yes	 Yes
+eggbeaters	tool	yes	low	50	Yes	 Yes
+bolo ties	accessory	yes	low	51	Yes	 Yes
+doilies	home decor	yes	high	51	Yes	 Yes
+tubas	food	no	low	51	Yes	 Yes
+razors	food	no	low	51	Yes	 Yes
+rhubarbs	food	yes	high	51	Yes	 Yes
+latches	furniture	no	high	51	No	 No
+stockings	women's clothing	yes	high	51	Yes	 Yes
+cantaloupes	candy	no	high	51	Yes	 Yes
+bonsai	food	no	low	51	Yes	 Yes
+swabs	animal	no	high	51	Yes	 Yes
+belt buckles	accessory	yes	low	52	Yes	 Yes
+insoles	accessory	yes	high	52	Yes	 Yes
+eels	vegetable	no	high	52	Yes	 Yes
+cd players	electronic device	yes	high	52	Yes	 Yes
+televisions	food	no	high	52	Yes	 Yes
+routers	electronic device	yes	high	52	Yes	 Yes
+earrings	food	no	low	52	No	 No
+blouses	food	no	low	52	Yes	 Yes
+syrups	condiment	yes	high	52	Yes	 Yes
+dustpans	kitchen equipment	no	high	53	Yes	 Yes
+dustpans	kitchen tool	no	high	53	Yes	 I
+moths	food	no	low	53	Yes	 Yes
+mittens	food	no	low	53	Yes	 Yes
+crayfish	mammal	no	high	53	Yes	 Yes
+stretchers	animal	no	high	53	Yes	 Yes
+mosses	food	no	low	53	Yes	 Yes
+routers	animal	no	high	54	Yes	 Yes
+sunroofs	auto part	yes	low	54	Yes	 Yes
+buses	water vehicle	no	high	54	No	 No
+lightbulbs	electronic device	no	high	55	Yes	 Yes
+eye patches	accessory	yes	low	55	Yes	 Yes
+combs	food	no	low	55	Yes	 Yes
+toaster ovens	electronic device	yes	low	55	Yes	 Yes
+tridents	animal	no	low	55	Yes	 Yes
+catfish	mammal	no	high	55	Yes	 Yes
+bassoons	game	no	low	55	Yes	 Yes
+luggage	container	yes	low	55	Yes	 Yes
+pots	animal	no	low	55	Yes	 Yes
+chariots	water vehicle	no	high	55	No	 No
+centerpieces	tool	no	high	55	Yes	 Yes
+folders	food	no	low	56	Yes	 Yes
+taffy	water vehicle	no	low	57	No	 No
+handbrakes	auto part	yes	low	57	Yes	 Yes
+pesto	condiment	yes	high	57	Yes	 Yes
+squids	seafood	yes	low	57	Yes	 Yes
+syringes	container	yes	low	58	Yes	 Yes
+birdcages	container	yes	high	58	Yes	 Yes
+honey	vegetable	no	low	58	Yes	 Yes
+peelers	animal	no	high	58	Yes	 Yes
+highchairs	food	no	high	58	Yes	 Yes
+octopus	mammal	no	high	58	Yes	 Yes
+banjoes	dessert	no	low	58	No	 No
+scoops	bird	no	low	58	Yes	 Yes
+tongs	kitchen tool	yes	low	58	Yes	 Yes
+cables	food	no	low	58	No	 No
+bassoons	food	no	low	59	Yes	 Yes
+headscarves	women's clothing	yes	low	59	Yes	 Yes
+grilles	tool	no	low	59	Yes	 Yes
+cookers	container	yes	low	59	Yes	 Yes
+pencils	food	no	low	59	No	 No
+bulls	food	no	low	59	Yes	 Yes
+slugs	sea animal	no	high	59	Yes	 Yes
+footrests	tool	no	high	59	Yes	 Yes
+corsages	food	no	high	59	Yes	 Yes
+buckles	animal	no	low	59	Yes	 Yes
+rakes	garden tool	yes	high	60	Yes	 Yes
+cheesecake	animal	no	low	60	Yes	 Yes
+place mats	home decor	yes	low	60	Yes	 Yes
+yogurts	breakfast	yes	high	60	Yes	 Yes
+hippos	sea animal	no	high	60	Yes	 Yes
+legos	food	no	low	60	Yes	 Yes
+whisks	furniture	no	high	61	Yes	 Yes
+shaving cream	toiletry	yes	high	61	Yes	 Yes
+saxophones	tool	no	low	61	Yes	 I
+eels	seafood	yes	high	61	Yes	 Yes
+tube tops	jewelry	no	high	61	Yes	 Yes
+tridents	musical instrument	no	low	61	Yes	 Yes
+screws	fastener	yes	high	61	Yes	 Yes
+strollers	food	no	high	61	Yes	 Yes
+lobsters	mammal	no	high	62	Yes	 Yes
+maple syrup	breakfast	yes	low	62	Yes	 Yes
+backscratchers	tool	yes	high	62	Yes	 Yes
+chariots	tool	no	high	62	Yes	 Yes
+tapestries	home decor	yes	high	62	Yes	 Yes
+snowsuits	outerwear	yes	high	62	Yes	 Yes
+coveralls	outerwear	yes	high	62	Yes	 Yes
+printers	electronic device	yes	high	63	Yes	 Yes
+cages	container	yes	high	63	Yes	 Yes
+hairdryers	electronic device	yes	low	63	Yes	 Yes
+nuts	dessert	no	low	63	No	 No
+chains	food	no	high	63	Yes	 Yes
+envelopes	vehicle	no	high	63	Yes	 Yes
+fruitcakes	vegetable	no	high	63	No	 No
+belts	food	no	low	63	No	 No
+velcros	clothing	no	high	64	No	 No
+rollerblades	animal	no	low	64	Yes	 Yes
+monkeys	food	no	low	64	Yes	 Yes
+moles	mammal	yes	high	64	Yes	 Yes
+kaleidoscopes	tool	no	high	64	Yes	 I
+geese	sea animal	no	high	64	Yes	 Yes
+coils	food	no	high	64	No	 I
+chariots	food	no	high	64	No	 No
+kites	tool	no	high	65	Yes	 Yes
+brakes	animal	no	low	65	Yes	 Yes
+notepads	office supply	yes	high	65	No	 No
+applesauce	condiment	yes	high	65	Yes	 Yes
+maple syrup	bird	no	low	65	Yes	 Yes
+quills	food	no	low	66	Yes	 I
+computers	electronic device	yes	high	66	Yes	 Yes
+toothpaste	toiletry	yes	high	66	No	 No
+coops	animal	no	low	66	Yes	 Yes
+crayfish	vegetable	no	high	66	Yes	 Yes
+toasters	electronic device	yes	high	66	Yes	 Yes
+dresses	women's clothing	yes	high	67	Yes	 Yes
+rabbits	vegetable	no	high	67	No	 No
+seaplanes	vehicle	yes	low	67	Yes	 Yes
+statues	food	no	low	67	No	 No
+ashtrays	container	yes	low	67	No	 No
+zebras	water vehicle	no	low	67	Yes	 Yes
+geese	livestock	yes	high	68	Yes	 Yes
+blowfish	seafood	yes	low	68	Yes	 Yes
+clams	mammal	no	high	68	Yes	 Yes
+cruise ships	vehicle	yes	low	68	Yes	 Yes
+submarines	water vehicle	yes	high	68	Yes	 Yes
+envelopes	water vehicle	no	high	68	Yes	 Yes
+stools	breakfast	no	low	69	Yes	 Yes
+cantaloupes	condiment	no	high	69	Yes	 Yes
+headdresses	accessory	yes	high	69	Yes	 Yes
+braces	food	no	low	69	No	 No
+chicken wires	food	no	low	69	Yes	 Yes
+glasses	container	yes	low	69	Yes	 Yes
+staples	fastener	yes	high	70	Yes	 Yes
+rattles	toy	yes	high	70	Yes	 Yes
+coils	plant	no	high	70	No	 I
+underwear	food	no	high	70	Yes	 Yes
+ducks	livestock	yes	low	71	Yes	 Yes
+calves	vegetable	no	low	71	No	 No
+spaghetti	seafood	no	high	71	Yes	 Yes
+chips	tool	no	low	71	Yes	 Yes
+incubators	animal	no	high	71	Yes	 Yes
+eagles	food	no	high	71	Yes	 Yes
+piecrusts	animal	no	low	71	Yes	 Yes
+air conditioners	electronic device	yes	low	72	Yes	 Yes
+tongs	vehicle	no	high	72	Yes	 Yes
+dynamites	tool	no	low	72	Yes	 Yes
+stereos	electronic device	yes	low	72	Yes	 Yes
+swordfish	animal	yes	low	72	Yes	 Yes
+knives	kitchen tool	yes	low	72	Yes	 Yes
+slot machines	electronic device	yes	high	72	Yes	 Yes
+mirrors	furniture	no	low	72	No	 No
+rockets	vehicle	yes	low	72	Yes	 Yes
+cruise ships	water vehicle	yes	low	73	Yes	 Yes
+vacuum cleaners	electronic device	yes	low	73	Yes	 Yes
+bumpers	food	no	high	73	Yes	 Yes
+whoopee cushions	toy	yes	low	73	No	 No
+bananas	weapon	no	low	73	Yes	 Yes
+drills	food	no	high	74	No	 No
+tridents	food	no	low	74	Yes	 Yes
+outfits	accessory	no	high	74	Yes	 Yes
+stilettoes	animal	no	low	75	Yes	 Yes
+lighter	food	no	high	75	Yes	 Yes
+fishbowls	animal	no	high	76	Yes	 Yes
+coffeemakers	electronic device	yes	low	76	Yes	 Yes
+swabs	toiletry	yes	high	76	No	 No
+rocking horses	toy	yes	low	76	Yes	 Yes
+pineapples	animal	no	high	77	Yes	 Yes
+loincloths	headwear	no	high	77	Yes	 Yes
+underwear	footwear	no	high	77	Yes	 Yes
+jackets	food	no	low	77	Yes	 Yes
+roosters	food	no	low	77	Yes	 Yes
+mandolins	animal	no	low	77	Yes	 Yes
+zebras	plant	no	low	78	No	 No
+undershirts	outerwear	no	high	78	Yes	 Yes
+poppies	food	yes	low	78	Yes	 Yes
+crayfish	plant	no	high	78	Yes	 Yes
+puppies	plant	no	low	78	No	 No
+boots	food	no	low	78	Yes	 Yes
+rattlesnakes	food	no	low	78	Yes	 Yes
+coils	musical instrument	no	high	79	Yes	 Yes
+purses	accessory	yes	high	79	Yes	 Yes
+knobs	animal	no	low	79	Yes	 Yes
+iceskates	footwear	yes	low	80	Yes	 Yes
+rifles	animal	no	low	80	Yes	 Yes
+guacamole	animal	no	low	80	Yes	 Yes
+chairs	container	no	low	80	Yes	 Yes
+aquariums	container	yes	high	80	Yes	 Yes
+board games	food	no	low	81	Yes	 Yes
+bonnets	accessory	yes	low	81	Yes	 Yes
+food processors	electronic device	yes	low	81	Yes	 Yes
+pickles	animal	no	high	81	Yes	 Yes
+bananas	tool	no	low	81	Yes	 Yes
+pitchers	tool	no	high	81	Yes	 Yes
+bread	breakfast	yes	high	81	Yes	 Yes
+closets	container	yes	low	82	Yes	 Yes
+tube tops	accessory	no	high	82	Yes	 Yes
+stingrays	animal	yes	low	82	Yes	 Yes
+routers	vehicle	no	high	82	Yes	 Yes
+stilettoes	food	no	low	82	Yes	 Yes
+lightbulbs	food	no	high	82	Yes	 Yes
+vultures	food	no	low	83	Yes	 Yes
+saxophones	food	no	low	83	Yes	 Yes
+guns	food	no	high	83	Yes	 Yes
+vials	medical equipment	yes	high	84	Yes	 Yes
+kegs	home decor	no	low	84	Yes	 Yes
+funnels	kitchen tool	yes	high	85	Yes	 Yes
+nuts	tool	no	low	85	Yes	 Yes
+chessboards	food	no	low	85	Yes	 Yes
+granola	animal	no	low	85	Yes	 Yes
+bolts	food	no	high	85	Yes	 Yes
+bats	food	no	high	86	Yes	 Yes
+fur coats	outerwear	yes	low	86	Yes	 Yes
+shrimps	mammal	no	high	86	Yes	 Yes
+chicken	livestock	yes	high	86	Yes	 Yes
+graters	kitchen tool	yes	high	86	Yes	 Yes
+creme brulee	water vehicle	no	low	86	Yes	 Yes
+jackets	animal	no	low	86	Yes	 Yes
+shredders	electronic device	yes	low	86	Yes	 Yes
+razors	animal	no	low	87	Yes	 Yes
+tube tops	footwear	no	high	87	Yes	 Yes
+lingerie	women's clothing	yes	low	87	Yes	 Yes
+toast	weapon	no	low	87	Yes	 Yes
+trombones	food	no	low	88	Yes	 Yes
+harps	food	no	low	88	Yes	 Yes
+razor blades	animal	no	high	88	Yes	 Yes
+belt buckles	fastener	yes	low	88	Yes	 Yes
+frogs	sea animal	no	high	88	Yes	 Yes
+veils	women's clothing	yes	high	88	Yes	 Yes
+closets	furniture	yes	high	88	Yes	 Yes
+gazelles	food	no	low	88	Yes	 Yes
+jams	animal	no	low	88	Yes	 I
+mirrors	garden tool	no	low	88	Yes	 Yes
+refrigerators	electronic device	yes	high	89	Yes	 Yes
+peanut butter	condiment	yes	low	89	Yes	 Yes
+sharks	seafood	yes	low	90	Yes	 Yes
+trumpets	food	no	low	90	Yes	 Yes
+scoops	animal	no	low	91	Yes	 Yes
+go-karts	animal	no	high	91	Yes	 Yes
+highlighters	food	no	high	91	Yes	 Yes
+rollerskates	footwear	yes	low	91	Yes	 Yes
+tapestries	food	no	high	91	Yes	 Yes
+water heaters	food	no	high	91	No	 No
+lingerie	food	no	low	91	Yes	 Yes
+wineglasses	container	yes	low	91	Yes	 Yes
+dustpans	food	no	high	92	Yes	 Yes
+padlocks	fastener	yes	low	92	Yes	 Yes
+campers	vehicle	yes	high	92	Yes	 Yes
+alpacas	food	no	low	92	Yes	 Yes
+purses	food	no	high	92	Yes	 Yes
+envelopes	toy	no	high	92	Yes	 Yes
+bonnets	animal	no	low	93	Yes	 Yes
+clarinets	food	no	low	93	Yes	 Yes
+birdbaths	home decor	yes	low	93	Yes	 Yes
+whisks	game	no	high	93	Yes	 Yes
+honey	drink	no	low	93	Yes	 Yes
+ice creams	animal	no	low	94	Yes	 Yes
+moles	food	no	high	94	Yes	 Yes
+videogames	electronic device	no	high	94	Yes	 Yes
+maple syrup	plant	no	low	94	Yes	 Yes
+mixers	furniture	no	high	95	Yes	 Yes
+raincoats	outerwear	yes	high	95	Yes	 Yes
+spatulas	animal	no	high	95	Yes	 Yes
+projectors	musical instrument	no	high	96	Yes	 Yes
+pantyhoses	women's clothing	yes	high	96	Yes	 Yes
+zucchini	dessert	no	high	97	Yes	 Yes
+knobs	food	no	low	97	Yes	 Yes
+sea urchins	seafood	yes	low	97	Yes	 Yes
+pickles	drink	no	high	97	Yes	 Yes
+tweezers	food	no	high	97	Yes	 Yes
+cinnamon	breakfast	no	high	98	Yes	 Yes
+quads	vehicle	yes	high	98	Yes	 Yes
+lasagna	home decor	no	high	98	Yes	 Yes
+rulers	tool	yes	low	98	Yes	 Yes
+beavers	sea animal	no	high	98	Yes	 Yes
+muffs	accessory	yes	high	98	Yes	 Yes
+penguins	food	no	low	98	Yes	 Yes
+kaleidoscopes	food	no	high	99	Yes	 Yes
+machine guns	food	no	low	99	No	 No
+hairsprays	toiletry	yes	high	99	Yes	 Yes
+routers	weapon	no	high	99	Yes	 Yes
+tablets	electronic device	yes	high	99	Yes	 Yes
+pocket watches	food	no	low	100	Yes	 Yes
+latches	fastener	yes	high	100	Yes	 Yes
+screens	electronic device	yes	high	100	Yes	 Yes
+rearview mirrors	auto part	yes	low	100	No	 No
+waffles	animal	no	low	100	Yes	 Yes
+blazers	outerwear	yes	high	100	Yes	 Yes
+hawks	food	no	low	101	Yes	 Yes
+penlights	animal	no	low	101	Yes	 Yes
+bumpers	animal	no	high	101	Yes	 Yes
+shovels	garden tool	yes	low	101	No	 No
+dishwashers	electronic device	yes	high	102	Yes	 Yes
+gumballs	animal	no	low	102	Yes	 Yes
+pans	container	yes	high	102	Yes	 Yes
+seatbelts	auto part	yes	high	102	No	 No
+routers	container	no	high	103	Yes	 Yes
+stretchers	container	no	high	103	Yes	 Yes
+machetes	animal	no	low	104	Yes	 Yes
+dressers	container	yes	low	104	Yes	 Yes
+whipped cream	weapon	no	low	105	Yes	 Yes
+lemonades	weapon	no	low	105	Yes	 Yes
+abacuses	tool	no	high	105	Yes	 Yes
+dresses	home decor	no	high	105	Yes	 Yes
+jump ropes	food	no	high	106	Yes	 Yes
+hairpins	fastener	yes	low	106	Yes	 Yes
+dressers	food	no	low	106	Yes	 Yes
+water heaters	electronic device	yes	low	106	Yes	 Yes
+puppies	furniture	no	low	107	Yes	 Yes
+stools	container	no	low	107	Yes	 Yes
+chickpeas	breakfast	no	high	107	Yes	 Yes
+bugs	mammal	no	high	108	Yes	 Yes
+gorillas	tool	no	low	108	Yes	 Yes
+polygraphs	electronic device	yes	low	108	Yes	 Yes
+cookers	electronic device	yes	low	108	Yes	 Yes
+chalks	musical instrument	no	high	108	Yes	 Yes
+plungers	food	no	high	108	Yes	 Yes
+noisemakers	food	no	high	109	Yes	 Yes
+artichokes	animal	no	high	109	Yes	 Yes
+butterflies	mammal	no	high	109	Yes	 Yes
+jams	bird	no	low	109	No	 No
+koalas	sea animal	no	low	109	Yes	 Yes
+bolts	furniture	no	high	109	No	 No
+whisks	musical instrument	no	high	109	Yes	 Yes
+purses	container	yes	high	110	Yes	 Yes
+zucchini	candy	no	high	110	Yes	 Yes
+centrifuges	food	no	high	110	No	 No
+chairs	fruit	no	low	110	Yes	 Yes
+overalls	outerwear	yes	high	111	Yes	 Yes
+limousines	food	no	low	112	No	 No
+noodles	condiment	no	high	112	Yes	 Yes
+t-shirts	animal	no	low	112	Yes	 Yes
+jumpsuits	outerwear	yes	high	112	Yes	 Yes
+shawls	accessory	yes	low	112	Yes	 Yes
+cockroaches	mammal	no	high	113	Yes	 Yes
+eyeliners	toiletry	yes	low	114	Yes	 Yes
+tweezers	animal	no	high	114	Yes	 Yes
+leotards	animal	no	low	114	Yes	 Yes
+canes	medical equipment	yes	low	114	Yes	 Yes
+blowers	electronic device	yes	high	115	Yes	 Yes
+coils	electronic device	no	high	115	Yes	 Yes
+stamps	tool	yes	low	115	Yes	 Yes
+whisks	clothing	no	high	115	Yes	 Yes
+turkeys	breakfast	no	high	116	Yes	 Yes
+fruitcakes	animal	no	high	116	Yes	 Yes
+benches	animal	no	low	116	Yes	 Yes
+bassoons	fruit	no	low	116	Yes	 Yes
+jackets	outerwear	yes	low	117	Yes	 Yes
+maple syrup	condiment	yes	low	117	Yes	 Yes
+chains	water vehicle	no	high	117	Yes	 Yes
+juicers	kitchen equipment	yes	low	118	Yes	 Yes
+hairdryers	toiletry	yes	high	118	No	 No
+ski boots	food	no	low	118	Yes	 Yes
+juicers	kitchen tool	yes	high	118	Yes	 Yes
+bottle openers	kitchen tool	yes	low	118	Yes	 Yes
+oranges	tool	no	low	118	Yes	 Yes
+police cars	animal	no	low	118	Yes	 Yes
+buckles	fastener	yes	low	119	Yes	 Yes
+bedpans	medical equipment	yes	high	119	No	 No
+crows	tool	no	low	119	Yes	 Yes
+envelopes	clothing	no	high	119	Yes	 Yes
+benches	food	no	low	119	Yes	 Yes
+latches	vehicle	no	high	120	Yes	 Yes
+gloves	accessory	yes	high	121	Yes	 Yes
+stretchers	protective clothing	no	high	121	Yes	 Yes
+lunchboxes	school supply	yes	low	122	Yes	 Yes
+steering wheels	auto part	yes	low	122	Yes	 Yes
+toast	tool	no	low	122	Yes	 Yes
+hooks	vehicle	no	high	123	Yes	 Yes
+ducklings	toy	no	low	123	Yes	 Yes
+glasses	accessory	yes	high	123	Yes	 Yes
+scoops	sea animal	no	low	123	Yes	 Yes
+handkerchiefs	accessory	yes	high	124	Yes	 Yes
+cruise ships	food	no	low	124	Yes	 Yes
+bulls	tool	no	low	124	Yes	 Yes
+coyotes	food	no	low	125	Yes	 Yes
+maple syrup	vegetable	no	low	125	Yes	 Yes
+pickles	breakfast	no	high	125	Yes	 Yes
+pinwheels	tool	no	high	125	Yes	 Yes
+shears	garden tool	yes	high	127	Yes	 Yes
+binders	office supply	yes	high	127	Yes	 Yes
+ivy	food	no	low	127	Yes	 I
+noodles	vehicle	no	high	127	Yes	 Yes
+latches	food	no	high	128	Yes	 Yes
+bananas	vehicle	no	low	128	Yes	 Yes
+juicers	electronic device	yes	low	128	Yes	 Yes
+centerpieces	container	no	high	128	Yes	 Yes
+cream cheese	condiment	yes	low	129	Yes	 Yes
+okra	animal	no	high	129	Yes	 Yes
+dynamites	toy	no	low	129	No	 No
+chinchillas	livestock	no	high	129	Yes	 Yes
+eggbeaters	kitchen tool	yes	low	130	Yes	 Yes
+taillights	auto part	yes	high	130	Yes	 Yes
+robes	home decor	no	high	130	Yes	 Yes
+catfish	plant	no	high	131	Yes	 Yes
+vases	home decor	yes	high	131	Yes	 Yes
+stingrays	sea animal	yes	low	131	Yes	 Yes
+nuts	furniture	no	low	132	No	 No
+gorillas	food	no	low	132	Yes	 Yes
+snowshoes	food	no	high	132	Yes	 Yes
+combs	toiletry	yes	low	132	Yes	 Yes
+envelopes	game	no	high	133	Yes	 Yes
+earwigs	mammal	no	high	134	Yes	 Yes
+car doors	auto part	yes	high	134	Yes	 Yes
+rearview mirrors	bird	no	low	134	No	 No
+spatulas	vehicle	no	high	135	Yes	 Yes
+spark plugs	auto part	yes	high	135	Yes	 Yes
+lingerie	animal	no	low	136	Yes	 Yes
+hairpins	jewelry	yes	low	137	Yes	 Yes
+rubber bands	fastener	yes	low	137	Yes	 Yes
+cordon bleu sandwiches	animal	no	low	138	Yes	 Yes
+seaplanes	food	no	low	138	No	 No
+candelabras	home decor	yes	high	138	Yes	 Yes
+lip balms	toiletry	yes	low	138	Yes	 Yes
+brakes	food	no	low	139	Yes	 Yes
+chandeliers	home decor	yes	high	139	Yes	 Yes
+honey	mammal	no	low	140	Yes	 Yes
+albums	home decor	yes	low	140	Yes	 Yes
+jukeboxes	food	no	high	140	Yes	 Yes
+ostriches	food	no	high	140	Yes	 Yes
+chairs	bird	no	low	141	Yes	 Yes
+dollhouses	tool	no	high	141	Yes	 Yes
+dustpans	protective clothing	no	high	141	Yes	 Yes
+machetes	food	no	high	141	Yes	 Yes
+matches	tool	yes	low	142	Yes	 I
+cantaloupes	sea animal	no	high	142	Yes	 Yes
+nail clippers	food	no	high	143	Yes	 Yes
+ratchets	food	no	high	143	Yes	 Yes
+jams	weapon	no	low	143	Yes	 Yes
+tea	weapon	no	low	144	Yes	 Yes
+birdbaths	food	no	high	144	Yes	 Yes
+apples	tool	no	low	145	Yes	 Yes
+aircraft carriers	water vehicle	yes	low	145	No	 No
+marmalade	condiment	yes	high	145	Yes	 Yes
+fruit punches	weapon	no	high	146	Yes	 Yes
+elephants	food	no	low	147	Yes	 Yes
+birthday cakes	animal	no	low	147	Yes	 Yes
+canes	food	no	low	147	Yes	 Yes
+windshields	auto part	yes	high	148	No	 No
+pillboxes	container	yes	high	148	Yes	 Yes
+sewing machines	electronic device	yes	high	148	Yes	 Yes
+highlighters	electronic device	no	high	148	Yes	 Yes
+saws	garden tool	yes	high	149	Yes	 Yes
+noodles	drink	no	high	149	Yes	 Yes
+jellyfish	seafood	yes	low	149	Yes	 Yes
+wallets	container	yes	low	149	Yes	 Yes
+figurines	home decor	yes	high	150	Yes	 Yes
+stilettoes	toiletry	no	low	150	Yes	 Yes
+chariots	livestock	no	high	150	No	 No
+washing machines	electronic device	yes	high	151	Yes	 Yes
+sombreros	accessory	yes	high	151	Yes	 Yes
+wind chimes	home decor	yes	low	151	Yes	 Yes
+blouses	fruit	no	low	152	Yes	 Yes
+bassoons	toy	no	low	152	Yes	 Yes
+brooms	clothing	no	high	152	Yes	 Yes
+weasels	food	no	high	153	Yes	 Yes
+perfumes	toiletry	yes	low	153	No	 No
+cantaloupes	animal	no	high	153	Yes	 Yes
+stools	vegetable	no	low	153	Yes	 Yes
+computers	food	no	high	154	No	 No
+nutcrackers	tool	yes	low	155	Yes	 Yes
+razors	toiletry	yes	low	155	No	 No
+food processors	kitchen equipment	yes	high	155	Yes	 Yes
+honey	women's clothing	no	low	156	Yes	 Yes
+flies	tool	no	low	156	Yes	 Yes
+bombs	animal	no	low	156	Yes	 Yes
+rollerblades	food	no	low	157	Yes	 Yes
+stools	clothing	no	low	157	Yes	 Yes
+rocking chairs	food	no	low	157	Yes	 Yes
+bikinis	animal	no	low	158	Yes	 Yes
+latches	kitchen tool	no	high	158	Yes	 Yes
+latches	kitchen equipment	no	high	158	Yes	 Yes
+mirrors	vehicle	no	low	158	Yes	 Yes
+centrifuges	electronic device	yes	low	159	Yes	 Yes
+rolling pins	kitchen tool	yes	low	159	Yes	 Yes
+backscratchers	weapon	no	high	159	Yes	 Yes
+go-karts	food	no	high	159	Yes	 Yes
+bulls	plant	no	low	159	No	 No
+chains	vehicle	no	high	160	Yes	 Yes
+hairbrush	toiletry	yes	high	160	Yes	 Yes
+braces	fruit	no	low	160	No	 No
+sombreros	headwear	yes	low	160	Yes	 Yes
+lab coats	outerwear	yes	low	160	Yes	 Yes
+elephants	tool	no	low	160	Yes	 Yes
+honey	sea animal	no	low	161	Yes	 Yes
+corsages	animal	no	low	161	Yes	 Yes
+tents	container	yes	low	162	Yes	 Yes
+footrests	accessory	no	high	162	Yes	 Yes
+syrups	breakfast	yes	low	162	Yes	 Yes
+makeup	toiletry	yes	high	163	Yes	 Yes
+wigs	food	no	low	163	Yes	 Yes
+tube tops	protective clothing	no	high	163	Yes	 Yes
+mirrors	animal	no	low	164	Yes	 Yes
+bikinis	food	no	low	165	Yes	 Yes
+lasagna	condiment	no	high	165	Yes	 Yes
+zebras	game	no	low	165	No	 No
+saxophones	fruit	no	low	166	Yes	 Yes
+jellyfish	mammal	no	high	166	Yes	 Yes
+blouses	animal	no	low	167	Yes	 Yes
+zippers	fastener	yes	high	167	Yes	 Yes
+t-shirts	fruit	no	low	168	Yes	 Yes
+hearing aids	food	no	high	168	No	 No
+buckles	accessory	yes	low	169	Yes	 Yes
+highlighters	accessory	no	high	169	Yes	 Yes
+backpacks	school supply	yes	low	170	Yes	 Yes
+rearview mirrors	animal	no	low	170	Yes	 Yes
+maple syrup	weapon	no	low	170	Yes	 Yes
+cougars	food	no	low	170	Yes	 Yes
+stretchers	water vehicle	no	high	170	Yes	 Yes
+bongos	food	no	low	171	Yes	 Yes
+bunkbeds	animal	no	low	171	Yes	 Yes
+elephants	game	no	low	171	Yes	 Yes
+computers	game	yes	low	171	Yes	 Yes
+celeries	vegetable	yes	high	171	Yes	 Yes
+hotplates	electronic device	yes	low	172	Yes	 Yes
+bowties	food	no	low	173	Yes	 Yes
+stools	medical equipment	no	low	173	Yes	 Yes
+joysticks	food	no	high	173	Yes	 Yes
+latches	protective clothing	no	high	173	Yes	 Yes
+leeches	mammal	no	high	174	Yes	 Yes
+latches	musical instrument	no	high	174	Yes	 Yes
+grilles	food	no	low	174	Yes	 Yes
+bulls	weapon	no	low	175	Yes	 Yes
+mirrors	food	no	low	175	Yes	 Yes
+sandbags	container	yes	low	175	Yes	 Yes
+wasps	food	no	low	176	Yes	 Yes
+snails	seafood	yes	low	177	Yes	 Yes
+lip glosses	animal	no	low	178	Yes	 Yes
+speedometers	auto part	yes	high	178	Yes	 Yes
+cardigans	food	no	low	178	Yes	 Yes
+scallions	animal	no	high	179	Yes	 Yes
+calves	tool	no	low	180	Yes	 Yes
+wallpapers	animal	no	low	181	Yes	 I
+outfits	home decor	no	high	182	Yes	 Yes
+chinchillas	food	no	high	182	Yes	 Yes
+skewers	kitchen tool	yes	high	183	Yes	 Yes
+marmalade	breakfast	yes	high	183	Yes	 Yes
+ski boots	home decor	no	low	183	Yes	 Yes
+bolts	vehicle	no	high	184	Yes	 Yes
+stilettoes	women's clothing	yes	low	185	Yes	 Yes
+zebras	food	no	low	185	Yes	 Yes
+bikinis	tool	no	low	185	Yes	 Yes
+nail files	food	no	low	185	Yes	 Yes
+puppies	musical instrument	no	low	187	Yes	 Yes
+kaleidoscopes	animal	no	high	188	Yes	 Yes
+centerpieces	clothing	no	high	189	Yes	 Yes
+creme brulee	animal	no	low	189	Yes	 Yes
+shawls	outerwear	yes	low	189	Yes	 Yes
+bolts	clothing	no	high	190	No	 No
+candlesticks	home decor	yes	low	190	Yes	 Yes
+car seats	auto part	yes	high	191	Yes	 Yes
+gauzes	medical equipment	yes	high	191	Yes	 Yes
+cocktails	tool	no	low	191	Yes	 Yes
+puppies	weapon	no	low	192	Yes	 Yes
+candles	home decor	yes	low	192	Yes	 Yes
+routers	food	no	high	192	No	 No
+stretchers	musical instrument	no	high	193	Yes	 Yes
+meat	livestock	no	high	193	Yes	 Yes
+dustpans	plant	no	high	193	Yes	 I
+notebooks	office supply	yes	low	195	Yes	 I
+footrests	animal	no	high	195	Yes	 Yes
+clams	breakfast	no	high	195	Yes	 Yes
+ties	clothing	yes	low	195	Yes	 Yes
+highlighters	toiletry	no	high	195	No	 No
+pickaxes	garden tool	yes	low	196	Yes	 Yes
+roof racks	container	no	high	196	Yes	 Yes
+easter eggs	food	yes	low	196	Yes	 Yes
+envelopes	protective clothing	no	high	197	Yes	 Yes
+curtains	home decor	yes	high	198	Yes	 Yes
+dresses	footwear	no	high	199	Yes	 Yes
+penlights	food	no	low	199	Yes	 Yes
+ducklings	breakfast	no	low	199	Yes	 Yes
+envelopes	animal	no	high	200	Yes	 Yes
+coasters	container	no	high	200	Yes	 Yes
+cornbread	animal	no	low	200	Yes	 Yes
+beavers	food	no	high	201	Yes	 Yes
+squirt guns	food	no	high	201	Yes	 Yes
+margaritas	weapon	no	low	202	Yes	 Yes
+tube tops	musical instrument	no	high	203	Yes	 Yes
+whisks	toy	no	high	203	Yes	 Yes
+strawberries	weapon	no	low	203	Yes	 Yes
+dryers	electronic device	yes	low	203	Yes	 Yes
+pocket watches	animal	no	low	204	Yes	 Yes
+envelopes	toiletry	no	high	204	Yes	 Yes
+icemakers	kitchen equipment	yes	low	204	No	 I
+chessboards	animal	no	low	205	Yes	 Yes
+belts	animal	no	low	205	Yes	 Yes
+teacups	container	yes	low	206	Yes	 Yes
+mirrors	bird	no	low	206	No	 No
+dustpans	toiletry	no	high	207	No	 No
+apples	clothing	no	low	207	Yes	 Yes
+tridents	plant	no	low	207	Yes	 Yes
+dashboards	electronic device	no	high	208	Yes	 Yes
+razor blades	electronic device	no	high	208	Yes	 Yes
+abacuses	weapon	no	high	209	Yes	 Yes
+lamps	home decor	yes	high	209	Yes	 Yes
+belt buckles	animal	no	low	210	Yes	 Yes
+bonnets	food	no	low	210	Yes	 Yes
+burritos	tool	no	low	210	Yes	 Yes
+bassoons	electronic device	no	low	210	Yes	 Yes
+dustpans	musical instrument	no	high	211	Yes	 Yes
+train sets	toy	yes	low	212	No	 No
+weasels	tool	no	high	212	Yes	 I
+generators	vehicle	no	high	212	Yes	 Yes
+kangaroos	food	no	low	212	Yes	 Yes
+squirrels	tool	no	high	213	Yes	 Yes
+barnacles	mammal	no	high	213	Yes	 Yes
+wallpapers	home decor	yes	high	214	Yes	 Yes
+wreaths	home decor	yes	high	214	Yes	 Yes
+stretchers	toiletry	no	high	214	No	 No
+inkwells	container	yes	low	214	Yes	 Yes
+clothespins	fastener	yes	high	214	Yes	 Yes
+toothpicks	toiletry	yes	low	215	No	 No
+chalkboards	school supply	yes	high	215	No	 No
+cantaloupes	breakfast	no	high	216	Yes	 Yes
+lasagna	candy	no	high	216	No	 No
+barrettes	jewelry	yes	low	217	Yes	 Yes
+mixers	electronic device	yes	high	217	Yes	 Yes
+crows	food	no	low	217	Yes	 Yes
+triangles	tool	no	high	218	Yes	 Yes
+bananas	clothing	no	low	218	Yes	 Yes
+stained glass	home decor	yes	low	218	Yes	 Yes
+pegs	fastener	yes	high	218	Yes	 Yes
+chainsaws	electronic device	yes	low	219	Yes	 Yes
+doghouses	food	no	high	220	Yes	 Yes
+coils	container	no	high	220	No	 No
+tube tops	animal	no	high	222	Yes	 Yes
+lip glosses	toiletry	yes	low	222	Yes	 Yes
+clipboards	office supply	yes	low	222	No	 No
+turkeys	vehicle	no	high	223	Yes	 Yes
+mittens	accessory	yes	low	223	Yes	 Yes
+safety pins	fastener	yes	low	224	Yes	 Yes
+pins	fastener	yes	high	224	Yes	 Yes
+corals	mammal	no	high	226	Yes	 Yes
+gaskets	fastener	yes	low	226	Yes	 Yes
+bow	clothing	yes	low	227	Yes	 Yes
+coils	vehicle	no	high	227	Yes	 I
+christmas trees	home decor	yes	high	228	Yes	 Yes
+nightstands	container	yes	low	228	Yes	 Yes
+tube tops	weapon	no	high	228	Yes	 Yes
+koalas	food	no	high	229	Yes	 Yes
+hinges	food	no	high	229	Yes	 Yes
+strollers	clothing	no	high	230	Yes	 Yes
+bok choys	plant	yes	low	231	Yes	 Yes
+blenders	electronic device	yes	low	231	Yes	 Yes
+flies	clothing	no	low	231	No	 No
+gumdrops	animal	no	low	231	Yes	 Yes
+sheeps	clothing	no	low	231	Yes	 Yes
+lasagna	seafood	no	high	233	Yes	 Yes
+jugs	clothing	no	low	234	Yes	 Yes
+ducklings	musical instrument	no	low	235	Yes	 Yes
+highlighters	musical instrument	no	high	235	Yes	 Yes
+buckles	food	no	low	236	Yes	 Yes
+bats	weapon	yes	low	236	Yes	 Yes
+backscratchers	game	no	high	236	Yes	 Yes
+aprons	outerwear	yes	low	237	Yes	 Yes
+generators	musical instrument	no	high	237	Yes	 Yes
+backscratchers	food	no	high	238	Yes	 Yes
+ducklings	garden tool	no	low	239	Yes	 Yes
+footrests	toy	no	high	240	No	 No
+slicers	electronic device	yes	high	240	Yes	 Yes
+plungers	garden tool	no	high	240	Yes	 Yes
+noisemakers	toy	yes	high	240	No	 No
+coils	furniture	no	high	240	No	 No
+braces	animal	no	low	242	Yes	 Yes
+bonsai	home decor	yes	low	242	Yes	 Yes
+turkeys	sea animal	no	high	242	Yes	 Yes
+puppies	tool	no	low	242	Yes	 Yes
+kaleidoscopes	toy	yes	high	243	No	 No
+dynamites	plant	no	low	243	No	 No
+dreidels	toy	yes	high	243	Yes	 Yes
+stained glass	animal	no	low	243	Yes	 Yes
+chains	protective clothing	no	high	244	Yes	 Yes
+cuckoo clocks	food	no	low	244	Yes	 Yes
+roosters	tool	no	low	244	Yes	 Yes
+highlighters	game	no	high	246	Yes	 Yes
+costumes	home decor	no	high	246	Yes	 Yes
+nail clippers	animal	no	low	246	Yes	 Yes
+mirrors	home decor	yes	low	246	Yes	 Yes
+hatchets	garden tool	yes	high	246	Yes	 Yes
+tongs	container	no	high	247	Yes	 Yes
+mirrors	container	no	low	248	No	 No
+buses	auto part	no	high	248	Yes	 Yes
+calves	furniture	no	low	249	No	 No
+cobras	food	no	low	249	Yes	 Yes
+dustpans	clothing	no	high	249	Yes	 Yes
+lingerie	game	no	low	250	Yes	 Yes
+calves	drink	no	low	250	No	 No
+icepicks	kitchen tool	yes	low	250	Yes	 Yes
+geese	vegetable	no	high	251	No	 No
+spaghetti	clothing	no	high	251	Yes	 Yes
+scallops	dessert	no	high	252	Yes	 Yes
+spatulas	garden tool	no	high	252	Yes	 Yes
+lightning bugs	food	no	low	253	Yes	 Yes
+banjoes	musical instrument	yes	low	254	Yes	 Yes
+treadmills	electronic device	yes	low	256	Yes	 Yes
+hearing aids	vehicle	no	high	257	Yes	 Yes
+bassoons	vehicle	no	low	257	Yes	 Yes
+maple syrup	insect	no	low	257	Yes	 Yes
+pitchforks	garden tool	yes	low	259	No	 No
+inkwells	school supply	yes	high	259	Yes	 Yes
+scissors	garden tool	yes	low	260	Yes	 Yes
+toast	sea animal	no	low	260	Yes	 Yes
+crystal balls	food	no	low	261	Yes	 Yes
+muffs	food	no	high	261	Yes	 Yes
+tube tops	tool	no	high	261	Yes	 I
+stools	bird	no	low	261	Yes	 Yes
+sodas	animal	no	low	262	Yes	 Yes
+dynamites	kitchen tool	no	low	262	No	 No
+dynamites	kitchen equipment	no	low	262	No	 No
+electric chairs	electronic device	yes	low	263	Yes	 Yes
+chains	game	no	high	264	Yes	 Yes
+sweepers	food	no	high	264	Yes	 Yes
+police cars	auto part	no	high	264	No	 No
+watches	accessory	yes	low	264	Yes	 Yes
+mandolins	plant	no	low	266	Yes	 Yes
+nail clippers	toiletry	yes	high	266	No	 No
+metal detectors	electronic device	yes	high	267	Yes	 Yes
+catapults	food	no	high	268	Yes	 Yes
+bassoons	furniture	no	low	269	No	 No
+robots	electronic device	no	high	269	Yes	 Yes
+coyotes	tool	no	low	269	Yes	 Yes
+staple guns	animal	no	low	270	Yes	 Yes
+brooms	home decor	no	high	270	Yes	 Yes
+grenades	animal	no	low	270	Yes	 Yes
+rifles	home decor	no	low	271	Yes	 Yes
+tea	clothing	no	low	271	Yes	 Yes
+latches	game	no	high	271	Yes	 Yes
+spatulas	container	no	high	272	Yes	 Yes
+hourglasses	food	no	low	272	Yes	 Yes
+centerpieces	animal	no	high	272	Yes	 Yes
+hooks	fastener	yes	high	273	Yes	 Yes
+tube tops	outerwear	no	high	274	Yes	 Yes
+swabs	container	no	high	275	Yes	 Yes
+wheelbarrows	garden tool	no	high	275	No	 No
+robes	footwear	no	high	276	Yes	 Yes
+kittens	tool	no	low	277	Yes	 Yes
+noodles	clothing	no	high	278	Yes	 Yes
+burners	food	no	high	279	Yes	 Yes
+perfumes	tool	no	low	279	Yes	 Yes
+rollerskates	food	no	low	279	Yes	 Yes
+revolvers	food	no	high	280	Yes	 Yes
+jackets	bird	no	low	280	Yes	 Yes
+cardinals	food	no	low	280	Yes	 Yes
+ferns	mammal	no	high	281	Yes	 Yes
+sawhorses	tool	yes	low	281	Yes	 Yes
+toolboxes	garden tool	no	high	282	Yes	 Yes
+jams	plant	no	low	283	No	 I
+chains	home decor	no	high	284	Yes	 Yes
+binders	school supply	yes	high	285	Yes	 Yes
+jelly beans	weapon	no	low	286	Yes	 Yes
+mirrors	clothing	no	low	286	No	 No
+bulldozers	food	no	high	286	No	 No
+letter openers	food	no	high	286	Yes	 Yes
+dollhouses	clothing	no	high	286	Yes	 Yes
+scarecrows	food	no	high	286	Yes	 Yes
+catfish	vegetable	no	high	287	Yes	 Yes
+dollhouses	animal	no	high	288	Yes	 Yes
+footbaths	food	no	high	288	Yes	 Yes
+thumbtacks	fastener	yes	high	289	Yes	 Yes
+noodles	tool	no	high	289	Yes	 Yes
+bunkbeds	food	no	low	289	Yes	 Yes
+headlights	auto part	yes	high	289	Yes	 Yes
+geese	plant	no	high	291	No	 No
+belts	accessory	yes	low	292	Yes	 Yes
+honey	breakfast	yes	low	293	Yes	 Yes
+water filters	kitchen equipment	yes	low	293	No	 No
+folders	office supply	yes	low	295	Yes	 Yes
+lipsticks	toiletry	yes	low	295	Yes	 Yes
+ballot boxes	food	no	low	295	No	 No
+microwaves	kitchen equipment	yes	high	295	Yes	 Yes
+dynamites	animal	no	low	296	Yes	 Yes
+clipboards	food	no	low	297	No	 No
+honey	garden tool	no	low	298	Yes	 Yes
+hoses	garden tool	yes	low	298	Yes	 Yes
+straps	fastener	yes	low	298	Yes	 Yes
+coils	clothing	no	high	299	No	 No
+roosters	women's clothing	no	low	300	Yes	 Yes
+cheeseburgers	tool	no	low	301	No	 No
+coops	container	yes	high	301	Yes	 Yes
+capes	food	no	low	302	Yes	 I
+prunes	animal	no	low	302	Yes	 Yes
+chains	musical instrument	no	high	303	Yes	 Yes
+combination locks	fastener	yes	low	303	Yes	 Yes
+lighter	weapon	no	high	304	Yes	 Yes
+scarves	outerwear	yes	low	304	Yes	 Yes
+bulls	musical instrument	no	low	305	Yes	 Yes
+stained glass	food	no	low	306	Yes	 Yes
+brooms	food	no	high	306	Yes	 Yes
+penlights	medical equipment	yes	low	306	Yes	 Yes
+highlighters	vehicle	no	high	308	Yes	 Yes
+latches	water vehicle	no	high	308	No	 No
+whisks	fastener	no	high	309	Yes	 Yes
+backscratchers	medical equipment	no	high	309	Yes	 Yes
+stretchers	kitchen tool	no	high	310	Yes	 Yes
+velcros	fastener	yes	low	310	Yes	 I
+footrests	food	no	high	311	Yes	 Yes
+rabbits	sea animal	no	high	311	Yes	 Yes
+butter	condiment	yes	low	312	Yes	 Yes
+belt buckles	food	no	low	313	Yes	 Yes
+strawberries	tool	no	low	314	Yes	 Yes
+buses	container	no	high	314	No	 No
+swabs	electronic device	no	high	314	Yes	 Yes
+jams	tool	no	low	314	Yes	 I
+penguins	tool	no	low	315	No	 No
+puppies	drink	no	low	316	Yes	 Yes
+jackets	musical instrument	no	low	316	Yes	 Yes
+noodles	container	no	high	316	Yes	 Yes
+roosters	plant	no	low	317	Yes	 Yes
+rabbits	tool	no	high	317	Yes	 Yes
+envelopes	electronic device	no	high	318	Yes	 Yes
+banana splits	animal	no	low	318	Yes	 Yes
+nail polish	toiletry	yes	low	319	Yes	 Yes
+chips	vehicle	no	low	320	Yes	 Yes
+tube tops	school supply	no	high	320	No	 No
+flyswatters	food	no	high	321	No	 No
+envelopes	home decor	no	high	322	Yes	 Yes
+toast	mammal	no	low	323	Yes	 Yes
+scallops	breakfast	no	high	323	Yes	 Yes
+triangles	musical instrument	yes	high	324	Yes	 Yes
+underwear	outerwear	no	high	324	Yes	 Yes
+notepads	school supply	yes	low	324	No	 No
+maple syrup	game	no	low	325	Yes	 Yes
+visors	accessory	yes	high	327	Yes	 Yes
+nuts	clothing	no	low	327	Yes	 Yes
+coils	game	no	high	328	No	 I
+clams	tool	no	high	329	Yes	 Yes
+spears	clothing	no	high	330	Yes	 Yes
+cream cheese	plant	no	low	330	Yes	 Yes
+elephants	vegetable	no	low	331	No	 No
+bumpers	container	no	high	331	Yes	 Yes
+christmas trees	tool	no	high	331	Yes	 Yes
+eyedroppers	medical equipment	yes	high	332	Yes	 Yes
+swabs	vehicle	no	high	332	Yes	 Yes
+turkeys	tool	no	high	332	Yes	 Yes
+cocktails	animal	no	low	333	Yes	 Yes
+cantaloupes	drink	no	high	333	Yes	 Yes
+ducklings	tool	no	low	334	Yes	 Yes
+corkscrews	kitchen tool	yes	high	334	Yes	 Yes
+freezers	electronic device	yes	low	335	No	 No
+sheeps	tool	no	low	335	Yes	 Yes
+dustpans	game	no	high	336	Yes	 Yes
+highlighters	furniture	no	high	336	Yes	 Yes
+stretchers	clothing	no	high	336	Yes	 Yes
+puppies	clothing	no	low	336	Yes	 Yes
+latches	toy	no	high	338	No	 No
+hot tubs	container	yes	low	338	Yes	 Yes
+envelopes	musical instrument	no	high	338	Yes	 Yes
+calves	weapon	no	low	340	Yes	 Yes
+jumpsuits	food	no	low	341	Yes	 Yes
+chinchillas	sea animal	no	high	341	Yes	 Yes
+moles	sea animal	no	high	343	No	 No
+tube tops	water vehicle	no	high	343	Yes	 Yes
+drums	container	no	high	344	Yes	 Yes
+calves	candy	no	low	344	No	 No
+elephants	furniture	no	low	345	No	 No
+dustpans	animal	no	high	347	Yes	 I
+cloaks	outerwear	yes	high	347	Yes	 Yes
+crayons	school supply	yes	high	347	No	 No
+zucchini	breakfast	no	high	347	Yes	 Yes
+measuring cups	animal	no	low	347	No	 No
+puppies	vegetable	no	low	348	No	 No
+whiteboards	school supply	yes	high	349	No	 No
+stretchers	home decor	no	high	349	Yes	 Yes
+backscratchers	home decor	no	high	350	Yes	 Yes
+ostriches	tool	no	high	351	Yes	 Yes
+maple syrup	sea animal	no	low	352	Yes	 Yes
+mirrors	fruit	no	low	352	Yes	 Yes
+chains	container	no	high	354	Yes	 Yes
+brakes	auto part	yes	low	354	Yes	 Yes
+dynamites	bird	no	low	355	No	 No
+ballot boxes	animal	no	low	356	Yes	 Yes
+globes	home decor	yes	high	356	Yes	 Yes
+dashboards	home decor	no	high	360	Yes	 Yes
+mussels	breakfast	no	high	360	Yes	 Yes
+elephants	garden tool	no	low	361	Yes	 Yes
+bombs	clothing	no	low	361	No	 No
+zebras	fastener	no	low	361	No	 No
+dynamites	medical equipment	no	low	361	No	 No
+flies	furniture	no	low	362	No	 No
+bulls	vegetable	no	low	363	No	 No
+stretchers	toy	no	high	365	Yes	 Yes
+shortbread	animal	no	low	368	Yes	 Yes
+kittens	clothing	no	low	368	Yes	 Yes
+chains	fastener	yes	high	369	Yes	 Yes
+ski boots	candy	no	low	369	No	 No
+undershirts	food	no	high	371	Yes	 Yes
+moths	tool	no	low	373	Yes	 Yes
+bulls	fastener	no	low	374	Yes	 Yes
+spaghetti	tool	no	high	375	Yes	 Yes
+jetskis	vehicle	yes	low	376	Yes	 Yes
+flamingoes	food	no	low	376	Yes	 Yes
+pickles	seafood	no	high	376	Yes	 Yes
+cantaloupes	seafood	no	high	376	Yes	 Yes
+gloves	outerwear	yes	high	378	Yes	 Yes
+honey	weapon	no	low	379	Yes	 Yes
+geese	drink	no	high	379	No	 No
+spears	vehicle	no	high	379	Yes	 Yes
+peanut butter	home decor	no	low	381	Yes	 Yes
+calves	clothing	no	low	381	Yes	 Yes
+gyroscopes	toy	yes	low	382	Yes	 Yes
+margaritas	musical instrument	no	low	383	Yes	 Yes
+clasps	fastener	yes	high	384	Yes	 Yes
+margaritas	animal	no	low	385	Yes	 Yes
+inkwells	food	no	high	387	Yes	 Yes
+lasagna	kitchen tool	no	high	387	Yes	 Yes
+geese	breakfast	no	high	387	Yes	 Yes
+lasagna	kitchen equipment	no	high	387	Yes	 Yes
+tube tops	food	no	high	388	Yes	 Yes
+grinders	kitchen tool	yes	high	388	Yes	 Yes
+jackets	candy	no	low	389	No	 No
+staplers	food	no	high	389	Yes	 Yes
+rabbits	musical instrument	no	high	389	Yes	 Yes
+chickpeas	dessert	no	high	391	Yes	 Yes
+backscratchers	musical instrument	no	high	392	Yes	 Yes
+latches	home decor	no	high	392	Yes	 Yes
+bumpers	auto part	yes	high	393	Yes	 Yes
+statues	home decor	yes	low	394	Yes	 Yes
+organs	musical instrument	yes	high	394	Yes	 Yes
+geese	tool	no	high	395	No	 No
+highlighters	animal	no	high	395	Yes	 Yes
+lecterns	food	no	high	396	Yes	 Yes
+okra	condiment	no	high	396	Yes	 Yes
+tube tops	vehicle	no	high	397	Yes	 Yes
+tanks	container	yes	high	398	No	 No
+notebooks	school supply	yes	low	400	Yes	 Yes
+bulls	toy	no	low	400	Yes	 Yes
+cuckoo clocks	home decor	yes	low	401	Yes	 Yes
+tridents	drink	no	low	402	Yes	 Yes
+roosters	musical instrument	no	low	402	Yes	 Yes
+jackets	container	no	low	403	Yes	 Yes
+dynamites	musical instrument	no	low	404	Yes	 Yes
+pickles	container	no	high	405	Yes	 Yes
+cufflinks	fastener	yes	high	405	Yes	 Yes
+green beans	home decor	no	low	406	Yes	 Yes
+cars	auto part	no	high	407	Yes	 Yes
+geese	seafood	no	high	407	Yes	 Yes
+rulers	school supply	yes	low	408	No	 No
+stools	sea animal	no	low	408	Yes	 Yes
+mosses	clothing	no	low	408	Yes	 Yes
+pencils	school supply	yes	high	409	No	 No
+briefcases	food	no	low	411	Yes	 Yes
+peas	clothing	no	high	411	No	 No
+vests	outerwear	no	high	412	Yes	 Yes
+whipped cream	tool	no	low	412	Yes	 Yes
+piggy banks	container	yes	low	413	No	 No
+highlighters	protective clothing	no	high	413	Yes	 Yes
+kites	clothing	no	high	414	Yes	 Yes
+knots	fastener	yes	low	414	Yes	 Yes
+flasks	animal	no	low	415	Yes	 Yes
+roosters	breakfast	no	low	415	Yes	 Yes
+coils	toy	no	high	416	No	 I
+taffy	tool	no	low	417	Yes	 Yes
+zebras	tool	no	low	419	No	 No
+water heaters	container	yes	low	420	No	 No
+latches	jewelry	no	high	420	Yes	 Yes
+mongooses	food	no	low	421	Yes	 Yes
+grinders	garden tool	no	high	421	Yes	 I
+cummerbunds	accessory	yes	low	423	Yes	 Yes
+honey	tool	no	low	424	Yes	 Yes
+dynamites	vehicle	no	low	424	Yes	 Yes
+latches	electronic device	no	high	424	Yes	 Yes
+rabbits	fastener	no	high	424	Yes	 Yes
+scoops	musical instrument	no	low	425	Yes	 Yes
+coasters	home decor	yes	high	425	Yes	 Yes
+boas	food	no	low	425	Yes	 Yes
+ivy	tool	no	low	427	Yes	 I
+anklets	food	no	low	427	Yes	 Yes
+razor blades	vehicle	no	high	428	Yes	 Yes
+nuts	container	no	low	430	Yes	 Yes
+rearview mirrors	toy	no	low	432	No	 No
+jams	sea animal	no	low	432	Yes	 Yes
+puppies	breakfast	no	low	432	Yes	 Yes
+paperclips	office supply	yes	high	433	No	 No
+can openers	kitchen tool	yes	high	436	Yes	 Yes
+pickles	tool	no	high	438	Yes	 Yes
+hubcaps	auto part	yes	high	439	Yes	 Yes
+bananas	container	no	low	439	Yes	 Yes
+ducklings	weapon	no	low	440	Yes	 Yes
+macaroni	tool	no	high	440	Yes	 Yes
+rabbits	candy	no	high	442	No	 No
+t-shirts	container	no	low	442	Yes	 Yes
+tridents	fastener	no	low	442	Yes	 Yes
+rabbits	furniture	no	high	446	Yes	 Yes
+knobs	clothing	no	low	447	Yes	 Yes
+bulls	furniture	no	low	447	No	 No
+bees	clothing	no	low	448	No	 No
+roof racks	auto part	yes	high	449	Yes	 Yes
+elephants	musical instrument	no	low	451	Yes	 Yes
+prunes	tool	no	low	451	Yes	 I
+dashboards	auto part	yes	high	453	Yes	 Yes
+dustpans	toy	no	high	455	Yes	 Yes
+books	school supply	yes	low	456	Yes	 Yes
+gaskets	auto part	yes	low	458	Yes	 Yes
+spears	toy	no	high	460	No	 No
+clams	drink	no	high	460	Yes	 Yes
+mirrors	kitchen tool	no	low	461	Yes	 Yes
+mirrors	kitchen equipment	no	low	461	Yes	 Yes
+scoops	kitchen tool	yes	low	463	Yes	 Yes
+pens	office supply	yes	low	464	Yes	 Yes
+toast	container	no	low	465	Yes	 Yes
+flasks	clothing	no	low	465	No	 No
+pinwheels	clothing	no	high	466	Yes	 Yes
+turkeys	dessert	no	high	466	No	 No
+rabbits	toy	no	high	466	Yes	 Yes
+maple syrup	furniture	no	low	468	No	 No
+fruit punches	tool	yes	high	468	Yes	 Yes
+whisks	container	no	high	468	Yes	 Yes
+pencil sharpeners	school supply	yes	high	470	No	 No
+bulls	women's clothing	no	low	471	Yes	 Yes
+mongooses	tool	no	low	471	No	 No
+fountain pens	office supply	yes	low	473	Yes	 Yes
+latches	plant	no	high	473	No	 No
+locks	fastener	yes	low	474	Yes	 Yes
+puppies	vehicle	no	low	474	Yes	 Yes
+noodles	fastener	no	high	475	Yes	 Yes
+nails	fastener	yes	low	476	Yes	 Yes
+hoes	garden tool	yes	high	477	Yes	 Yes
+bolts	container	no	high	478	Yes	 Yes
+flatirons	toiletry	yes	low	478	No	 No
+highlighters	toy	no	high	478	No	 No
+green beans	tool	no	low	478	Yes	 Yes
+waffles	tool	no	low	480	Yes	 Yes
+strawberries	clothing	no	low	480	Yes	 Yes
+mussels	mammal	no	high	480	Yes	 Yes
+swimming pools	container	yes	low	480	Yes	 Yes
+moose	tool	no	low	481	Yes	 Yes
+slicers	vehicle	no	high	482	Yes	 Yes
+jackhammers	electronic device	yes	low	482	No	 No
+stilettoes	sea animal	no	low	483	Yes	 Yes
+christmas trees	jewelry	no	high	483	Yes	 Yes
+jams	condiment	yes	low	485	Yes	 I
+blackberries	tool	no	low	486	Yes	 Yes
+racks	vegetable	no	low	486	Yes	 Yes
+coats	outerwear	yes	high	487	Yes	 Yes
+stilts	toy	yes	low	487	Yes	 Yes
+cream cheese	weapon	no	low	489	Yes	 Yes
+stilettoes	drink	no	low	490	Yes	 Yes
+zebras	vehicle	no	low	491	Yes	 Yes
+cardinals	tool	no	low	494	Yes	 Yes
+zucchini	tool	no	high	494	Yes	 Yes
+green beans	clothing	no	low	495	Yes	 Yes
+bulls	drink	no	low	495	Yes	 Yes
+mixers	medical equipment	no	high	497	Yes	 Yes
+lamps	electronic device	yes	low	497	Yes	 Yes
+hearing aids	clothing	no	high	497	No	 No
+scallops	tool	no	high	497	Yes	 Yes
+puppies	jewelry	no	low	497	Yes	 Yes
+apples	vehicle	no	low	498	Yes	 Yes
+camcorders	food	no	low	498	No	 I
+robots	toy	yes	low	501	Yes	 Yes
+envelopes	medical equipment	no	high	502	Yes	 Yes
+incubators	electronic device	yes	low	502	Yes	 Yes
+kegs	toiletry	no	low	504	No	 No
+tridents	vehicle	no	low	505	Yes	 Yes
+rearview mirrors	food	no	low	506	No	 No
+honey	musical instrument	no	low	509	Yes	 Yes
+triangles	container	no	high	511	Yes	 Yes
+backscratchers	garden tool	no	high	513	Yes	 Yes
+hourglasses	home decor	yes	low	513	Yes	 Yes
+poppies	clothing	no	low	514	Yes	 Yes
+doghouses	container	yes	low	515	Yes	 Yes
+highlighters	medical equipment	no	high	516	Yes	 Yes
+paperclips	fastener	yes	high	517	Yes	 Yes
+birthday cakes	tool	no	low	519	Yes	 Yes
+nuts	home decor	no	low	520	Yes	 Yes
+swabs	clothing	no	high	522	Yes	 Yes
+bolts	electronic device	no	high	523	Yes	 Yes
+calves	breakfast	no	low	524	Yes	 Yes
+abacuses	furniture	no	high	524	Yes	 Yes
+hearing aids	animal	no	high	525	Yes	 Yes
+crayfish	tool	no	high	529	Yes	 Yes
+jackets	fruit	no	low	530	Yes	 Yes
+bassoons	garden tool	no	low	532	Yes	 Yes
+maple syrup	tool	no	low	532	Yes	 Yes
+bow	fastener	yes	high	532	Yes	 Yes
+string cheese	mammal	no	low	533	Yes	 Yes
+honey	furniture	no	low	535	Yes	 Yes
+ducklings	clothing	no	low	535	Yes	 Yes
+footrests	clothing	no	high	535	Yes	 Yes
+racks	sea animal	no	low	535	Yes	 Yes
+noodles	kitchen tool	no	high	536	Yes	 Yes
+chainsaws	garden tool	yes	low	536	Yes	 Yes
+calves	musical instrument	no	low	536	Yes	 Yes
+margaritas	medical equipment	no	low	538	No	 No
+zucchini	condiment	no	high	539	Yes	 Yes
+posters	home decor	yes	high	541	Yes	 Yes
+macaroni	clothing	no	high	542	Yes	 Yes
+mandolins	vehicle	no	low	543	Yes	 Yes
+zebras	garden tool	no	low	544	Yes	 Yes
+ducklings	women's clothing	no	low	547	Yes	 Yes
+peanut butter	tool	no	low	548	Yes	 Yes
+peas	vehicle	no	high	549	Yes	 Yes
+margaritas	bird	no	low	549	No	 No
+peelers	weapon	no	high	550	Yes	 Yes
+chicken wires	vehicle	no	low	552	Yes	 Yes
+puppies	toiletry	no	low	555	No	 No
+honeypots	container	yes	low	555	Yes	 Yes
+rabbits	vehicle	no	high	556	Yes	 Yes
+chalks	electronic device	no	high	558	Yes	 Yes
+mushrooms	mammal	no	high	559	Yes	 Yes
+coffeemakers	animal	no	low	561	Yes	 Yes
+crystal balls	home decor	yes	low	563	Yes	 Yes
+granola	tool	no	low	563	Yes	 I
+calves	jewelry	no	low	569	No	 No
+jams	electronic device	no	low	570	Yes	 Yes
+zebras	women's clothing	no	low	573	Yes	 Yes
+jams	vehicle	no	low	573	Yes	 Yes
+cordon bleu sandwiches	tool	no	low	573	Yes	 Yes
+bassoons	plant	no	low	574	No	 No
+chickpeas	fastener	no	high	575	Yes	 Yes
+banjoes	clothing	no	low	578	No	 No
+barrettes	fastener	yes	high	580	Yes	 Yes
+creme brulee	plant	no	low	580	Yes	 Yes
+highlighters	home decor	no	high	581	Yes	 Yes
+whisks	home decor	no	high	582	Yes	 Yes
+turkeys	seafood	no	high	582	Yes	 Yes
+ginger	condiment	yes	low	583	Yes	 Yes
+bolts	game	no	high	583	Yes	 Yes
+lemonades	tool	no	low	583	Yes	 Yes
+tube tops	home decor	no	high	583	Yes	 Yes
+elephants	weapon	no	low	583	Yes	 Yes
+calves	home decor	no	low	583	Yes	 Yes
+scallops	mammal	no	high	584	Yes	 Yes
+jelly beans	tool	no	low	585	Yes	 Yes
+fruitcakes	clothing	no	high	587	No	 No
+geese	dessert	no	high	594	No	 No
+tea	tool	no	low	594	Yes	 Yes
+tube tops	container	no	high	595	Yes	 Yes
+metal detectors	food	no	high	595	No	 No
+spatulas	electronic device	no	high	595	Yes	 Yes
+whipped cream	plant	no	low	598	Yes	 Yes
+icemakers	electronic device	yes	low	598	Yes	 Yes
+mirrors	sea animal	no	low	599	Yes	 Yes
+cornucopias	home decor	yes	low	599	Yes	 Yes
+nail files	toiletry	yes	low	599	No	 No
+backscratchers	women's clothing	no	high	602	Yes	 Yes
+peanut butter	clothing	no	low	605	Yes	 Yes
+license plates	auto part	yes	high	605	No	 No
+cocktails	clothing	no	low	605	Yes	 Yes
+calves	toy	no	low	606	No	 No
+bassoons	candy	no	low	607	No	 No
+walkers	medical equipment	yes	low	608	Yes	 Yes
+mandolins	clothing	no	low	611	Yes	 Yes
+bananas	electronic device	no	low	611	Yes	 Yes
+highlighters	clothing	no	high	612	Yes	 Yes
+scoops	insect	no	low	614	No	 No
+raspberries	tool	no	low	614	Yes	 Yes
+bulls	jewelry	no	low	614	No	 No
+jams	clothing	no	low	616	Yes	 Yes
+string cheese	tool	no	low	616	Yes	 Yes
+ducklings	furniture	no	low	618	Yes	 Yes
+coils	home decor	no	high	621	Yes	 I
+sifters	kitchen tool	yes	high	622	Yes	 Yes
+peas	mammal	no	high	623	Yes	 Yes
+flamingoes	tool	no	low	624	Yes	 Yes
+pepperonis	tool	no	low	625	Yes	 Yes
+tweezers	toiletry	yes	high	625	No	 No
+stretchers	sea animal	no	high	625	Yes	 Yes
+jelly beans	vehicle	no	low	627	Yes	 Yes
+envelopes	office supply	yes	high	630	Yes	 Yes
+puppies	garden tool	no	low	632	Yes	 Yes
+roosters	home decor	no	low	633	Yes	 Yes
+geese	clothing	no	high	636	No	 No
+backscratchers	kitchen tool	no	high	638	Yes	 Yes
+backscratchers	kitchen equipment	no	high	638	Yes	 Yes
+toast	electronic device	no	low	640	Yes	 Yes
+crayfish	fastener	no	high	640	Yes	 Yes
+food processors	container	no	high	643	No	 No
+pinecones	home decor	yes	low	643	Yes	 Yes
+roosters	furniture	no	low	645	No	 No
+latches	toiletry	no	high	647	No	 No
+crows	weapon	no	low	647	Yes	 Yes
+bolts	home decor	no	high	647	Yes	 Yes
+tube tops	game	no	high	648	Yes	 Yes
+dollhouses	food	no	high	651	Yes	 Yes
+headscarves	food	no	low	654	Yes	 Yes
+ostriches	fastener	no	high	654	Yes	 Yes
+peelers	vehicle	no	high	654	Yes	 Yes
+zebras	musical instrument	no	low	656	Yes	 Yes
+hooks	electronic device	no	high	656	Yes	 Yes
+tube tops	furniture	no	high	656	Yes	 Yes
+stretchers	fastener	no	high	657	Yes	 Yes
+ducklings	school supply	no	low	658	No	 No
+headrests	auto part	yes	high	659	Yes	 Yes
+rabbits	drink	no	high	659	Yes	 Yes
+roosters	weapon	no	low	659	Yes	 Yes
+paper	school supply	yes	low	660	Yes	 Yes
+cream cheese	tool	no	low	660	Yes	 Yes
+pears	clothing	no	low	660	Yes	 Yes
+clams	clothing	no	high	661	Yes	 Yes
+axes	garden tool	yes	high	662	Yes	 Yes
+chairs	insect	no	low	662	No	 No
+ducklings	dessert	no	low	665	Yes	 Yes
+stretchers	school supply	no	high	668	No	 No
+bulls	toiletry	no	low	670	No	 No
+cantaloupes	fastener	no	high	671	Yes	 Yes
+elephants	candy	no	low	673	No	 No
+dresses	outerwear	no	high	674	Yes	 Yes
+rearview mirrors	fastener	no	low	677	No	 No
+backscratchers	headwear	no	high	678	Yes	 Yes
+roadsweepers	food	no	high	679	Yes	 Yes
+sprouts	tool	no	high	682	Yes	 Yes
+prunes	weapon	no	low	683	Yes	 Yes
+mussels	container	no	high	689	Yes	 Yes
+chains	toy	no	high	689	No	 No
+elephants	women's clothing	no	low	690	Yes	 Yes
+bow	home decor	no	high	691	Yes	 Yes
+highlighters	fastener	no	high	692	Yes	 Yes
+buttons	fastener	yes	low	692	Yes	 Yes
+dollhouses	accessory	no	high	696	Yes	 Yes
+tube tops	medical equipment	no	high	696	Yes	 Yes
+cordon bleu sandwiches	vehicle	no	low	696	Yes	 Yes
+whisks	women's clothing	no	high	696	Yes	 Yes
+curling irons	electronic device	yes	low	697	Yes	 Yes
+banana splits	tool	no	low	698	Yes	 Yes
+puppies	home decor	no	low	698	Yes	 Yes
+coasters	clothing	no	high	698	Yes	 Yes
+cheeseburgers	electronic device	no	low	699	No	 No
+odometers	auto part	yes	low	699	No	 No
+burners	kitchen equipment	yes	low	700	Yes	 Yes
+peas	tool	no	high	701	Yes	 Yes
+tridents	vegetable	no	low	704	Yes	 Yes
+jelly beans	container	no	low	705	Yes	 Yes
+puppies	women's clothing	no	low	705	Yes	 Yes
+lasagna	tool	no	high	708	Yes	 Yes
+honey	toy	no	low	708	Yes	 Yes
+latches	accessory	no	high	709	Yes	 Yes
+tridents	kitchen equipment	no	low	710	Yes	 Yes
+bumpers	electronic device	no	high	711	Yes	 Yes
+tea	vehicle	no	low	711	Yes	 Yes
+envelopes	school supply	no	high	712	Yes	 Yes
+nuts	kitchen equipment	no	low	713	Yes	 Yes
+nuts	kitchen tool	no	low	713	Yes	 Yes
+meat	seafood	no	high	715	Yes	 Yes
+coils	fastener	no	high	716	Yes	 I
+doorknockers	home decor	yes	high	718	Yes	 Yes
+lingerie	bird	no	low	719	Yes	 Yes
+buttons	accessory	yes	low	719	Yes	 Yes
+slings	medical equipment	yes	low	721	Yes	 Yes
+latches	clothing	no	high	721	No	 No
+pedals	auto part	yes	low	722	No	 I
+stilettoes	breakfast	no	low	723	Yes	 Yes
+crows	vehicle	no	low	724	Yes	 Yes
+curling irons	toiletry	yes	low	726	Yes	 Yes
+salami	tool	no	low	727	Yes	 Yes
+nutcrackers	kitchen tool	yes	low	727	Yes	 Yes
+flippers	footwear	yes	high	727	Yes	 Yes
+cantaloupes	tool	no	high	727	Yes	 I
+capes	outerwear	yes	low	728	Yes	 Yes
+rolls	breakfast	yes	low	728	Yes	 Yes
+clovers	tool	no	low	729	Yes	 Yes
+waffle irons	electronic device	yes	low	735	Yes	 Yes
+guacamole	vehicle	no	low	736	Yes	 Yes
+whipped cream	vehicle	no	low	738	Yes	 Yes
+bacon	electronic device	no	low	738	Yes	 Yes
+tube tops	toy	no	high	739	Yes	 Yes
+pencils	office supply	yes	high	741	No	 No
+highlighters	kitchen tool	no	high	742	Yes	 Yes
+turkeys	clothing	no	high	742	Yes	 Yes
+highlighters	kitchen equipment	no	high	742	Yes	 Yes
+erasers	office supply	yes	low	743	No	 No
+peanut butter	vehicle	no	low	751	Yes	 Yes
+rearview mirrors	clothing	no	low	751	No	 No
+lasagna	clothing	no	high	751	Yes	 Yes
+margaritas	vehicle	no	low	753	Yes	 Yes
+strawberries	home decor	no	low	753	Yes	 Yes
+maple syrup	vehicle	no	low	754	Yes	 Yes
+tube tops	fastener	no	high	758	Yes	 Yes
+taffy	weapon	no	low	759	Yes	 Yes
+chalks	school supply	yes	high	760	No	 No
+honey	clothing	no	low	761	Yes	 Yes
+jelly beans	home decor	no	low	761	Yes	 Yes
+margaritas	plant	no	low	761	No	 No
+test tubes	clothing	no	low	761	No	 No
+t-shirts	bird	no	low	765	No	 No
+margaritas	tool	no	low	770	Yes	 Yes
+cream cheese	vehicle	no	low	773	Yes	 Yes
+lasagna	container	no	high	773	Yes	 Yes
+dynamites	clothing	no	low	775	No	 No
+mice	electronic device	yes	high	775	No	 No
+clippers	toiletry	yes	low	775	No	 No
+honey	home decor	no	low	778	Yes	 Yes
+rabbits	clothing	no	high	779	Yes	 Yes
+weasels	fastener	no	high	779	No	 No
+bassoons	school supply	no	low	779	No	 No
+tweezers	clothing	no	high	780	Yes	 Yes
+costumes	footwear	no	high	782	Yes	 Yes
+scallops	candy	no	high	782	Yes	 Yes
+projectors	medical equipment	no	high	783	Yes	 Yes
+crayfish	breakfast	no	high	783	Yes	 Yes
+highlighters	women's clothing	no	high	784	Yes	 Yes
+grinders	electronic device	no	high	786	No	 No
+peas	fastener	no	high	786	Yes	 Yes
+chapsticks	clothing	yes	high	787	Yes	 Yes
+elephants	fastener	no	low	789	Yes	 Yes
+zebras	weapon	no	low	792	Yes	 Yes
+bassoons	dessert	no	low	795	No	 No
+chains	women's clothing	no	high	798	Yes	 Yes
+prunes	musical instrument	no	low	801	Yes	 Yes
+strawberries	toy	no	low	801	No	 No
+jelly beans	clothing	no	low	806	Yes	 Yes
+calves	dessert	no	low	806	No	 No
+ducklings	home decor	no	low	808	Yes	 Yes
+puppies	medical equipment	no	low	810	No	 No
+rabbits	breakfast	no	high	811	Yes	 Yes
+bassoons	clothing	no	low	819	No	 No
+banana splits	vehicle	no	low	820	Yes	 Yes
+lighter	tool	yes	high	821	Yes	 Yes
+pickles	clothing	no	high	822	Yes	 Yes
+latches	auto part	no	high	822	Yes	 Yes
+crackers	clothing	no	high	824	Yes	 Yes
+jelly beans	musical instrument	no	low	825	Yes	 Yes
+whisks	kitchen tool	yes	high	826	Yes	 Yes
+whisks	kitchen equipment	no	high	826	Yes	 Yes
+ice creams	tool	no	low	827	Yes	 Yes
+chalks	clothing	no	high	827	Yes	 Yes
+paperclips	school supply	yes	high	829	No	 No
+grilles	auto part	yes	low	830	Yes	 Yes
+ducklings	fastener	no	low	830	Yes	 Yes
+ski boots	fruit	no	low	834	Yes	 Yes
+mirrors	plant	no	low	834	No	 No
+flies	breakfast	no	low	836	No	 No
+shortbread	tool	no	low	840	Yes	 Yes
+whisks	jewelry	no	high	843	Yes	 Yes
+spears	medical equipment	no	high	844	Yes	 Yes
+spaghetti	container	no	high	845	Yes	 Yes
+crayfish	livestock	no	high	847	Yes	 Yes
+engines	auto part	yes	low	850	Yes	 Yes
+ducklings	vehicle	no	low	853	Yes	 Yes
+clovers	musical instrument	no	low	854	Yes	 Yes
+dustpans	auto part	no	high	855	Yes	 I
+granola	vehicle	no	low	855	Yes	 I
+dynamites	vegetable	no	low	855	No	 No
+lasagna	furniture	no	high	857	Yes	 Yes
+paper	office supply	yes	low	857	Yes	 Yes
+apples	container	no	low	858	Yes	 Yes
+pillboxes	medical equipment	yes	low	860	Yes	 Yes
+juicers	container	no	high	860	Yes	 Yes
+nuts	women's clothing	no	low	861	Yes	 Yes
+zebras	furniture	no	low	862	No	 No
+bananas	home decor	no	low	875	Yes	 Yes
+bulls	protective clothing	no	low	876	Yes	 Yes
+roosters	toy	no	low	876	Yes	 Yes
+poinsettias	animal	no	low	876	Yes	 Yes
+generators	electronic device	yes	high	878	Yes	 Yes
+mirrors	toy	no	low	879	No	 No
+zebras	drink	no	low	879	No	 No
+peelers	electronic device	no	high	882	Yes	 Yes
+bassoons	fastener	no	low	882	Yes	 Yes
+nuts	livestock	no	low	883	Yes	 Yes
+bolts	toy	no	high	885	No	 No
+clippers	garden tool	yes	low	892	Yes	 Yes
+mirrors	school supply	no	low	892	No	 No
+bassoons	mammal	no	low	895	Yes	 Yes
+mandolins	container	no	low	895	Yes	 Yes
+abacuses	toiletry	no	high	896	Yes	 Yes
+lemonades	animal	no	low	896	Yes	 Yes
+tube tops	toiletry	no	high	897	Yes	 Yes
+strawberries	furniture	no	low	901	No	 No
+tea	fastener	no	low	902	Yes	 Yes
+cords	electronic device	no	high	907	Yes	 Yes
+string cheese	home decor	no	low	907	Yes	 Yes
+gorillas	vehicle	no	low	907	Yes	 Yes
+coils	kitchen equipment	no	high	908	No	 I
+whipped cream	clothing	no	low	914	Yes	 Yes
+chickpeas	container	no	high	915	Yes	 Yes
+abacuses	vehicle	no	high	918	Yes	 Yes
+highlighters	container	no	high	918	Yes	 Yes
+fountain pens	school supply	yes	high	921	Yes	 Yes
+bulls	candy	no	low	923	No	 No
+scallops	jewelry	no	high	924	Yes	 Yes
+elephants	dessert	no	low	926	No	 No
+latches	headwear	no	high	928	Yes	 Yes
+buses	clothing	no	high	928	No	 No
+dustpans	electronic device	no	high	932	Yes	 Yes
+creme brulee	weapon	no	low	936	Yes	 Yes
+sheeps	home decor	no	low	938	Yes	 Yes
+sheeps	dessert	no	low	939	No	 No
+chains	school supply	no	high	940	No	 No
+tridents	medical equipment	no	low	942	Yes	 Yes
+highlighters	office supply	yes	high	944	No	 No
+rabbits	home decor	no	high	946	Yes	 Yes
+bikinis	bird	no	low	947	Yes	 Yes
+macaroni	container	no	high	947	Yes	 Yes
+crayfish	dessert	no	high	947	Yes	 Yes
+swabs	musical instrument	no	high	949	Yes	 Yes
+clovers	clothing	no	low	949	Yes	 Yes
+rabbits	dessert	no	high	954	No	 No
+jams	container	no	low	955	Yes	 Yes
+zebras	dessert	no	low	955	No	 No
+elephants	toy	no	low	958	No	 No
+elephants	home decor	no	low	961	Yes	 Yes
+bulls	headwear	no	low	961	Yes	 Yes
+spatulas	clothing	no	high	963	No	 No
+dynamites	sea animal	no	low	963	No	 No
+scissors	office supply	yes	high	966	No	 No
+backscratchers	toiletry	no	high	969	No	 No
+abacuses	toy	no	high	970	Yes	 Yes
+flies	home decor	no	low	972	Yes	 Yes
+tube tops	dessert	no	high	973	No	 No
+stilettoes	electronic device	no	low	976	Yes	 Yes
+tongs	electronic device	no	high	978	Yes	 Yes
+peas	container	no	high	981	Yes	 Yes
+exhaust pipes	auto part	yes	low	982	No	 No
+muffs	outerwear	no	high	982	Yes	 Yes
+flasks	vegetable	no	low	984	No	 No
+cocktails	bird	no	low	986	Yes	 Yes
+bassoons	container	no	low	988	No	 No
+calculators	school supply	yes	low	991	No	 No
+jackets	insect	no	low	994	Yes	 Yes
+noodles	toy	no	high	998	Yes	 Yes
+honey	headwear	no	low	998	Yes	 Yes
+blouses	container	no	low	999	Yes	 Yes
+jackets	toy	no	low	999	Yes	 Yes
+backscratchers	furniture	no	high	1002	Yes	 Yes
+roosters	dessert	no	low	1003	No	 No
+gorillas	clothing	no	low	1004	No	 No
+stretchers	plant	no	high	1006	Yes	 Yes
+flan	tool	no	low	1011	Yes	 Yes
+pumpkins	mammal	no	high	1011	Yes	 Yes
+nuts	toy	no	low	1011	Yes	 Yes
+mandolins	dessert	no	low	1014	Yes	 Yes
+bulls	clothing	no	low	1018	Yes	 Yes
+tortellini	tool	no	low	1020	Yes	 Yes
+chairs	breakfast	no	low	1020	Yes	 Yes
+brakes	container	no	low	1021	Yes	 Yes
+honey	vehicle	no	low	1021	Yes	 Yes
+gourds	home decor	yes	low	1023	Yes	 Yes
+weather vanes	home decor	yes	low	1026	Yes	 Yes
+whisks	toiletry	no	high	1026	No	 No
+cornbread	tool	no	low	1026	Yes	 Yes
+rabbits	kitchen tool	no	high	1027	Yes	 Yes
+rabbits	kitchen equipment	no	high	1027	Yes	 Yes
+backscratchers	school supply	no	high	1028	No	 No
+tube tops	drink	no	high	1030	Yes	 Yes
+ducklings	jewelry	no	low	1035	Yes	 Yes
+turkeys	kitchen tool	no	high	1036	No	 No
+turkeys	kitchen equipment	no	high	1036	Yes	 Yes
+latches	medical equipment	no	high	1037	Yes	 Yes
+aquariums	seafood	no	high	1037	Yes	 Yes
+latches	dessert	no	high	1038	No	 No
+chalks	container	no	high	1042	Yes	 Yes
+chains	electronic device	no	high	1043	Yes	 Yes
+bananas	headwear	no	low	1044	Yes	 Yes
+jackets	toiletry	no	low	1047	No	 No
+roosters	school supply	no	low	1049	No	 No
+whisks	school supply	no	high	1050	No	 No
+puppies	fastener	no	low	1051	Yes	 Yes
+highlighters	plant	no	high	1051	Yes	 Yes
+tridents	breakfast	no	low	1051	Yes	 Yes
+zucchini	container	no	high	1060	Yes	 Yes
+maple syrup	electronic device	no	low	1060	Yes	 Yes
+footrests	container	no	high	1061	Yes	 Yes
+creme brulee	vehicle	no	low	1064	Yes	 Yes
+chains	plant	no	high	1072	No	 No
+toast	clothing	no	low	1077	Yes	 Yes
+noodles	school supply	no	high	1080	No	 No
+bow	jewelry	no	high	1081	Yes	 Yes
+highlighters	school supply	yes	high	1086	No	 No
+tape recorders	food	no	low	1087	No	 No
+markers	electronic device	no	high	1088	Yes	 Yes
+honey	fastener	no	low	1097	Yes	 Yes
+pens	school supply	yes	low	1106	No	 No
+cornbread	vehicle	no	low	1111	Yes	 Yes
+nuts	electronic device	no	low	1114	Yes	 Yes
+folders	school supply	yes	low	1117	Yes	 Yes
+zucchini	clothing	no	high	1117	Yes	 Yes
+rims	auto part	yes	high	1120	Yes	 Yes
+fans	electronic device	yes	low	1124	Yes	 Yes
+dustpans	office supply	no	high	1126	No	 I
+brooms	electronic device	no	high	1127	Yes	 Yes
+fruit punches	vehicle	no	high	1130	Yes	 Yes
+kegs	clothing	no	low	1137	No	 No
+prunes	clothing	no	low	1139	Yes	 Yes
+pinwheels	home decor	yes	high	1141	Yes	 Yes
+taffy	vehicle	no	low	1144	Yes	 Yes
+bulls	garden tool	no	low	1147	Yes	 Yes
+roosters	clothing	no	low	1150	Yes	 Yes
+creme brulee	electronic device	no	low	1152	Yes	 Yes
+crows	electronic device	no	low	1156	Yes	 Yes
+puppies	school supply	no	low	1156	No	 No
+chairs	fastener	no	low	1157	Yes	 Yes
+frames	home decor	yes	low	1160	Yes	 Yes
+elephants	toiletry	no	low	1161	No	 No
+abacuses	electronic device	no	high	1165	Yes	 Yes
+envelopes	women's clothing	no	high	1167	Yes	 Yes
+string cheese	container	no	low	1168	Yes	 Yes
+cantaloupes	home decor	no	high	1169	Yes	 Yes
+maple syrup	clothing	no	low	1178	No	 No
+fruit punches	garden tool	no	high	1183	Yes	 Yes
+tube tops	electronic device	no	high	1184	Yes	 Yes
+abacuses	home decor	yes	high	1187	Yes	 Yes
+elephants	drink	no	low	1190	No	 No
+brooms	container	no	high	1191	Yes	 Yes
+maple syrup	container	no	low	1191	Yes	 Yes
+coils	medical equipment	no	high	1193	No	 No
+staplers	office supply	yes	high	1199	No	 No
+bassoons	vegetable	no	low	1201	No	 No
+mandolins	fastener	no	low	1204	Yes	 Yes
+dustpans	school supply	no	high	1204	No	 I
+scallops	condiment	no	high	1206	Yes	 Yes
+ducklings	kitchen equipment	no	low	1216	Yes	 Yes
+ducklings	kitchen tool	no	low	1216	Yes	 Yes
+pencil sharpeners	office supply	yes	high	1216	No	 No
+bulls	dessert	no	low	1217	No	 No
+strawberries	headwear	no	low	1220	Yes	 Yes
+scarecrows	home decor	yes	high	1222	Yes	 Yes
+prunes	vehicle	no	low	1224	Yes	 Yes
+maple syrup	headwear	no	low	1228	Yes	 Yes
+mosses	container	no	low	1233	Yes	 Yes
+erasers	school supply	yes	low	1235	No	 No
+celeries	condiment	no	high	1236	Yes	 I
+zucchini	seafood	no	high	1237	Yes	 Yes
+puppies	kitchen tool	no	low	1243	No	 No
+puppies	kitchen equipment	no	low	1243	Yes	 Yes
+lighter	vehicle	no	high	1244	Yes	 Yes
+prunes	container	no	low	1251	No	 No
+timers	kitchen tool	yes	low	1258	Yes	 Yes
+nuts	toiletry	no	low	1260	No	 No
+tiramisu	tool	no	low	1260	Yes	 Yes
+zebras	home decor	no	low	1262	Yes	 Yes
+ski boots	container	no	low	1262	Yes	 Yes
+lingerie	fastener	no	low	1266	Yes	 Yes
+weasels	vehicle	no	high	1271	Yes	 Yes
+calves	kitchen tool	no	low	1277	No	 I
+apples	home decor	no	low	1280	Yes	 Yes
+machine guns	dessert	no	low	1286	No	 No
+zebras	toiletry	no	low	1286	No	 No
+funnels	clothing	no	high	1287	Yes	 Yes
+maple syrup	mammal	no	low	1288	Yes	 Yes
+stretchers	footwear	no	high	1290	Yes	 Yes
+highlighters	dessert	no	high	1292	No	 No
+tridents	furniture	no	low	1296	Yes	 Yes
+stretchers	electronic device	no	high	1298	Yes	 Yes
+dynamites	dessert	no	low	1298	No	 No
+mirrors	medical equipment	no	low	1299	Yes	 Yes
+honey	kitchen tool	no	low	1300	Yes	 Yes
+mandolins	mammal	no	low	1300	Yes	 Yes
+honey	kitchen equipment	no	low	1300	Yes	 Yes
+apples	electronic device	no	low	1302	Yes	 Yes
+margaritas	insect	no	low	1302	No	 No
+jackets	sea animal	no	low	1304	Yes	 Yes
+scallops	home decor	no	high	1312	Yes	 Yes
+calves	toiletry	no	low	1318	No	 No
+cinnamon	seafood	no	high	1320	Yes	 Yes
+wheels	auto part	yes	low	1322	Yes	 Yes
+chickpeas	clothing	no	high	1325	Yes	 Yes
+envelopes	fastener	no	high	1327	Yes	 Yes
+peanut butter	container	no	low	1329	Yes	 Yes
+strawberries	container	no	low	1330	Yes	 Yes
+chairs	electronic device	no	low	1331	Yes	 Yes
+zebras	clothing	no	low	1335	No	 No
+potpourris	home decor	yes	high	1337	Yes	 Yes
+celeries	mammal	no	high	1338	Yes	 Yes
+irons	electronic device	yes	low	1339	Yes	 Yes
+cream cheese	container	no	low	1341	Yes	 Yes
+tridents	dessert	no	low	1343	Yes	 Yes
+puppies	office supply	no	low	1345	No	 No
+maple syrup	fastener	no	low	1346	Yes	 Yes
+jelly beans	furniture	no	low	1347	Yes	 Yes
+drills	electronic device	yes	high	1355	No	 No
+cream cheese	clothing	no	low	1364	Yes	 Yes
+mirrors	dessert	no	low	1365	No	 No
+rearview mirrors	plant	no	low	1367	No	 No
+cheeseburgers	container	no	low	1369	No	 No
+dustpans	fastener	no	high	1370	Yes	 I
+coleslaws	container	no	low	1371	Yes	 Yes
+flies	kitchen tool	no	low	1376	No	 No
+flamingoes	electronic device	no	low	1380	Yes	 Yes
+tridents	candy	no	low	1380	Yes	 Yes
+knobs	mammal	no	low	1382	Yes	 Yes
+jelly beans	mammal	no	low	1397	Yes	 Yes
+rabbits	toiletry	no	high	1397	No	 No
+test tubes	mammal	no	low	1398	Yes	 Yes
+stilettoes	insect	no	low	1405	Yes	 Yes
+tapes	fastener	yes	low	1405	Yes	 I
+elephants	protective clothing	no	low	1408	Yes	 Yes
+backscratchers	vehicle	no	high	1413	Yes	 Yes
+clams	container	no	high	1421	Yes	 Yes
+cranks	garden tool	no	high	1434	No	 I
+cocktails	vegetable	no	low	1434	No	 No
+centerpieces	electronic device	no	high	1434	Yes	 Yes
+string cheese	clothing	no	low	1436	Yes	 Yes
+elephants	medical equipment	no	low	1439	No	 No
+backscratchers	electronic device	no	high	1443	Yes	 Yes
+string cheese	vehicle	no	low	1445	Yes	 Yes
+mirrors	insect	no	low	1450	No	 No
+roosters	toiletry	no	low	1451	No	 No
+capes	electronic device	no	low	1453	Yes	 Yes
+eels	clothing	no	high	1454	Yes	 Yes
+clarinets	clothing	no	low	1466	Yes	 Yes
+bombs	vegetable	no	low	1466	No	 No
+stretchers	auto part	no	high	1468	No	 No
+files	office supply	yes	low	1469	Yes	 Yes
+saxophones	container	no	low	1480	Yes	 Yes
+scoops	clothing	no	low	1484	Yes	 Yes
+spatulas	office supply	no	high	1485	No	 No
+whisks	office supply	no	high	1496	Yes	 Yes
+tube tops	auto part	no	high	1501	No	 No
+tridents	mammal	no	low	1507	Yes	 Yes
+puppies	electronic device	no	low	1512	No	 No
+stretchers	accessory	no	high	1528	Yes	 Yes
+racks	mammal	no	low	1529	Yes	 Yes
+chains	medical equipment	no	high	1533	Yes	 Yes
+cream cheese	electronic device	no	low	1533	Yes	 Yes
+cordon bleu sandwiches	electronic device	no	low	1533	Yes	 Yes
+stretchers	office supply	no	high	1535	No	 No
+latches	office supply	no	high	1537	No	 No
+honey	electronic device	no	low	1542	Yes	 Yes
+cordon bleu sandwiches	container	no	low	1551	Yes	 Yes
+saltshakers	container	yes	low	1557	Yes	 Yes
+ducklings	toiletry	no	low	1557	No	 No
+mascaras	toiletry	yes	low	1562	No	 No
+tube tops	kitchen tool	no	high	1564	Yes	 Yes
+tube tops	kitchen equipment	no	high	1564	Yes	 Yes
+rabbits	seafood	no	high	1566	Yes	 Yes
+mirrors	women's clothing	no	low	1568	Yes	 Yes
+kaleidoscopes	container	no	high	1569	Yes	 Yes
+zebras	toy	no	low	1569	No	 No
+dustpans	headwear	no	high	1573	Yes	 Yes
+cantaloupes	toy	no	high	1574	No	 No
+clovers	vehicle	no	low	1577	Yes	 Yes
+puppies	headwear	no	low	1578	Yes	 Yes
+boas	women's clothing	yes	low	1580	Yes	 Yes
+combination locks	food	no	low	1582	Yes	 I
+pitchers	container	yes	high	1586	No	 No
+tridents	electronic device	no	low	1587	Yes	 Yes
+mirrors	office supply	no	low	1593	No	 No
+margaritas	accessory	no	low	1594	Yes	 Yes
+canes	sea animal	no	low	1600	Yes	 Yes
+stilettoes	medical equipment	no	low	1601	Yes	 Yes
+sickles	garden tool	yes	high	1603	Yes	 Yes
+stretchers	jewelry	no	high	1607	Yes	 Yes
+glue	school supply	yes	low	1613	Yes	 Yes
+costumes	outerwear	no	high	1614	Yes	 Yes
+tea	container	no	low	1621	Yes	 Yes
+stretchers	vegetable	no	high	1628	No	 No
+creme brulee	tool	no	low	1630	Yes	 Yes
+dustpans	medical equipment	no	high	1632	Yes	 Yes
+tridents	home decor	no	low	1633	Yes	 Yes
+tea	mammal	no	low	1633	Yes	 Yes
+dynamites	auto part	no	low	1635	No	 No
+honey	toiletry	no	low	1635	No	 No
+cantaloupes	kitchen tool	no	high	1636	Yes	 Yes
+shortbread	vehicle	no	low	1645	Yes	 Yes
+bassoons	toiletry	no	low	1647	No	 No
+elephants	office supply	no	low	1650	No	 No
+creme brulee	insect	no	low	1652	Yes	 Yes
+chairs	mammal	no	low	1652	Yes	 Yes
+bolts	toiletry	no	high	1653	No	 No
+chains	toiletry	no	high	1657	No	 No
+braces	medical equipment	yes	low	1658	Yes	 Yes
+staplers	school supply	yes	high	1667	No	 No
+whisks	medical equipment	no	high	1672	Yes	 Yes
+puppies	container	no	low	1676	Yes	 Yes
+drills	garden tool	no	high	1678	Yes	 Yes
+cinnamon	clothing	no	high	1682	Yes	 Yes
+abacuses	school supply	no	high	1684	Yes	 Yes
+eels	container	no	high	1686	Yes	 Yes
+elephants	jewelry	no	low	1689	No	 No
+zebras	headwear	no	low	1695	Yes	 Yes
+envelopes	dessert	no	high	1705	Yes	 Yes
+maple syrup	toy	no	low	1707	No	 No
+scallops	drink	no	high	1707	Yes	 Yes
+vultures	electronic device	no	low	1709	Yes	 Yes
+cocktails	container	no	low	1711	Yes	 Yes
+latches	school supply	no	high	1713	No	 No
+salami	electronic device	no	low	1715	Yes	 Yes
+elephants	clothing	no	low	1716	No	 No
+cantaloupes	mammal	no	high	1721	Yes	 Yes
+chickpeas	mammal	no	high	1737	Yes	 Yes
+margaritas	electronic device	no	low	1738	No	 No
+rabbits	electronic device	no	high	1741	Yes	 Yes
+chains	headwear	no	high	1742	Yes	 Yes
+bulls	home decor	no	low	1756	Yes	 Yes
+bonnets	container	no	low	1757	Yes	 Yes
+chairs	livestock	no	low	1766	No	 No
+honey	school supply	no	low	1770	No	 No
+jackets	electronic device	no	low	1771	Yes	 Yes
+whipped cream	container	no	low	1778	Yes	 Yes
+roosters	protective clothing	no	low	1787	Yes	 Yes
+tweezers	container	no	high	1788	Yes	 Yes
+jackets	breakfast	no	low	1794	Yes	 Yes
+cantaloupes	furniture	no	high	1795	Yes	 Yes
+calves	office supply	no	low	1797	No	 No
+tube tops	office supply	no	high	1799	No	 No
+roosters	jewelry	no	low	1799	Yes	 Yes
+knobs	sea animal	no	low	1805	Yes	 Yes
+sheeps	kitchen tool	no	low	1812	Yes	 Yes
+fruitcakes	seafood	no	high	1815	Yes	 Yes
+mirrors	fastener	no	low	1815	No	 No
+ducklings	electronic device	no	low	1821	Yes	 Yes
+bolts	auto part	no	high	1825	Yes	 Yes
+abacuses	clothing	no	high	1828	Yes	 Yes
+cantaloupes	clothing	no	high	1833	No	 No
+abacuses	container	no	high	1835	Yes	 Yes
+puppies	accessory	no	low	1846	Yes	 Yes
+scoops	electronic device	no	low	1847	Yes	 Yes
+crayfish	toiletry	no	high	1850	No	 No
+mirrors	drink	no	low	1852	No	 No
+stretchers	women's clothing	no	high	1856	Yes	 Yes
+bulls	medical equipment	no	low	1871	Yes	 Yes
+zebras	condiment	no	low	1872	No	 No
+markers	school supply	yes	high	1879	No	 No
+spatulas	school supply	no	high	1880	No	 No
+whisks	accessory	no	high	1886	Yes	 Yes
+whisks	electronic device	no	high	1888	Yes	 Yes
+boas	clothing	yes	low	1893	Yes	 Yes
+stretchers	livestock	no	high	1894	Yes	 Yes
+bananas	accessory	no	low	1900	Yes	 Yes
+shakers	container	yes	high	1902	Yes	 Yes
+tea	electronic device	no	low	1904	Yes	 Yes
+ducklings	condiment	no	low	1906	Yes	 Yes
+pickles	livestock	no	high	1908	Yes	 Yes
+margaritas	kitchen tool	no	low	1915	Yes	 Yes
+margaritas	container	no	low	1917	No	 No
+ski boots	dessert	no	low	1921	No	 No
+puppies	auto part	no	low	1924	No	 No
+zucchini	mammal	no	high	1928	Yes	 Yes
+zebras	auto part	no	low	1929	No	 No
+bulls	breakfast	no	low	1938	No	 No
+bassoons	livestock	no	low	1939	No	 No
+staples	office supply	yes	high	1946	Yes	 Yes
+spears	electronic device	no	high	1950	Yes	 Yes
+canes	mammal	no	low	1951	Yes	 Yes
+elephants	electronic device	no	low	1951	No	 No
+calves	container	no	low	1956	Yes	 Yes
+dustpans	women's clothing	no	high	1957	Yes	 Yes
+nuts	school supply	no	low	1964	No	 No
+rearview mirrors	container	no	low	1965	No	 No
+sheeps	office supply	no	low	1968	No	 No
+scallops	clothing	no	high	1969	Yes	 Yes
+chains	office supply	no	high	1974	No	 No
+ink	school supply	yes	high	1994	Yes	 Yes
+elephants	condiment	no	low	2003	No	 No
+prunes	school supply	no	low	2006	No	 No
+calves	school supply	no	low	2011	No	 No
+honey	medical equipment	no	low	2011	Yes	 Yes
+tapes	office supply	yes	high	2012	No	 I
+thumbtacks	office supply	yes	high	2022	No	 No
+rifles	mammal	no	low	2027	Yes	 Yes
+ducklings	medical equipment	no	low	2034	Yes	 Yes
+patches	accessory	yes	high	2046	No	 I
+ducklings	protective clothing	no	low	2046	Yes	 Yes
+bulls	kitchen equipment	no	low	2063	No	 No
+bulls	kitchen tool	no	low	2063	No	 No
+sheeps	school supply	no	low	2070	No	 No
+catfish	container	no	high	2077	Yes	 Yes
+nuts	accessory	no	low	2103	Yes	 Yes
+stools	electronic device	no	low	2112	Yes	 Yes
+rifles	dessert	no	low	2127	No	 No
+calves	protective clothing	no	low	2129	Yes	 Yes
+razors	container	no	low	2134	Yes	 Yes
+coils	auto part	no	high	2138	No	 I
+bulls	auto part	no	low	2151	No	 No
+sheeps	electronic device	no	low	2159	Yes	 Yes
+maple syrup	livestock	no	low	2180	Yes	 Yes
+creme brulee	container	no	low	2184	Yes	 Yes
+bolts	school supply	no	high	2185	No	 No
+whisks	auto part	no	high	2196	Yes	 Yes
+crayfish	drink	no	high	2198	Yes	 Yes
+envelopes	accessory	no	high	2203	Yes	 Yes
+mandolins	protective clothing	no	low	2215	Yes	 Yes
+zebras	electronic device	no	low	2224	No	 No
+elephants	kitchen tool	no	low	2230	No	 No
+coils	school supply	no	high	2230	No	 No
+elephants	kitchen equipment	no	low	2230	No	 No
+cinnamon	container	no	high	2253	Yes	 Yes
+jackets	dessert	no	low	2254	No	 No
+crows	toiletry	no	low	2266	No	 No
+roosters	electronic device	no	low	2281	Yes	 Yes
+prunes	electronic device	no	low	2287	No	 No
+zebras	kitchen tool	no	low	2298	No	 No
+zebras	kitchen equipment	no	low	2298	No	 No
+latches	vegetable	no	high	2305	No	 No
+elephants	school supply	no	low	2310	No	 No
+rubber bands	office supply	yes	high	2315	No	 No
+elephants	headwear	no	low	2320	Yes	 Yes
+highlighters	auto part	no	high	2323	Yes	 Yes
+zebras	medical equipment	no	low	2330	No	 No
+ducklings	headwear	no	low	2344	Yes	 Yes
+backscratchers	fastener	no	high	2345	Yes	 Yes
+backscratchers	accessory	no	high	2347	Yes	 Yes
+flies	container	no	low	2359	No	 No
+rearview mirrors	office supply	no	low	2366	No	 No
+bulls	school supply	no	low	2378	No	 No
+crows	clothing	no	low	2380	Yes	 Yes
+cantaloupes	container	no	high	2385	Yes	 Yes
+scallops	furniture	no	high	2390	Yes	 Yes
+mirrors	outerwear	no	low	2418	Yes	 Yes
+clovers	container	no	low	2421	Yes	 Yes
+fruitcakes	container	no	high	2421	No	 No
+latches	women's clothing	no	high	2447	Yes	 Yes
+bulls	office supply	no	low	2449	No	 No
+rabbits	condiment	no	high	2452	Yes	 Yes
+zebras	school supply	no	low	2459	No	 No
+backscratchers	auto part	no	high	2459	Yes	 Yes
+rearview mirrors	breakfast	no	low	2461	No	 No
+puppies	protective clothing	no	low	2469	Yes	 Yes
+hawks	clothing	no	low	2478	No	 No
+glue	office supply	yes	low	2478	Yes	 Yes
+puppies	condiment	no	low	2490	Yes	 Yes
+zebras	breakfast	no	low	2494	No	 No
+whipped cream	mammal	no	low	2495	Yes	 Yes
+cantaloupes	toiletry	no	high	2503	No	 No
+pickles	mammal	no	high	2512	Yes	 Yes
+chains	accessory	no	high	2529	Yes	 Yes
+tube tops	plant	no	high	2530	Yes	 Yes
+coils	toiletry	no	high	2534	No	 No
+braces	sea animal	no	low	2534	No	 No
+margaritas	clothing	no	low	2540	No	 No
+crayfish	clothing	no	high	2548	Yes	 Yes
+ink	office supply	yes	low	2549	Yes	 Yes
+backscratchers	protective clothing	no	high	2553	Yes	 Yes
+scallops	container	no	high	2558	Yes	 Yes
+zebras	office supply	no	low	2560	No	 No
+latches	mammal	no	high	2577	Yes	 Yes
+turkeys	container	no	high	2578	Yes	 Yes
+alpacas	electronic device	no	low	2586	Yes	 Yes
+banks	container	yes	high	2590	Yes	 Yes
+prunes	livestock	no	low	2610	Yes	 Yes
+tridents	clothing	no	low	2612	Yes	 Yes
+crayfish	container	no	high	2618	Yes	 Yes
+stilettoes	vegetable	no	low	2622	Yes	 Yes
+chariots	electronic device	no	high	2625	Yes	 Yes
+mirrors	breakfast	no	low	2628	Yes	 Yes
+coils	accessory	no	high	2644	No	 I
+elephants	auto part	no	low	2649	No	 No
+razors	mammal	no	low	2651	Yes	 Yes
+envelopes	headwear	no	high	2677	Yes	 Yes
+mascaras	container	no	low	2685	No	 No
+scoops	mammal	no	low	2703	Yes	 Yes
+roosters	office supply	no	low	2712	No	 No
+bulls	electronic device	no	low	2714	Yes	 Yes
+bolts	accessory	no	high	2733	Yes	 Yes
+noodles	office supply	no	high	2736	No	 No
+envelopes	outerwear	no	high	2785	Yes	 Yes
+tacos	mammal	no	low	2794	Yes	 Yes
+elephants	container	no	low	2803	No	 No
+abacuses	office supply	no	high	2820	Yes	 I
+pinwheels	accessory	no	high	2829	Yes	 Yes
+zebras	jewelry	no	low	2852	No	 No
+ski boots	mammal	no	low	2859	Yes	 Yes
+stilettoes	auto part	no	low	2893	Yes	 Yes
+calves	condiment	no	low	2905	Yes	 Yes
+jackets	vegetable	no	low	2915	No	 No
+roosters	medical equipment	no	low	2925	Yes	 Yes
+honey	container	no	low	2933	Yes	 Yes
+mirrors	auto part	no	low	2933	No	 No
+dustpans	accessory	no	high	2941	Yes	 I
+bassoons	condiment	no	low	2948	Yes	 Yes
+pineapples	mammal	no	high	2956	Yes	 Yes
+calves	electronic device	no	low	2957	No	 No
+bolts	office supply	no	high	2967	No	 No
+jackets	plant	no	low	2984	Yes	 I
+stilettoes	container	no	low	2993	Yes	 Yes
+hawks	toiletry	no	low	3004	No	 No
+bulls	condiment	no	low	3020	Yes	 Yes
+tridents	container	no	low	3033	Yes	 Yes
+stilettoes	seafood	no	low	3044	Yes	 Yes
+bassoons	accessory	no	low	3047	Yes	 Yes
+kegs	mammal	no	low	3054	Yes	 Yes
+bassoons	office supply	no	low	3067	No	 No
+ducklings	footwear	no	low	3070	Yes	 Yes
+rearview mirrors	sea animal	no	low	3085	No	 No
+legos	mammal	no	low	3136	Yes	 Yes
+mirrors	vegetable	no	low	3163	No	 No
+ski boots	vegetable	no	low	3163	No	 No
+backscratchers	clothing	no	high	3165	Yes	 Yes
+bikinis	vegetable	no	low	3176	Yes	 Yes
+ducklings	accessory	no	low	3189	Yes	 Yes
+pocket watches	mammal	no	low	3205	Yes	 Yes
+ducklings	container	no	low	3206	Yes	 Yes
+bassoons	breakfast	no	low	3219	Yes	 Yes
+tridents	livestock	no	low	3225	Yes	 Yes
+brakes	breakfast	no	low	3235	No	 No
+funnels	accessory	no	high	3248	Yes	 Yes
+bikinis	plant	no	low	3248	Yes	 Yes
+tridents	accessory	no	low	3287	Yes	 Yes
+roosters	auto part	no	low	3305	Yes	 Yes
+birdbaths	container	yes	low	3318	Yes	 Yes
+honey	protective clothing	no	low	3341	Yes	 Yes
+envelopes	auto part	no	high	3356	Yes	 Yes
+strawberries	accessory	no	low	3399	Yes	 Yes
+scallions	mammal	no	low	3406	Yes	 Yes
+kaleidoscopes	accessory	no	high	3423	Yes	 I
+rearview mirrors	vegetable	no	low	3430	No	 No
+geese	container	no	high	3465	No	 No
+puppies	footwear	no	low	3472	Yes	 Yes
+latches	livestock	no	high	3487	Yes	 Yes
+bulls	footwear	no	low	3504	Yes	 Yes
+jams	mammal	no	low	3505	Yes	 Yes
+creme brulee	clothing	no	low	3528	Yes	 Yes
+rollerblades	container	no	low	3533	Yes	 Yes
+margaritas	toy	no	low	3533	No	 No
+maple syrup	accessory	no	low	3548	Yes	 Yes
+calves	accessory	no	low	3596	Yes	 Yes
+stools	seafood	no	low	3600	Yes	 Yes
+backscratchers	office supply	no	high	3602	No	 No
+clovers	electronic device	no	low	3605	Yes	 Yes
+bulls	container	no	low	3609	Yes	 Yes
+stilettoes	mammal	no	low	3625	Yes	 Yes
+elephants	seafood	no	low	3630	Yes	 Yes
+dynamites	mammal	no	low	3635	No	 No
+ducklings	auto part	no	low	3643	Yes	 Yes
+stretchers	mammal	no	high	3661	Yes	 Yes
+bananas	outerwear	no	low	3667	Yes	 Yes
+elephants	breakfast	no	low	3671	No	 No
+rabbits	container	no	high	3688	Yes	 Yes
+braces	mammal	no	low	3736	Yes	 Yes
+fruit punches	office supply	yes	low	3756	No	 No
+latches	drink	no	high	3770	No	 No
+coils	office supply	no	high	3773	No	 No
+chains	auto part	no	high	3777	Yes	 Yes
+ducklings	office supply	no	low	3781	No	 No
+staple guns	mammal	no	low	3795	Yes	 Yes
+taffy	container	no	low	3801	Yes	 Yes
+bulls	accessory	no	low	3817	Yes	 Yes
+lighter	electronic device	no	high	3927	Yes	 Yes
+mirrors	accessory	no	low	3928	Yes	 Yes
+rearview mirrors	mammal	no	low	3929	Yes	 Yes
+rabbits	auto part	no	high	3935	Yes	 Yes
+triangles	medical equipment	no	high	3947	No	 No
+tube tops	vegetable	no	high	4000	Yes	 Yes
+honey	office supply	no	low	4030	No	 No
+sheeps	container	no	low	4036	Yes	 Yes
+ties	accessory	yes	low	4099	Yes	 Yes
+jams	accessory	no	low	4118	Yes	 I
+boas	accessory	yes	low	4125	Yes	 Yes
+bow	accessory	yes	high	4178	Yes	 Yes
+tridents	auto part	no	low	4200	Yes	 Yes
+roosters	accessory	no	low	4328	Yes	 Yes
+margaritas	furniture	no	low	4343	No	 No
+roosters	container	no	low	4349	Yes	 Yes
+backscratchers	toy	no	high	4364	No	 No
+bassoons	outerwear	no	low	4399	Yes	 Yes
+mandolins	auto part	no	low	4444	Yes	 Yes
+zebras	footwear	no	low	4476	Yes	 Yes
+crows	container	no	low	4521	Yes	 Yes
+jackets	livestock	no	low	4620	Yes	 Yes
+test tubes	seafood	no	low	4622	No	 No
+bassoons	auto part	no	low	4652	Yes	 Yes
+honey	auto part	no	low	4664	Yes	 Yes
+crows	auto part	no	low	4900	Yes	 Yes
+capes	vegetable	no	low	4919	No	 No
+jackets	mammal	no	low	4942	Yes	 Yes
+abacuses	accessory	no	high	5095	Yes	 Yes
+kites	accessory	no	high	5248	Yes	 Yes
+dynamites	accessory	no	low	5259	Yes	 Yes
+bombs	mammal	no	low	5303	No	 No
+scallops	toiletry	no	high	5398	No	 No
+margaritas	livestock	no	low	5490	No	 No
+chairs	seafood	no	low	5568	Yes	 Yes
+margaritas	outerwear	no	low	5610	No	 No
+triangles	electronic device	no	high	5703	Yes	 Yes
+footbaths	container	yes	low	5882	Yes	 Yes
+zebras	accessory	no	low	5918	Yes	 Yes
+belt buckles	mammal	no	low	5966	Yes	 Yes
+backscratchers	container	no	high	5991	Yes	 Yes
+canes	seafood	no	low	5998	Yes	 Yes
+elephants	footwear	no	low	6173	No	 No
+flasks	mammal	no	low	6189	Yes	 Yes
+birthday cakes	mammal	no	low	6277	Yes	 Yes
+cocktails	mammal	no	low	6384	Yes	 Yes
+tube tops	mammal	no	high	6414	Yes	 Yes
+bunkbeds	mammal	no	low	6431	Yes	 Yes
+pocket watches	seafood	no	low	6435	Yes	 Yes
+zebras	container	no	low	6481	Yes	 Yes
+honey	footwear	no	low	6513	Yes	 Yes
+margaritas	mammal	no	low	6705	Yes	 Yes
+t-shirts	mammal	no	low	7037	Yes	 Yes
+dustpans	mammal	no	high	7260	Yes	 Yes
+toast	auto part	no	low	7324	Yes	 Yes
+blouses	mammal	no	low	7352	Yes	 Yes
+mirrors	livestock	no	low	7365	No	 No
+jackets	seafood	no	low	7526	Yes	 Yes
+elephants	accessory	no	low	7609	Yes	 Yes
+ostriches	container	no	high	7622	Yes	 Yes
+knobs	seafood	no	low	7647	Yes	 Yes
+honey	accessory	no	low	7650	Yes	 Yes
+mirrors	mammal	no	low	7921	Yes	 Yes
+bulls	outerwear	no	low	8076	Yes	 Yes
+belt buckles	seafood	no	low	8482	Yes	 Yes
+capes	seafood	no	low	8766	Yes	 Yes
+bikinis	mammal	no	low	9269	Yes	 Yes
+maple syrup	footwear	no	low	9818	Yes	 Yes
+honey	outerwear	no	low	9825	Yes	 Yes
+elephants	outerwear	no	low	9885	No	 No
+ballot boxes	mammal	no	low	10034	Yes	 Yes
+mirrors	seafood	no	low	10079	Yes	 Yes
+lemonades	mammal	no	low	10189	Yes	 Yes
+tube tops	livestock	no	high	10795	Yes	 Yes
+zebras	outerwear	no	low	11163	Yes	 Yes
