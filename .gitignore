@@ -1,2 +1,3 @@
-models/
+models/*
+!models/.note.txt
 outputs/logodds
