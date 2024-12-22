@@ -1,4 +1,5 @@
 models/*
 !models/.note.txt
 scripts/wandb/
+src/__pycache__
 outputs/logodds
