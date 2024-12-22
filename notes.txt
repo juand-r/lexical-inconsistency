@@ -1,0 +1,38 @@
+December 02:
+- Finalized evaluation metric: log-odds is more convenient than ranks to compare
+  model confidence in both discriminator and generator settings.
+    - In discriminator case, for both gemma-2-2B and gpt-2-XL, over 99% of the prob
+      mass on ["Yes", " Yes", "YES", "yes", " yes",  "No", " No", "NO", "no", " no"].
+
+December 16:
+- Simple baselines are not effective:
+    - training generator & discriminator on different "views" of the same data
+    - training one model on the union of both generator and discriminator forms
+    - training on the "joint" form (issue: easy for model to learn heuristics/artifact)
+
+TODO
+====
+
+[high priority]
+- set up contrastive learning training to see if we can reduce the gap
+- analysis of activations across layers, two models compared (CCA?)
+    - prelude to map discriminator activation(s) onto generator
+- messier but more "correct" log-odds for generator: orthographic variants, plurals
+    - figure out how often mis-spelled words should be considered in log-odds
+    - estimate how often underscores and other non-words appear early on
+      (do the results change if we remove these?)
+
+[medium priority]
+- train a tuned-lens on gemma-2-2b to corroborate previous findings
+  (correlations between layers)
+- find other settings to evaluate the generator/discriminator gap
+- continue to find data-centric characterization of the gap
+    - similarity effects?
+    - frequency effects?
+    - how many other works in between two concepts in WordNet?
+
+[low priority]
+- Unlikelihood training <-- a more principled way to deal with negative examples
+- Check correlations on new pairs (no overlap in hyponym or hypernym)
+- Prompt variations (e.g., True/False question)
+
