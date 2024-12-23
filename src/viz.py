@@ -92,3 +92,16 @@ def logitlens_viz(words, input_words, max_probs, savename=None):
     if savename is not None:
         plt.savefig(savename)
     # plt.close()
+
+def plot_logodds_over_layers(lgo):
+    X = np.array([i.numpy() for i in lgo])
+    meansg = np.mean(X, 0)
+    stdsg = np.std(X, 0)
+    x = list(range(len(lgo[0])))
+    # x = np.arange(1, 26)
+    plt.plot(x, meansg, ".-")
+    plt.fill_between(x, meansg - stdsg, meansg + stdsg, color="b", alpha=0.2)
+    plt.grid()
+    plt.xlabel("Layer")
+    plt.ylabel("log-odds")
+    plt.show()
