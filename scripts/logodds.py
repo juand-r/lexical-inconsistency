@@ -1,7 +1,18 @@
 """
 Compute probabilities via tuned-lens or logit-lens; obtain log-odds over layers
 and save to disk to analyze later.
+
+Log-odds are computed for both discriminator and generator prompts.
+
+Usage
+=====
+
+CUDA_VISIBLE_DEVICES=1 python logodds.py --model ftmodel--gemma-2-2b--generator--zero--all--negation
+
+Tensors will be saved in `outputs/logodds`; the end of the file will be in the form {disc,gen}-{few,zero}.pt
+indicating whether test samples were in discriminator or generator form (zero or few shot).
 """
+#TODO should track train or test set, in case I want to do this on the train set!
 
 import os
 import sys
