@@ -14,6 +14,7 @@ import argparse
 import numpy as np
 import torch
 import random
+from datetime import datetime
 from peft import AutoPeftModelForCausalLM, LoraConfig
 from transformers import (
     AutoTokenizer,
@@ -268,6 +269,12 @@ def main():
             model_id.split("/")[-1], both, shots, train_filter, negstr
         )
     output_dir = os.path.join("../models/", output_dir)
+
+    #If this already exists, make sure not to overwrite it
+    if os.path.exists(output_dir):
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_dir = f"{output_dir}_{timestamp}"
+
     merge_dir = output_dir + "/merged"
 
     train_args = TrainingArguments(
