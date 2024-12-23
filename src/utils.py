@@ -21,14 +21,10 @@ Utilities to:
 
 import math
 import random
-import seaborn as sns
-import pandas as pd
-import matplotlib.pyplot as plt
-from scipy.stats import pearsonr
 from collections import namedtuple
 from string import Template
 from datasets import Dataset
-from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
 
 def load_noun_pair_data():

@@ -4,6 +4,8 @@ Code for visualizations
 TODO: add code for stacked barplot to show token ratios across layers.
 """
 
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 def f(L1, L2, c):
     """Filter subset of L1 where entries of L2 have taxonomic==c"""

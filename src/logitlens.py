@@ -5,9 +5,7 @@ For more information, see https://nnsight.net/notebooks/tutorials/logit_lens/
 """
 
 from nnsight import LanguageModel
-from typing import List, Callable
 import torch
-import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
