@@ -15,4 +15,4 @@ accelerate==1.1.0
 nnsight==0.3.6
 peft==0.14.0
 trl==0.12.2
-
+scikit-learn==1.5.2
