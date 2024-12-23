@@ -13,6 +13,10 @@ Utilities to:
 
 - Make prompts and format them into a tokenized, padded, huggingface Dataset
     prompts_train, hf_train = make_and_format_data(L_train, tokenizer, style="discriminator", shots="few", neg=False, both="union")
+
+- Load huggingface or peft model:
+    model, tokenizer = load_model(peft_model_id, device)
+
 """
 
 import math
@@ -206,3 +210,13 @@ def make_and_format_data(
     )
 
     return items, hf_dataset
+
+
+def load_model(peft_model_id, device):
+    tokenizer = AutoTokenizer.from_pretrained(peft_model_id)
+    model = AutoModelForCausalLM.from_pretrained(
+        peft_model_id, torch_dtype=torch.float16
+    )
+    model.to(device)
+    return model, tokenizer
+
