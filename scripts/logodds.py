@@ -12,20 +12,21 @@ CUDA_VISIBLE_DEVICES=1 python logodds.py --model ftmodel--gemma-2-2b--generator-
 Tensors will be saved in `outputs/logodds`; the end of the file will be in the form {disc,gen}-{few,zero}.pt
 indicating whether test samples were in discriminator or generator form (zero or few shot).
 """
-#TODO should track train or test set, in case I want to do this on the train set!
+#TODO should also track train or test set, in case I want to do this on the train set
 
 import os
 import sys
 import argparse
 from tqdm import tqdm
 import torch
+import json
 
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 src_path = os.path.join(parent_dir, "src")
 sys.path.append(src_path)
 
 from utils import load_noun_pair_data, split_train_test, make_prompt
-from logitlens import logitlens, load_model_nnsight, compute_logodds
+from logitlens import get_logitlens_output, load_model_nnsight, compute_logodds
 from tunedlens import init_lens, obtain_prob_tensor
 
 device = "cuda"
@@ -89,7 +90,7 @@ def main():
             input_ids = tokenizer.encode(prompt)
             probs = obtain_prob_tensor(input_ids, token_pos=-1)
         else: #do_logitlens:
-            X = logitlens(prompt, model, modelname_short)
+            X = get_logitlens_output(prompt, model, modelname_short)
             probs = X[0][:, -1, :].detach().cpu()
         P_gen.append(probs)
 
@@ -100,19 +101,23 @@ def main():
             input_ids = tokenizer.encode(prompt)
             probs = obtain_prob_tensor(input_ids, token_pos=-1)
         else: #do_logitlens:
-            X = logitlens(prompt, model, modelname_short)
+            X = get_logitlens_output(prompt, model, modelname_short)
             probs = X[0][:, -1, :].detach().cpu()
         P_disc.append(probs)
 
 
-    ranks, logodds_gen, logodds_disc = compute_logodds(
-        P_gen, None, None, P_disc, L_test, tokenizer, first_sw_token, yestoks, notoks
+    ranks, logodds_gen, logodds_disc, corr = compute_logodds(
+        P_gen, P_disc, L_test, tokenizer, first_sw_token, yestoks, notoks, layer_gen=-1, layer_disc=-1
     )
 
     tensordir_disc = os.path.join("../outputs/logodds", os.path.basename(modeldir)+ "--disc-"+disc_shots+".pt")
     tensordir_gen = os.path.join("../outputs/logodds", os.path.basename(modeldir)+ "--gen-"+gen_shots+".pt")
     torch.save(logodds_disc, tensordir_disc)
     torch.save(logodds_gen, tensordir_gen)
+    ranks_gen = os.path.join("../outputs/logodds", os.path.basename(modeldir)+ "--gen-"+gen_shots+"--ranks.json")
+    with open(ranks_gen, 'w') as f:
+        json.dump(ranks, f, indent=4)
+
     print("\n\n")
 
 if __name__ == "__main__":

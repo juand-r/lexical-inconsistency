@@ -25,7 +25,7 @@ def load_model_nnsight(modelname, device):
     return model
 
 
-def logitlens(prompt, model, modelname_short):
+def get_logitlens_output(prompt, model, modelname_short):
     """
     Usage:
     model = load_model_nnsight("google/gemma-2b", "cuda:0")
@@ -84,25 +84,25 @@ def get_rank(L, ind):
     return rank
 
 
-def logodds_yn(Ps, ii, yestoks, notoks):
-    what = torch.log(torch.sum(Ps[ii][:, yestoks], dim=-1)) - torch.log(
+def get_logodds_disc(Ps, ii, yestoks, notoks):
+    lgo = torch.log(torch.sum(Ps[ii][:, yestoks], dim=-1)) - torch.log(
         torch.sum(Ps[ii][:, notoks], dim=-1)
     )
-    what[torch.isinf(what)] = 35  # truncate infs
-    return what
+    lgo[torch.isinf(lgo)] = 35  # truncate infs
+    return lgo
 
 
-def logodds(Ps, L_, ii, tokenizer, first_sw_token):
-    ind = tokenizer.encode("a " + L_[ii].noun2)[first_sw_token]
-    what = torch.log(torch.abs(Ps[ii][:, ind])) - torch.log(
+def get_logodds_gen(Ps, L, ii, tokenizer, first_sw_token):
+    ind = tokenizer.encode("a " + L[ii].noun2)[first_sw_token]
+    lgo = torch.log(torch.abs(Ps[ii][:, ind])) - torch.log(
         torch.abs(1 - Ps[ii][:, ind])
     )
-    what[torch.isinf(what)] = 35  # truncate infs
-    return what
+    lgo[torch.isinf(lgo)] = 35  # truncate infs
+    return lgo
 
 
-def makepreds_disc(lgo, threshold=0):
-    pred = ["Yes" if x > threshold else "No" for x in [i[-1].tolist() for i in lgo][:]]
+def makepreds_disc(logodds, threshold=0, layer_disc=-1):
+    pred = ["Yes" if x > threshold else "No" for x in [i[layer_disc].tolist() for i in logodds][:]]
     return pred
 
 
@@ -110,55 +110,44 @@ def makepreds_gen(ranks, threshold=40):
     return ["Yes" if r <= threshold else "No" for r in ranks]
 
 
-def compute_logodds(
-    Psgen_, Psgenfs_, Ps_, Psfs_, L_, tokenizer, first_sw_token, yestoks, notoks
-):
+def compute_accuracy_and_correlations(L, logodds_gen, logodds_disc, ranks, layer_gen=-1, layer_disc=-1):
 
-    gold = [i.taxonomic.capitalize() for i in L_[:]]
-    ranks = [
-        get_rank(
-            Psgen_[ii][-1, :], tokenizer.encode("a " + L_[ii].noun2)[first_sw_token]
-        )
-        for ii in tqdm(range(len(Psgen_)))
-    ]
-    lr = -np.log(ranks[:])
-
-    # log-odds, generator:
-    lgo = [
-        logodds(Psgen_, L_, ii, tokenizer, first_sw_token) for ii in range(len(Psgen_))
-    ]
-    lgo_yfs = [logodds_yn(Psfs_, ii, yestoks, notoks) for ii in range(len(Psfs_))]
+    gold = [i.taxonomic.capitalize() for i in L[:]]
 
     print("correlation: zs gen, fs disc (more usual)")
-    p = pearsonr(
-        [i[-1].tolist() for i in lgo], [i[-1].tolist() for i in lgo_yfs]
+    corr = pearsonr(
+        [i[layer_gen].tolist() for i in logodds_gen],
+        [i[layer_disc].tolist() for i in logodds_disc]
     ).statistic
-    print(p)
+    print(corr)
 
-    print("\n\n")
+    disc_accuracy = sklearn.metrics.accuracy_score(gold, makepreds_disc(logodds_disc, threshold=0, layer_disc=layer_disc))
+    print("\naccuracy of discriminator fs: {}".format(disc_accuracy))
 
-    print("\naccuracy of discriminator fs: ")
-    a = sklearn.metrics.accuracy_score(gold, makepreds_disc(lgo_yfs))
-    print(a)
+    gen_accuracies = {} #map threshold to accuracy
+    for threshold in [5, 10, 40, 100, 1000]:
+        a = sklearn.metrics.accuracy_score(gold, makepreds_gen(ranks, threshold=threshold))
+        gen_accuracies[threshold]= a
+        print("accuracy of generator zs: (th={}: {})".format(threshold, a))
+    return disc_accuracy, gen_accuracies, corr
 
-    print("\naccuracy of generator zs: (th=5)")
-    a = sklearn.metrics.accuracy_score(gold, makepreds_gen(ranks, threshold=5))
-    print(a)
 
-    print("\naccuracy of generator zs: (th=10)")
-    a = sklearn.metrics.accuracy_score(gold, makepreds_gen(ranks, threshold=10))
-    print(a)
+def compute_logodds(
+    P_gen, P_disc, L, tokenizer, first_sw_token, yestoks, notoks, layer_gen=-1, layer_disc=-1
+):
 
-    print("\naccuracy of generator zs: (th=40)")
-    a = sklearn.metrics.accuracy_score(gold, makepreds_gen(ranks, threshold=40))
-    print(a)
+    ranks = [
+        get_rank(
+            P_gen[ii][layer_gen, :], tokenizer.encode("a " + L[ii].noun2)[first_sw_token]
+        )
+        for ii in tqdm(range(len(P_gen)))
+    ]
 
-    print("\naccuracy of generator zs: (th=100)")
-    a = sklearn.metrics.accuracy_score(gold, makepreds_gen(ranks, threshold=100))
-    print(a)
+    logodds_gen = [get_logodds_gen(P_gen, L, ii, tokenizer, first_sw_token) for ii in range(len(P_gen))]
+    logodds_disc = [get_logodds_disc(P_disc, ii, yestoks, notoks) for ii in range(len(P_disc))]
 
-    print("\naccuracy of generator zs: (th=1000)")
-    a = sklearn.metrics.accuracy_score(gold, makepreds_gen(ranks, threshold=1000))
-    print(a)
+    disc_accuracy, gen_accuracies, corr = compute_accuracy_and_correlations(L, logodds_gen, logodds_disc, ranks, layer_gen=layer_gen, layer_disc=layer_disc)
 
-    return ranks, lgo, lgo_yfs
+    return ranks, logodds_gen, logodds_disc, corr
+
+

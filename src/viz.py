@@ -1,8 +1,8 @@
 """
 Code for visualizations
 
-TODO: add code for stacked barplot to show token ratios across layers.
 """
+#TODO: add code for stacked barplot to show token ratios across layers.
 
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -17,7 +17,18 @@ def f(L1, L2, c):
 
 def plot_correlations(L, gen, disc):
     """
-    TODO
+    Plot correlations between generator and discriminator log-odds.
+    Also computes pearson correlations, overall, and for positive
+    and negative classes.
+
+    Parameters
+    ----------
+    L : list
+        The list of hypernym items obtained via load_noun_pair_data()
+    gen : list (torch.Tensor)
+        List of tensors; each tensor is log-odds over layers
+    disc : list (torch.Tensor)
+        List of tensors; each tensor is log-odds over layers
     """
     taxonomic = [i.taxonomic for i in L]
     df = pd.DataFrame(
@@ -60,7 +71,8 @@ def plot_correlations(L, gen, disc):
 
 def logitlens_viz(words, input_words, max_probs, savename=None):
     """
-    TODO
+    Plot heatmap for logitlens argmax words over layers and token
+    positions.
     """
 
     import matplotlib.colors as mcolors
@@ -99,6 +111,9 @@ def logitlens_viz(words, input_words, max_probs, savename=None):
     # plt.close()
 
 def plot_logodds_over_layers(lgo):
+    """
+    Plot mean log-odds and standard deviation over layers across examples.
+    """
     X = np.array([i.numpy() for i in lgo])
     meansg = np.mean(X, 0)
     stdsg = np.std(X, 0)
