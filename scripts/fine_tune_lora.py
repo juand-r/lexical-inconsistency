@@ -164,10 +164,10 @@ def main():
         help="Use negation for generator form in negative examples.",
     )
     parser.add_argument(
-        "--instruction-pad",
+        "--instruction-mask",
         action="store_true",
         default=True,
-        help="Use instruction padding (SFT) or not.",
+        help="Use instruction masking (SFT) or not.",
     )
     args = parser.parse_args()
 
@@ -186,7 +186,7 @@ def main():
     shots = args.shots
     both = args.both
     negate = args.negate
-    instruction_pad = args.instruction_pad
+    instruction_mask = args.instruction_mask
 
     #########################################################
     # LOAD MODEL AND TOKENIZER
@@ -223,7 +223,7 @@ def main():
     print("Shots: ", shots)
     print("Use negation? ", negate)
     print("Train variation? ", both)
-    print("Instruction padding?", instruction_pad)
+    print("Instruction masking?", instruction_mask)
     print("\nTrain dataset size: ", len(L_train))
 
     p_train, hf_train = make_and_format_data(
@@ -233,7 +233,7 @@ def main():
         shots=shots,
         neg=negate,
         both=both,
-        instruction_padding=instruction_pad,
+        instruction_masking=instruction_mask,
     )
     p_test, hf_test = make_and_format_data(
         L_test,
@@ -242,7 +242,7 @@ def main():
         shots=shots,
         neg=negate,
         both=both,
-        instruction_padding=instruction_pad,
+        instruction_masking=instruction_mask,
     )
 
     ################################################################

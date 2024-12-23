@@ -17,6 +17,9 @@ Utilities to:
 - Load huggingface or peft model:
     model, tokenizer = load_model(peft_model_id, device)
 
+Note: some of this code adapted from
+https://wandb.ai/capecape/alpaca_ft/reports/How-to-Fine-tune-an-LLM-Part-3-The-HuggingFace-Trainer--Vmlldzo1OTEyNjMy
+
 """
 
 import math
@@ -29,7 +32,8 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 
 def load_noun_pair_data():
     """
-    TODO
+    Load the noun pair (hypernymy) data, with information including whether
+    taxonomic relation exists ("taxonomic"), and high or low similarity ("sim")
     """
     with open("../data/ranks.txt", "r") as fd:
         x = fd.readlines()
@@ -47,7 +51,7 @@ def load_noun_pair_data():
 
 def make_prompt(item, style="generator", shots="zero", neg=False):
     """
-    TODO
+    Make a prompt based on the item.
     """
     if style == "generator":
         if shots == "zero":
@@ -100,7 +104,8 @@ def make_prompt(item, style="generator", shots="zero", neg=False):
 
 def split_train_test(L, seed=0, subsample=False, num_train=3000):
     """
-    TODO
+    After loading the data into a list L, use this to shuffle, subsample (optional),
+    and split into train and test sets.
     """
     random.seed(seed)
     random.shuffle(L)
@@ -123,13 +128,14 @@ def make_and_format_data(
     shots="few",
     neg=False,
     both="union",
-    instruction_padding=True,
+    instruction_masking=True,
 ):
     """
     Make prompts and completions, and tokenize and pad into a HF dataset.
 
     Note on `both`:
-    - is union of two kinds so ignores other parameters
+    - combines generator and discriminator, this ignores other parameters
+    `style`, `shots` and `neg`
     """
 
     items = [make_prompt(i, style=style, shots=shots, neg=neg) for i in L]
@@ -182,7 +188,7 @@ def make_and_format_data(
     inputs = [instructions[ii] + completions[ii] for ii in range(len(completions))]
 
     # NOTE: The huggingface Training takes care of shifting tokens by 1.
-    if instruction_padding:
+    if instruction_masking:
         outputs = [
             [-100] * len(instructions[ii]) + completions[ii]
             for ii in range(len(completions))

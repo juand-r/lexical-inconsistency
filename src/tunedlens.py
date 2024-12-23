@@ -1,3 +1,10 @@
+"""
+Can use `tunedlens.obtain_prob_tensor` instead of `logitlens.get_logitlens_output`
+if I wish to use tuned lens. But we need a tuned model first. See:
+
+https://tuned-lens.readthedocs.io/en/latest/
+
+"""
 import torch
 import numpy as np
 from tuned_lens.plotting import PredictionTrajectory
