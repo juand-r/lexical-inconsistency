@@ -41,6 +41,7 @@ def main():
     parser.add_argument("--seed", type=int, default=0, help="Random seed for shuffling the data.")
     parser.add_argument("--disc-shots", type=str, default='few', help="'zero' vs 'few'")
     parser.add_argument("--gen-shots", type=str, default='zero', help="'zero' vs 'few'")
+    parser.add_argument("--train", action="store_true", default=False, help="log-odds of train or test set?")
     args = parser.parse_args()
 
     modelname = args.model
@@ -48,6 +49,7 @@ def main():
     seed = args.seed
     gen_shots = args.gen_shots
     disc_shots = args.disc_shots
+    train_flag = args.train
 
     L = load_noun_pair_data()
     L_train, L_test = split_train_test(L, seed=seed, subsample=False, num_train=3000)
@@ -84,7 +86,14 @@ def main():
 
     # Calculate probabilities via tuned/logit-lens: generator and discriminator
     P_gen = []
-    for item in tqdm(L_test[:]):
+    if train_flag:
+        LL = L_train
+        train_suffix = "--train"
+    else:
+        LL = L_test
+        train_suffix = ""
+
+    for item in tqdm(LL[:]):
         prompt = make_prompt(item, style='generator', shots=gen_shots).prompt
         if do_tunedlens:
             input_ids = tokenizer.encode(prompt)
@@ -95,7 +104,7 @@ def main():
         P_gen.append(probs)
 
     P_disc = []
-    for item in tqdm(L_test[:]):
+    for item in tqdm(LL[:]):
         prompt = make_prompt(item, style='discriminator', shots=disc_shots).prompt
         if do_tunedlens:
             input_ids = tokenizer.encode(prompt)
@@ -107,14 +116,14 @@ def main():
 
 
     ranks, logodds_gen, logodds_disc, corr = compute_logodds(
-        P_gen, P_disc, L_test, tokenizer, first_sw_token, yestoks, notoks, layer_gen=-1, layer_disc=-1
+        P_gen, P_disc, LL, tokenizer, first_sw_token, yestoks, notoks, layer_gen=-1, layer_disc=-1
     )
 
-    tensordir_disc = os.path.join("../outputs/logodds", os.path.basename(modeldir)+ "--disc-"+disc_shots+".pt")
-    tensordir_gen = os.path.join("../outputs/logodds", os.path.basename(modeldir)+ "--gen-"+gen_shots+".pt")
+    tensordir_disc = os.path.join("../outputs/logodds", os.path.basename(modeldir)+ "--disc-"+disc_shots + train_suffix+".pt")
+    tensordir_gen = os.path.join("../outputs/logodds", os.path.basename(modeldir)+ "--gen-"+gen_shots + train_suffix+".pt")
     torch.save(logodds_disc, tensordir_disc)
     torch.save(logodds_gen, tensordir_gen)
-    ranks_gen = os.path.join("../outputs/logodds", os.path.basename(modeldir)+ "--gen-"+gen_shots+"--ranks.json")
+    ranks_gen = os.path.join("../outputs/logodds", os.path.basename(modeldir)+ "--gen-"+gen_shots + train_suffix + "--ranks.json")
     with open(ranks_gen, 'w') as f:
         json.dump(ranks, f, indent=4)
 
