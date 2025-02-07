@@ -14,6 +14,7 @@ indicating whether test samples were in discriminator or generator form (zero or
 """
 #TODO should also track train or test set, in case I want to do this on the train set
 
+from pathlib import Path
 import os
 import sys
 import argparse
@@ -25,7 +26,7 @@ parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 src_path = os.path.join(parent_dir, "src")
 sys.path.append(src_path)
 
-from utils import load_noun_pair_data, split_train_test, make_prompt
+from utils import load_noun_pair_data, split_train_test, split_train_test_no_overlap, split_train_test_no_overlap_both, make_prompt
 from logitlens import get_logitlens_output, load_model_nnsight, compute_logodds
 from tunedlens import init_lens, obtain_prob_tensor
 
@@ -42,6 +43,8 @@ def main():
     parser.add_argument("--disc-shots", type=str, default='few', help="'zero' vs 'few'")
     parser.add_argument("--gen-shots", type=str, default='zero', help="'zero' vs 'few'")
     parser.add_argument("--train", action="store_true", default=False, help="log-odds of train or test set?")
+    parser.add_argument("--split-type", type=str, default='random', help="'random' vs 'hyper' vs 'both' ")
+
     args = parser.parse_args()
 
     modelname = args.model
@@ -50,9 +53,18 @@ def main():
     gen_shots = args.gen_shots
     disc_shots = args.disc_shots
     train_flag = args.train
+    split_type = args.split_type
 
     L = load_noun_pair_data()
-    L_train, L_test = split_train_test(L, seed=seed, subsample=False, num_train=3000)
+    if split_type=='hyper':
+        L_train, L_test = split_train_test_no_overlap(L, seed=seed)
+    elif split_type=='random':
+        L_train, L_test = split_train_test(L, seed=seed, subsample=False, num_train=3000)
+    elif split_type=='both':
+        L_train, L_test = split_train_test_no_overlap_both(L, seed=2)
+    else:
+        raise ValueError("Wrong value for split-type")
+
     device = "cuda"
 
     # Load model, lens, and tokenizer
@@ -62,10 +74,16 @@ def main():
         init_lens(modelname, device=device)
     else: # logit-lens
         modeldir = os.path.join("../models", modelname)
-        modeldir_merged = os.path.join(modeldir, "merged")
-        if os.path.isdir(modeldir_merged):
+        if Path(os.path.join(modeldir, "merged")).is_dir():
+            # in this case it is a merged model via lora
+            modeldir_merged = os.path.join(modeldir, "merged")
             modelname = modeldir_merged
             modelname_short = os.path.basename(modeldir).split("--")[1]
+        elif Path(modeldir).is_dir():
+            #TODO clean up name later
+            modeldir_merged =  modeldir
+            modelname = modeldir_merged
+            modelname_short = "gemma-2-2b" #os.path.basename(modeldir)
         else: # it's a huggingface model id
             modelname_short = modelname.split("/")[1]
             modeldir = modelname_short
@@ -93,6 +111,15 @@ def main():
         LL = L_test
         train_suffix = ""
 
+    if split_type=='random':
+        split_suffix = ""
+    elif split_type=='hyper':
+        split_suffix = "--hyper"
+    elif split_type=='both':
+        split_suffix = "--both"
+    else:
+        raise ValueError()
+
     for item in tqdm(LL[:]):
         prompt = make_prompt(item, style='generator', shots=gen_shots).prompt
         if do_tunedlens:
@@ -119,11 +146,11 @@ def main():
         P_gen, P_disc, LL, tokenizer, first_sw_token, yestoks, notoks, layer_gen=-1, layer_disc=-1
     )
 
-    tensordir_disc = os.path.join("../outputs/logodds", os.path.basename(modeldir)+ "--disc-"+disc_shots + train_suffix+".pt")
-    tensordir_gen = os.path.join("../outputs/logodds", os.path.basename(modeldir)+ "--gen-"+gen_shots + train_suffix+".pt")
+    tensordir_disc = os.path.join("../outputs/logodds", os.path.basename(modeldir)+ "--disc-"+disc_shots + train_suffix + split_suffix + ".pt")
+    tensordir_gen = os.path.join("../outputs/logodds", os.path.basename(modeldir)+ "--gen-"+gen_shots + train_suffix + split_suffix + ".pt")
     torch.save(logodds_disc, tensordir_disc)
     torch.save(logodds_gen, tensordir_gen)
-    ranks_gen = os.path.join("../outputs/logodds", os.path.basename(modeldir)+ "--gen-"+gen_shots + train_suffix + "--ranks.json")
+    ranks_gen = os.path.join("../outputs/logodds", os.path.basename(modeldir)+ "--gen-"+gen_shots + train_suffix + split_suffix + "--ranks.json")
     with open(ranks_gen, 'w') as f:
         json.dump(ranks, f, indent=4)
 

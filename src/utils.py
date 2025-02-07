@@ -29,6 +29,8 @@ from string import Template
 from datasets import Dataset
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
+from find_disjoint_sets import partition_items_kernighan_lin
+
 
 def load_noun_pair_data():
     """
@@ -118,6 +120,40 @@ def split_train_test(L, seed=0, subsample=False, num_train=3000):
 
     L_train = L[:num_train]
     L_test = L[num_train:]
+    return L_train, L_test
+
+
+def split_train_test_no_overlap(L, seed=0):
+    #TODO later flag for option no overlap in hyper, in hypo, or both
+    test_concepts_hyper = ['jewelry',
+                           'home decor',
+                           'vehicle',
+                           'musical instrument',
+                           'tool',
+                           'container',
+                           'auto part',
+                           'kitchen equipment',
+                           'kitchen tool',
+                           'garden tool']
+    random.seed(seed)
+    random.shuffle(L)
+    L_train = [i for i in L if i.noun2 not in test_concepts_hyper]
+    L_test = [i for i in L if i.noun2 in test_concepts_hyper]
+    return L_train, L_test
+
+def f1(x): return [i.noun1 for i in x]
+def f2(x): return [i.noun2 for i in x]
+
+def split_train_test_no_overlap_both(L, seed=2):
+    random.seed(seed)
+    random.shuffle(L)
+    c1, c2, exc = partition_items_kernighan_lin(L)
+    assert len(c1) == 419
+    assert len(c2) == 2676 # train
+    assert len(set(f1(c1)).intersection(f1(c2)))==0
+    assert len(set(f2(c1)).intersection(f2(c2)))==0
+    L_train = c2
+    L_test = c1
     return L_train, L_test
 
 
