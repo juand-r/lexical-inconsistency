@@ -16,7 +16,7 @@ parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 src_path = os.path.join(parent_dir, "src")
 sys.path.append(src_path)
 import utils
-from utils import make_prompt_triviaqa
+from utils import make_prompt_triviaqa, make_prompt_hypernymy
 
 #TODO load model also, use function above
 model_name = "google/gemma-2-2b"
@@ -44,8 +44,8 @@ tokenizer.padding_side = 'left'
 # NOTE first use ground truth ranking from generator.
 # Will now use ranking loss on *discriminator* prompts to try to match it!
 
-#task = 'hypernym'
-task = 'trivia-qa'
+task = 'hypernym'
+#task = 'trivia-qa'
 
 if task=='hypernym':
     L = utils.load_noun_pair_data()
@@ -63,9 +63,12 @@ else:
 
 #TODO load the positive *train* set, not test set! Use generator order for ranking
 #gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--gen-zero--train.pt', weights_only=True)
+
+gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--hypernym--gen-zero--train.pt', weights_only=True)
+
 #gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--gen-zero--train--hyper.pt', weights_only=True)
 #gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--gen-zero--train--both.pt', weights_only=True)
-gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--trivia-qa--gen-zero--train.pt', weights_only=True)
+#gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--trivia-qa--gen-zero--train.pt', weights_only=True)
 
 gen_logprobs_last_layer = [-math.log(1+math.exp(-l[-1].tolist())) for l in gen_logodds[:]]
 
@@ -75,7 +78,7 @@ if task=='hypernym':
     L_train_pos = [i for i in L_train if i.taxonomic == "yes"]
 
     #TODO do this again on "few" shot setting which is the one I actually want.. but need memory
-    p_train, hf_train = utils.make_and_format_data(L_train_pos, tokenizer, style='discriminator', shots='few', neg=False, both=None)
+    p_train, hf_train = utils.make_and_format_data(make_prompt_hypernymy, L_train_pos, tokenizer, style='discriminator', shots='few', neg=False, both=None)
     prompts_pos = [i.prompt for i in p_train]
 #NOTE in discriminator case the indices we're looking for is just index of " Yes"... for generator it will depend on each prompt
 # of course.
@@ -125,6 +128,8 @@ print(pairs[0])
 print("\n\n")
 print(pairs[1])
 print("\n\nNum Samples: ", len(pairs))
+
+breakpoint()
 
 class PairwiseDataset(Dataset):
     def __init__(self, pairs, tokenizer, max_length=128):

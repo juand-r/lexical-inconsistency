@@ -23,6 +23,7 @@ https://wandb.ai/capecape/alpaca_ft/reports/How-to-Fine-tune-an-LLM-Part-3-The-H
 """
 
 import math
+import json
 import random
 from collections import namedtuple
 from string import Template
@@ -49,6 +50,41 @@ def load_noun_pair_data():
     )
     out = [Item(*i) for i in x]
     return out
+
+
+def load_swords_data():
+    """Load the swords dataset, and makes positive and negative pairs from it."""
+    #NOTE for now pick the top highest ranked item in list of substitutes as positive case
+    #TODO generalize later!
+
+    with open("../data/swords-data-v1.1_test.json", "r") as fd:
+        test = json.load(fd)
+
+    with open("../data/swords-data-v1.1_dev.json", "r") as fd:
+        dev = json.load(fd)
+
+    Item = namedtuple(
+        "Item",
+        ["context", "target", "replacement", "synonym"],
+    )
+
+    #NOTE use their dev as my train to keep things sane.
+    testset = []
+    for item in test:
+        pos_replacement = item['substitutes'][0][0]
+        testset.append(Item(item['context'], item['target'], pos_replacement, 'yes') )
+        neg_replacement = item['substitutes'][-1][0]
+        testset.append(Item(item['context'], item['target'], neg_replacement, 'no') )
+
+    trainset = []
+    for item in dev:
+        pos_replacement = item['substitutes'][0][0]
+        trainset.append(Item(item['context'], item['target'], pos_replacement, 'yes') )
+        neg_replacement = item['substitutes'][-1][0]
+        trainset.append(Item(item['context'], item['target'], neg_replacement, 'no') )
+
+    return trainset, testset
+
 
 #TODO generalize better to DRY!
 
