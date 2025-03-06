@@ -21,12 +21,14 @@ import argparse
 from tqdm import tqdm
 import torch
 import json
+from datasets import load_dataset
 
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 src_path = os.path.join(parent_dir, "src")
 sys.path.append(src_path)
 
-from utils import load_noun_pair_data, split_train_test, split_train_test_no_overlap, split_train_test_no_overlap_both, make_prompt
+from utils import load_noun_pair_data, split_train_test, split_train_test_no_overlap, split_train_test_no_overlap_both, make_prompt_hypernymy, make_prompt_triviaqa
+
 from logitlens import get_logitlens_output, load_model_nnsight, compute_logodds
 from tunedlens import init_lens, obtain_prob_tensor
 
@@ -44,9 +46,11 @@ def main():
     parser.add_argument("--gen-shots", type=str, default='zero', help="'zero' vs 'few'")
     parser.add_argument("--train", action="store_true", default=False, help="log-odds of train or test set?")
     parser.add_argument("--split-type", type=str, default='random', help="'random' vs 'hyper' vs 'both' ")
+    parser.add_argument("--task", type=str, default='hypernym', help="hypernym, trivia-qa, etc")
 
     args = parser.parse_args()
 
+    task = args.task
     modelname = args.model
     do_tunedlens = args.tunedlens
     seed = args.seed
@@ -55,15 +59,29 @@ def main():
     train_flag = args.train
     split_type = args.split_type
 
-    L = load_noun_pair_data()
-    if split_type=='hyper':
-        L_train, L_test = split_train_test_no_overlap(L, seed=seed)
-    elif split_type=='random':
-        L_train, L_test = split_train_test(L, seed=seed, subsample=False, num_train=3000)
-    elif split_type=='both':
-        L_train, L_test = split_train_test_no_overlap_both(L, seed=2)
+    if task=='hypernym':
+        L = load_noun_pair_data()
+        if split_type=='hyper':
+            L_train, L_test = split_train_test_no_overlap(L, seed=seed)
+        elif split_type=='random':
+            L_train, L_test = split_train_test(L, seed=seed, subsample=False, num_train=3000)
+        elif split_type=='both':
+            L_train, L_test = split_train_test_no_overlap_both(L, seed=2)
+        else:
+            raise ValueError("Wrong value for split-type")
+        make_prompt = make_prompt_hypernymy
+    elif task=='trivia-qa':
+        # load data here
+        L = load_dataset('lucadiliello/triviaqa') #TODO check if this is correct version.
+        #USE SUBSET FOR NOW
+        L_train =  L['train'].shuffle(seed=42).select(range(3000))
+        L_test = L['validation'].shuffle(seed=42).select(range(1000))
+
+        #NOTE assumes this takes same arguments in each case
+        make_prompt = make_prompt_triviaqa
+
     else:
-        raise ValueError("Wrong value for split-type")
+        raise NotImplementedError("Not a task")
 
     device = "cuda"
 
@@ -120,7 +138,8 @@ def main():
     else:
         raise ValueError()
 
-    for item in tqdm(LL[:]):
+    for item in tqdm(LL):
+
         prompt = make_prompt(item, style='generator', shots=gen_shots).prompt
         if do_tunedlens:
             input_ids = tokenizer.encode(prompt)
@@ -131,7 +150,7 @@ def main():
         P_gen.append(probs)
 
     P_disc = []
-    for item in tqdm(LL[:]):
+    for item in tqdm(LL):
         prompt = make_prompt(item, style='discriminator', shots=disc_shots).prompt
         if do_tunedlens:
             input_ids = tokenizer.encode(prompt)
@@ -142,15 +161,14 @@ def main():
         P_disc.append(probs)
 
 
-    ranks, logodds_gen, logodds_disc, corr = compute_logodds(
-        P_gen, P_disc, LL, tokenizer, first_sw_token, yestoks, notoks, layer_gen=-1, layer_disc=-1
-    )
+    ranks, logodds_gen, logodds_disc, corr = compute_logodds(task,
+        P_gen, P_disc, LL, tokenizer, first_sw_token, yestoks, notoks, layer_gen=-1, layer_disc=-1)
 
-    tensordir_disc = os.path.join("../outputs/logodds", os.path.basename(modeldir)+ "--disc-"+disc_shots + train_suffix + split_suffix + ".pt")
-    tensordir_gen = os.path.join("../outputs/logodds", os.path.basename(modeldir)+ "--gen-"+gen_shots + train_suffix + split_suffix + ".pt")
+    tensordir_disc = os.path.join("../outputs/logodds", os.path.basename(modeldir) + "--" + task + "--disc-"+disc_shots + train_suffix + split_suffix + ".pt")
+    tensordir_gen = os.path.join("../outputs/logodds", os.path.basename(modeldir) + "--" + task + "--gen-"+gen_shots + train_suffix + split_suffix + ".pt")
     torch.save(logodds_disc, tensordir_disc)
     torch.save(logodds_gen, tensordir_gen)
-    ranks_gen = os.path.join("../outputs/logodds", os.path.basename(modeldir)+ "--gen-"+gen_shots + train_suffix + split_suffix + "--ranks.json")
+    ranks_gen = os.path.join("../outputs/logodds", os.path.basename(modeldir) + "--" + task + "--gen-"+gen_shots + train_suffix + split_suffix + "--ranks.json")
     with open(ranks_gen, 'w') as f:
         json.dump(ranks, f, indent=4)
 

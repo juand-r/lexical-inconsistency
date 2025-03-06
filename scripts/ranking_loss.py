@@ -10,10 +10,13 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, AdamW
 import math
 import random
 
+from datasets import load_dataset
+
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 src_path = os.path.join(parent_dir, "src")
 sys.path.append(src_path)
 import utils
+from utils import make_prompt_triviaqa
 
 #TODO load model also, use function above
 model_name = "google/gemma-2-2b"
@@ -40,28 +43,49 @@ tokenizer.padding_side = 'left'
 
 # NOTE first use ground truth ranking from generator.
 # Will now use ranking loss on *discriminator* prompts to try to match it!
-L = utils.load_noun_pair_data()
-L_train, L_test = utils.split_train_test(L, seed=0, subsample=False, num_train=3000)
-#L_train, L_test = utils.split_train_test_no_overlap(L, seed=0)
-#L_train, L_test = utils.split_train_test_no_overlap_both(L)
+
+#task = 'hypernym'
+task = 'trivia-qa'
+
+if task=='hypernym':
+    L = utils.load_noun_pair_data()
+    L_train, L_test = utils.split_train_test(L, seed=0, subsample=False, num_train=3000)
+    #L_train, L_test = utils.split_train_test_no_overlap(L, seed=0)
+    #L_train, L_test = utils.split_train_test_no_overlap_both(L)
+elif task=='trivia-qa':
+    L = load_dataset('lucadiliello/triviaqa') #TODO check if this is correct version.
+    #USE SUBSET FOR NOW
+    L_train =  L['train'].shuffle(seed=42).select(range(3000))
+    L_test = L['validation'].shuffle(seed=42).select(range(1000))
+else:
+    raise NotImplementedError("Task not implemented!")
 
 
 #TODO load the positive *train* set, not test set! Use generator order for ranking
-gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--gen-zero--train.pt', weights_only=True)
+#gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--gen-zero--train.pt', weights_only=True)
 #gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--gen-zero--train--hyper.pt', weights_only=True)
 #gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--gen-zero--train--both.pt', weights_only=True)
-
+gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--trivia-qa--gen-zero--train.pt', weights_only=True)
 
 gen_logprobs_last_layer = [-math.log(1+math.exp(-l[-1].tolist())) for l in gen_logodds[:]]
-gen_logprobs_last_layer_pos = [i for ii,i in enumerate(gen_logprobs_last_layer) if L_train[ii].taxonomic=='yes']
 
-#NOTE train only on positive examples for now
-L_train_pos = [i for i in L_train if i.taxonomic == "yes"]
-#TODO do this again on "few" shot setting which is the one I actually want.. but need memory
-p_train, hf_train = utils.make_and_format_data(L_train_pos, tokenizer, style='discriminator', shots='few', neg=False, both=None)
-prompts_pos = [i.prompt for i in p_train]
+if task=='hypernym':
+    gen_logprobs_last_layer_pos = [i for ii,i in enumerate(gen_logprobs_last_layer) if L_train[ii].taxonomic=='yes']
+    #NOTE train only on positive examples for now
+    L_train_pos = [i for i in L_train if i.taxonomic == "yes"]
+
+    #TODO do this again on "few" shot setting which is the one I actually want.. but need memory
+    p_train, hf_train = utils.make_and_format_data(L_train_pos, tokenizer, style='discriminator', shots='few', neg=False, both=None)
+    prompts_pos = [i.prompt for i in p_train]
 #NOTE in discriminator case the indices we're looking for is just index of " Yes"... for generator it will depend on each prompt
 # of course.
+else:
+    gen_logprobs_last_layer_pos = gen_logprobs_last_layer
+    L_train_pos = L_train
+    p_train, hf_train = utils.make_and_format_data(make_prompt_triviaqa, L_train_pos, tokenizer, style='discriminator', shots='few', neg=False, both=None)
+    prompts_pos = [i.prompt for i in p_train]
+
+
 
 Z = list(zip(prompts_pos, gen_logprobs_last_layer_pos))
 Z = sorted(Z, key = lambda i: i[-1])
@@ -168,7 +192,7 @@ for epoch in range(num_epochs):
     if True:#epoch % save_steps==1:
         #save_directory = "../models/v3-delta5-epoch"+str(epoch)
         #save_directory = "../models/v3-delta5-no-overlap-both-epoch"+str(epoch)
-        save_directory = "../models/v3-delta5"+str(epoch)
+        save_directory = "../models/v3-delta5-epoch"+str(epoch) + "--" + task
         print("Saving to ", save_directory)
         model.save_pretrained(save_directory)
         tokenizer.save_pretrained(save_directory)

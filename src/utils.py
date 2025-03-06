@@ -50,8 +50,53 @@ def load_noun_pair_data():
     out = [Item(*i) for i in x]
     return out
 
+#TODO generalize better to DRY!
 
-def make_prompt(item, style="generator", shots="zero", neg=False):
+def make_prompt_triviaqa(item, with_context=False, style='generator', shots='zero'):
+    """ Only positive examples for now! Also, when multiple acceptable answers are available in the dataset,
+    use the first one for now. """
+
+    example_context = """[DOC] [TLE] brindisi | Italian music | Britannica.combrindisi | Italian music | Britannica.com [PAR] Italian music [PAR] THIS IS A DIRECTORY PAGE. Britannica does not currently have an article on this topic. [PAR] Learn about this topic in these articles: [PAR]   [PAR] in drinking song [PAR] ...in certain types of 19th-century opera and operetta, frequently involving not only a soloist but also a chorus joining in with choral repeats or refrains. In Italy the drinking song is known as brindisi (Italian: "toast"). In Giuseppe Verdi's operas drinking songs range from the cheerful "Libiamo" ("Let Us Drink") in La traviata (1853), to.."""
+
+    example_question = "What kind of song is a Brindisi?"
+    example_answer = "drinking song"
+
+
+    if style=='generator':
+        if with_context:
+            example = "Context: " + example_context + "\n\nQuestion: " + example_question + "\n\nAnswer: " + example_answer + "\n\n"
+        else:
+            example = "Question: " + example_question + "\n\nAnswer: " + example_answer + "\n\n"
+
+        query = "Question: " + item['question'] + "\n\nAnswer: "# + item['answer'] + "\n\n"
+        completion = item['answers'][0]
+        if with_context:
+            query = "Context: "+ item['context'] + "\n\n" + query
+
+        if shots =='zero':
+            prompt = query
+        else:
+            prompt = example + query
+    else: #discriminator
+        completion = "Yes"
+        example = "Is the correct answer to the question \"" + example_question + "\" given by \""+ example_answer + "\"? Answer Yes or No: " + completion + "\n\n"
+        if with_context:
+            example = "Context: " + example_context + "\n\n" + example + "\n\n"
+
+        query = "Is the correct answer to the question \"" + item['question'] + "\" given by \""+ item['answers'][0] + "\"? Answer Yes or No: "
+        if with_context:
+            query = "Context: "+ item['context']  + "\n\n" + query
+
+        if shots == 'zero':
+            prompt = query
+        else:
+            prompt = example + query
+
+    Pt = namedtuple("PromptCompletion", ["prompt", "completion"])
+    return Pt(prompt, completion)
+
+
+def make_prompt_hypernymy(item, style="generator", shots="zero", neg=False):
     """
     Make a prompt based on the item.
     """
@@ -158,6 +203,7 @@ def split_train_test_no_overlap_both(L, seed=2):
 
 
 def make_and_format_data(
+    make_prompt,
     L,
     tokenizer,
     style="discriminator",
@@ -174,13 +220,16 @@ def make_and_format_data(
     `style`, `shots` and `neg`
     """
 
-    items = [make_prompt(i, style=style, shots=shots, neg=neg) for i in L]
+    #items = [make_prompt(i, style=style, shots=shots, neg=neg) for i in L]
+    items = [make_prompt(i, style=style, shots=shots) for i in L]
 
     if both == "union":
         items1 = [
-            make_prompt(i, style="discriminator", shots="zero", neg=False) for i in L
+            #make_prompt(i, style="discriminator", shots="zero", neg=False) for i in L
+            make_prompt(i, style="discriminator", shots="zero") for i in L
         ]
-        items2 = [make_prompt(i, style="generator", shots="zero", neg=True) for i in L]
+        items2 = [make_prompt(i, style="generator", shots="zero") for i in L]
+        #items2 = [make_prompt(i, style="generator", shots="zero", neg=True) for i in L]
         items = items1 + items2
         random.shuffle(items)
 

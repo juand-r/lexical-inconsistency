@@ -92,8 +92,15 @@ def get_logodds_disc(Ps, ii, yestoks, notoks):
     return lgo
 
 
-def get_logodds_gen(Ps, L, ii, tokenizer, first_sw_token):
-    ind = tokenizer.encode("a " + L[ii].noun2)[first_sw_token]
+def get_logodds_gen(Ps, L, ii, tokenizer, first_sw_token, task):
+    #TODO should clean up this code so it takes in the completion
+    if task=='hypernym':
+        ind = tokenizer.encode("a " + L[ii].noun2)[first_sw_token]
+    elif task=='trivia-qa':
+        ind = tokenizer.encode("a " + L[ii]['answers'][0])[first_sw_token]
+    else:
+        raise ValueError("!")
+
     lgo = torch.log(torch.abs(Ps[ii][:, ind])) - torch.log(
         torch.abs(1 - Ps[ii][:, ind])
     )
@@ -110,9 +117,15 @@ def makepreds_gen(ranks, threshold=40):
     return ["Yes" if r <= threshold else "No" for r in ranks]
 
 
-def compute_accuracy_and_correlations(L, logodds_gen, logodds_disc, ranks, layer_gen=-1, layer_disc=-1):
+def compute_accuracy_and_correlations(task, L, logodds_gen, logodds_disc, ranks, layer_gen=-1, layer_disc=-1):
 
-    gold = [i.taxonomic.capitalize() for i in L[:]]
+    if task=='hypernym':
+        gold = [i.taxonomic.capitalize() for i in L]
+    elif task=="trivia-qa":
+        #TODO will need to do this differently if include negative examples
+        gold = ['Yes' for i in L]
+    else:
+        raise ValueError("!")
 
     print("correlation: zs gen, fs disc (more usual)")
     corr = pearsonr(
@@ -133,20 +146,30 @@ def compute_accuracy_and_correlations(L, logodds_gen, logodds_disc, ranks, layer
 
 
 def compute_logodds(
-    P_gen, P_disc, L, tokenizer, first_sw_token, yestoks, notoks, layer_gen=-1, layer_disc=-1
+    task, P_gen, P_disc, L, tokenizer, first_sw_token, yestoks, notoks, layer_gen=-1, layer_disc=-1
 ):
 
-    ranks = [
-        get_rank(
-            P_gen[ii][layer_gen, :], tokenizer.encode("a " + L[ii].noun2)[first_sw_token]
-        )
-        for ii in tqdm(range(len(P_gen)))
-    ]
+    if task=='hypernym':
+        ranks = [
+            get_rank(
+                P_gen[ii][layer_gen, :], tokenizer.encode("a " + L[ii].noun2)[first_sw_token]
+            )
+            for ii in tqdm(range(len(P_gen)))
+        ]
+    elif task=='trivia-qa':
+        ranks = [
+            get_rank(
+                P_gen[ii][layer_gen, :], tokenizer.encode("a " + L[ii]['answers'][0])[first_sw_token]
+            )
+            for ii in tqdm(range(len(P_gen)))
+        ]
+    else:
+        raise ValueError("!!")
 
-    logodds_gen = [get_logodds_gen(P_gen, L, ii, tokenizer, first_sw_token) for ii in range(len(P_gen))]
+    logodds_gen = [get_logodds_gen(P_gen, L, ii, tokenizer, first_sw_token, task) for ii in range(len(P_gen))]
     logodds_disc = [get_logodds_disc(P_disc, ii, yestoks, notoks) for ii in range(len(P_disc))]
 
-    disc_accuracy, gen_accuracies, corr = compute_accuracy_and_correlations(L, logodds_gen, logodds_disc, ranks, layer_gen=layer_gen, layer_disc=layer_disc)
+    disc_accuracy, gen_accuracies, corr = compute_accuracy_and_correlations(task, L, logodds_gen, logodds_disc, ranks, layer_gen=layer_gen, layer_disc=layer_disc)
 
     return ranks, logodds_gen, logodds_disc, corr
 
