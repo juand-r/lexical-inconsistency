@@ -98,6 +98,8 @@ def get_logodds_gen(Ps, L, ii, tokenizer, first_sw_token, task):
         ind = tokenizer.encode("a " + L[ii].noun2)[first_sw_token]
     elif task=='trivia-qa':
         ind = tokenizer.encode("a " + L[ii]['answers'][0])[first_sw_token]
+    if task=='swords':
+        ind = tokenizer.encode("a " + L[ii].replacement)[first_sw_token]
     else:
         raise ValueError("!")
 
@@ -124,6 +126,8 @@ def compute_accuracy_and_correlations(task, L, logodds_gen, logodds_disc, ranks,
     elif task=="trivia-qa":
         #TODO will need to do this differently if include negative examples
         gold = ['Yes' for i in L]
+    elif task=='swords':
+        gold = [i.synonym.capitalize() for i in L]
     else:
         raise ValueError("!")
 
@@ -160,6 +164,13 @@ def compute_logodds(
         ranks = [
             get_rank(
                 P_gen[ii][layer_gen, :], tokenizer.encode("a " + L[ii]['answers'][0])[first_sw_token]
+            )
+            for ii in tqdm(range(len(P_gen)))
+        ]
+    elif task=='swords':
+        ranks = [
+            get_rank(
+                P_gen[ii][layer_gen, :], tokenizer.encode("a " + L[ii].replacement)[first_sw_token]
             )
             for ii in tqdm(range(len(P_gen)))
         ]

@@ -20,6 +20,7 @@ import sys
 import argparse
 from tqdm import tqdm
 import torch
+import gc
 import json
 from datasets import load_dataset
 
@@ -27,7 +28,7 @@ parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 src_path = os.path.join(parent_dir, "src")
 sys.path.append(src_path)
 
-from utils import load_noun_pair_data, split_train_test, split_train_test_no_overlap, split_train_test_no_overlap_both, make_prompt_hypernymy, make_prompt_triviaqa
+from utils import load_noun_pair_data, split_train_test, split_train_test_no_overlap, split_train_test_no_overlap_both, make_prompt_hypernymy, make_prompt_triviaqa, make_prompt_swords, load_swords_data
 
 from logitlens import get_logitlens_output, load_model_nnsight, compute_logodds
 from tunedlens import init_lens, obtain_prob_tensor
@@ -79,7 +80,9 @@ def main():
 
         #NOTE assumes this takes same arguments in each case
         make_prompt = make_prompt_triviaqa
-
+    elif task=='swords':
+        L_train, L_test = load_swords_data(seed=0)
+        make_prompt = make_prompt_swords
     else:
         raise NotImplementedError("Not a task")
 
@@ -121,7 +124,6 @@ def main():
         raise ValueError("!?")
 
     # Calculate probabilities via tuned/logit-lens: generator and discriminator
-    P_gen = []
     if train_flag:
         LL = L_train
         train_suffix = "--train"
@@ -138,6 +140,7 @@ def main():
     else:
         raise ValueError()
 
+    P_gen = []
     for item in tqdm(LL):
 
         prompt = make_prompt(item, style='generator', shots=gen_shots).prompt
@@ -147,7 +150,12 @@ def main():
         else: #do_logitlens:
             X = get_logitlens_output(prompt, model, modelname_short)
             probs = X[0][:, -1, :].detach().cpu()
+            #del X
         P_gen.append(probs)
+
+    print("NOW DOING DISCRIMINATOR")
+    gc.collect()
+    torch.cuda.empty_cache()
 
     P_disc = []
     for item in tqdm(LL):
@@ -158,6 +166,7 @@ def main():
         else: #do_logitlens:
             X = get_logitlens_output(prompt, model, modelname_short)
             probs = X[0][:, -1, :].detach().cpu()
+            del X
         P_disc.append(probs)
 
 

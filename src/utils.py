@@ -9,10 +9,10 @@ Utilities to:
 
 - Make a prompt to evaluate:
     # item is an element of L
-    prompt = make_prompt(item, style="generator", shots="zero", neg=False)
+    prompt = make_prompt_hypernymy(item, style="generator", shots="zero", neg=False)
 
 - Make prompts and format them into a tokenized, padded, huggingface Dataset
-    prompts_train, hf_train = make_and_format_data(L_train, tokenizer, style="discriminator", shots="few", neg=False, both="union")
+    prompts_train, hf_train = make_and_format_data(make_prompt, L_train, tokenizer, style="discriminator", shots="few", neg=False, both="union")
 
 - Load huggingface or peft model:
     model, tokenizer = load_model(peft_model_id, device)
@@ -52,7 +52,7 @@ def load_noun_pair_data():
     return out
 
 
-def load_swords_data():
+def load_swords_data(seed=0):
     """Load the swords dataset, and makes positive and negative pairs from it."""
     #NOTE for now pick the top highest ranked item in list of substitutes as positive case
     #TODO generalize later!
@@ -83,8 +83,10 @@ def load_swords_data():
         neg_replacement = item['substitutes'][-1][0]
         trainset.append(Item(item['context'], item['target'], neg_replacement, 'no') )
 
+    random.seed(seed)
+    random.shuffle(trainset)
+    random.shuffle(testset)
     return trainset, testset
-
 
 #TODO generalize better to DRY!
 
@@ -127,6 +129,44 @@ def make_prompt_triviaqa(item, with_context=False, style='generator', shots='zer
             prompt = query
         else:
             prompt = example + query
+
+    Pt = namedtuple("PromptCompletion", ["prompt", "completion"])
+    return Pt(prompt, completion)
+
+
+def make_prompt_swords(item, style="generator", shots="zero", neg=False):
+    """
+    Make a prompt based on the item.
+    """
+
+    if neg and item.synonym=='no':
+        negation_word = " not"
+    else:
+        negation_word = ""
+
+    if style == "generator":
+        prompt = Template(
+            "In the following sentence: $context, the word $target is$optional_negation a synonym of the word"
+            ).substitute(context=item.context, target=item.target, optional_negation=negation_word)
+        completion = " " + item.replacement
+        #TODO should few-shot negation case have different example..??
+        if shots == "few":
+            examples = "In the following sentence: 'I thought as much. Now leave, before I call the rats on you.', the word call is a synonym of the word summon\n\n"
+            prompt = examples + prompt
+
+    elif style == "discriminator":
+        prompt = Template(
+            "In the following sentence: $context, can the word $target be replaced by the word $replacement? Answer:"
+            ).substitute(context=item.context, target=item.target, replacement=item.replacement)
+        completion = " " + item.synonym.capitalize()
+
+        #TODO more than two shots??
+        if shots == "few":
+            example1 = "In the following sentence: 'Well, kid, what do you think? Remember, this is your quest.', can the word think be replaced by the word mind? Answer: No\n\n"
+            example2 = "In the following sentence: 'I thought as much. Now leave, before I call the rats on you.', can the word call be replaced by the word summon? Answer: Yes\n\n"
+            prompt = example1 + example2 + prompt
+    else:
+        raise ValueError("!?")
 
     Pt = namedtuple("PromptCompletion", ["prompt", "completion"])
     return Pt(prompt, completion)
@@ -256,8 +296,8 @@ def make_and_format_data(
     `style`, `shots` and `neg`
     """
 
-    #items = [make_prompt(i, style=style, shots=shots, neg=neg) for i in L]
-    items = [make_prompt(i, style=style, shots=shots) for i in L]
+    items = [make_prompt(i, style=style, shots=shots, neg=neg) for i in L]
+    #items = [make_prompt(i, style=style, shots=shots) for i in L]
 
     if both == "union":
         items1 = [

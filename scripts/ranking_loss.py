@@ -16,7 +16,7 @@ parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 src_path = os.path.join(parent_dir, "src")
 sys.path.append(src_path)
 import utils
-from utils import make_prompt_triviaqa, make_prompt_hypernymy
+from utils import make_prompt_triviaqa, make_prompt_hypernymy, make_prompt_swords
 
 #TODO load model also, use function above
 model_name = "google/gemma-2-2b"
@@ -44,8 +44,9 @@ tokenizer.padding_side = 'left'
 # NOTE first use ground truth ranking from generator.
 # Will now use ranking loss on *discriminator* prompts to try to match it!
 
-task = 'hypernym'
+#task = 'hypernym'
 #task = 'trivia-qa'
+task = 'swords'
 
 if task=='hypernym':
     L = utils.load_noun_pair_data()
@@ -57,6 +58,8 @@ elif task=='trivia-qa':
     #USE SUBSET FOR NOW
     L_train =  L['train'].shuffle(seed=42).select(range(3000))
     L_test = L['validation'].shuffle(seed=42).select(range(1000))
+elif task=='swords':
+    L_train, L_test = utils.load_swords_data(seed=0)
 else:
     raise NotImplementedError("Task not implemented!")
 
@@ -64,11 +67,13 @@ else:
 #TODO load the positive *train* set, not test set! Use generator order for ranking
 #gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--gen-zero--train.pt', weights_only=True)
 
-gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--hypernym--gen-zero--train.pt', weights_only=True)
+#gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--hypernym--gen-zero--train.pt', weights_only=True)
+gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--swords--gen-zero--train.pt', weights_only=True)
 
 #gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--gen-zero--train--hyper.pt', weights_only=True)
 #gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--gen-zero--train--both.pt', weights_only=True)
 #gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--trivia-qa--gen-zero--train.pt', weights_only=True)
+
 
 gen_logprobs_last_layer = [-math.log(1+math.exp(-l[-1].tolist())) for l in gen_logodds[:]]
 
@@ -82,12 +87,22 @@ if task=='hypernym':
     prompts_pos = [i.prompt for i in p_train]
 #NOTE in discriminator case the indices we're looking for is just index of " Yes"... for generator it will depend on each prompt
 # of course.
-else:
+elif task=='trivia-qa':
     gen_logprobs_last_layer_pos = gen_logprobs_last_layer
     L_train_pos = L_train
     p_train, hf_train = utils.make_and_format_data(make_prompt_triviaqa, L_train_pos, tokenizer, style='discriminator', shots='few', neg=False, both=None)
     prompts_pos = [i.prompt for i in p_train]
+elif task=='swords':
+    gen_logprobs_last_layer_pos = gen_logprobs_last_layer
+    L_train_pos = [i for i in L_train if i.synonym=='yes']
+    p_train, hf_train = utils.make_and_format_data(make_prompt_swords, L_train_pos, tokenizer, style='discriminator', shots='few', neg=False, both=None)
+    prompts_pos = [i.prompt for i in p_train]
+else:
+    raise ValueError("!!")
 
+#TODO upper bound, could maybe reduce this if get length from pairs, not here..
+max_context_length = len(hf_train[0]['input_ids'])
+print("MAX CONTEXT LENGTH: ", max_context_length)
 
 
 Z = list(zip(prompts_pos, gen_logprobs_last_layer_pos))
@@ -128,8 +143,6 @@ print(pairs[0])
 print("\n\n")
 print(pairs[1])
 print("\n\nNum Samples: ", len(pairs))
-
-breakpoint()
 
 class PairwiseDataset(Dataset):
     def __init__(self, pairs, tokenizer, max_length=128):
@@ -177,8 +190,13 @@ class PairwiseDataset(Dataset):
         return item
 
 #18 fine for zero-shot
-dataset = PairwiseDataset(pairs, tokenizer, max_length=64)
-train_loader = DataLoader(dataset, batch_size=32, shuffle=True)
+if task=='swords':
+    batch_size = 6
+else:
+    batch_size = 32
+
+dataset = PairwiseDataset(pairs, tokenizer, max_length=max_context_length)
+train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 print("\n\nDone making dataloader\n\n")
 optimizer = AdamW(model.parameters(), lr=1e-5)
 
