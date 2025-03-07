@@ -51,8 +51,9 @@ tokenizer.padding_side = 'left'
 # NOTE first use ground truth ranking from generator.
 # Will now use ranking loss on *discriminator* prompts to try to match it!
 
-task = 'hypernym'
+#task = 'hypernym'
 #task = 'trivia-qa'
+task == 'swords'
 
 if task=='hypernym':
     L = utils.load_noun_pair_data()
@@ -65,7 +66,7 @@ elif task=='trivia-qa':
     L_train =  L['train'].shuffle(seed=42).select(range(3000))
     L_test = L['validation'].shuffle(seed=42).select(range(1000))
 elif task=='swords':
-    L_train, L_test = load_swords_data(seed=0)
+    L_train, L_test = utils.load_swords_data(seed=0)
 else:
     raise NotImplementedError("Task not implemented!")
 
@@ -73,8 +74,8 @@ else:
 #TODO load the positive *train* set, not test set! Use generator order for ranking
 #gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--gen-zero--train.pt', weights_only=True)
 
-gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--hypernym--gen-zero--train.pt', weights_only=True)
-
+#gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--hypernym--gen-zero--train.pt', weights_only=True)
+gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--swords--gen-zero--train.pt', weights_only=True)
 #gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--gen-zero--train--hyper.pt', weights_only=True)
 #gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--gen-zero--train--both.pt', weights_only=True)
 #gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--trivia-qa--gen-zero--train.pt', weights_only=True)
@@ -195,8 +196,13 @@ class PairwiseDataset(Dataset):
         return item
 
 #18 fine for zero-shot
+if task=='swords':
+    batch_size = 6
+else:
+    batch_size = 32
+
 dataset = PairwiseDataset(pairs, tokenizer, max_length=max_context_length)
-train_loader = DataLoader(dataset, batch_size=32, shuffle=True)
+train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 print("\n\nDone making dataloader\n\n")
 optimizer = AdamW(model.parameters(), lr=1e-5)
 
