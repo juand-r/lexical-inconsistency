@@ -129,7 +129,8 @@ def make_prompt_triviaqa(item, with_context=False, style='generator', shots='zer
             prompt = query
         else:
             prompt = example + query
-
+    
+    prompt = prompt.strip()
     Pt = namedtuple("PromptCompletion", ["prompt", "completion"])
     return Pt(prompt, completion)
 
@@ -168,6 +169,7 @@ def make_prompt_swords(item, style="generator", shots="zero", neg=False):
     else:
         raise ValueError("!?")
 
+    prompt = prompt.strip()
     Pt = namedtuple("PromptCompletion", ["prompt", "completion"])
     return Pt(prompt, completion)
 
@@ -221,6 +223,7 @@ def make_prompt_hypernymy(item, style="generator", shots="zero", neg=False):
     else:
         raise ValueError("!?")
 
+    prompt = prompt.strip()
     Pt = namedtuple("PromptCompletion", ["prompt", "completion"])
     return Pt(prompt, completion)
 
