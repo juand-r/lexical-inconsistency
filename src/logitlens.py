@@ -269,9 +269,9 @@ def compute_logodds(
     logodds_gen = [get_logodds_gen(P_gen, L, ii, tokenizer, first_sw_token, task) for ii in range(len(P_gen))]
     logodds_disc = [get_logodds_disc(P_disc, ii, yestoks, notoks) for ii in range(len(P_disc))]
 
-    # disc_accuracy, gen_accuracies, corr = compute_accuracy_and_correlations(task, L, logodds_gen, logodds_disc, ranks, layer_gen=layer_gen, layer_disc=layer_disc)
+    disc_accuracy, gen_accuracies, corr = compute_accuracy_and_correlations(task, L, logodds_gen, logodds_disc, ranks, layer_gen=layer_gen, layer_disc=layer_disc)
     res_dict = compute_metrics(task, L, logodds_gen, logodds_disc, ranks)
-    return res_dict
+    # return res_dict
     return ranks, logodds_gen, logodds_disc, corr
 
 

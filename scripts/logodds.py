@@ -151,13 +151,13 @@ def main():
         else: #do_logitlens:
             X = get_logitlens_output(prompt, model, modelname_short)
             probs = X[0][:, -1, :].detach().cpu()
-            # print(probs.shape)
-            # print(probs[-1, :10])
+            print(probs.shape)
+            print(probs[-1, :10])
             probs_gen = get_final_logit_prob(prompt, model, tokenizer, device, is_chat = False) # TODO: change is_chat to True if instruction-tuned model
-            # print(probs_gen.shape)
-            # print(probs_gen[:10])
-            # print("sum probs:", probs_gen.sum())
-            # print("----")
+            print(probs_gen.shape)
+            print(probs_gen[:10])
+            print("sum probs:", probs_gen.sum())
+            print("----")
             #del X 
         P_gen.append(probs)
         P_gen_final.append(probs_gen) # TODO: P_gen_final does not match with P_gen with gemma-2-2b
@@ -179,7 +179,7 @@ def main():
         P_disc.append(probs)
 
 
-    ranks, logodds_gen, logodds_disc, corr = compute_logodds(task,
+    ranks, logodds_gen, logodds_disc, corr, disc_accuracy, gen_accuracies = compute_logodds(task,
         P_gen, P_disc, LL, tokenizer, first_sw_token, yestoks, notoks, layer_gen=-1, layer_disc=-1)
 
     tensordir_disc = os.path.join("../outputs/logodds", os.path.basename(modeldir) + "--" + task + "--disc-"+disc_shots + train_suffix + split_suffix + ".pt")
