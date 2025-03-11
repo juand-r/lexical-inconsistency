@@ -28,7 +28,7 @@ parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 src_path = os.path.join(parent_dir, "src")
 sys.path.append(src_path)
 
-from utils import load_noun_pair_data, split_train_test, split_train_test_no_overlap, split_train_test_no_overlap_both, make_prompt_hypernymy, make_prompt_triviaqa, make_prompt_swords, load_swords_data
+from utils import load_noun_pair_data, split_train_test, split_train_test_no_overlap, split_train_test_no_overlap_both, make_prompt_hypernymy, make_prompt_triviaqa, make_prompt_swords, load_swords_data, get_final_logit_prob
 
 from logitlens import get_logitlens_output, load_model_nnsight, compute_logodds
 from tunedlens import init_lens, obtain_prob_tensor
@@ -141,6 +141,7 @@ def main():
         raise ValueError()
 
     P_gen = []
+    P_gen_final = []
     for item in tqdm(LL):
 
         prompt = make_prompt(item, style='generator', shots=gen_shots).prompt
@@ -150,8 +151,16 @@ def main():
         else: #do_logitlens:
             X = get_logitlens_output(prompt, model, modelname_short)
             probs = X[0][:, -1, :].detach().cpu()
-            #del X
+            # print(probs.shape)
+            # print(probs[-1, :10])
+            probs_gen = get_final_logit_prob(prompt, model, tokenizer, device, is_chat = False) # TODO: change is_chat to True if instruction-tuned model
+            # print(probs_gen.shape)
+            # print(probs_gen[:10])
+            # print("sum probs:", probs_gen.sum())
+            # print("----")
+            #del X 
         P_gen.append(probs)
+        P_gen_final.append(probs_gen) # TODO: P_gen_final does not match with P_gen with gemma-2-2b
 
     print("NOW DOING DISCRIMINATOR")
     gc.collect()

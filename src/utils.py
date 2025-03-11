@@ -29,7 +29,8 @@ from collections import namedtuple
 from string import Template
 from datasets import Dataset
 from transformers import AutoTokenizer, AutoModelForCausalLM
-
+import torch
+import numpy as np
 from find_disjoint_sets import partition_items_kernighan_lin
 
 
@@ -131,6 +132,7 @@ def make_prompt_triviaqa(item, with_context=False, style='generator', shots='zer
             prompt = example + query
     
     prompt = prompt.strip()
+    completion = " " + completion.strip()
     Pt = namedtuple("PromptCompletion", ["prompt", "completion"])
     return Pt(prompt, completion)
 
@@ -386,3 +388,36 @@ def load_model(peft_model_id, device):
     model.to(device)
     return model, tokenizer
 
+
+def get_final_logit_prob(prompt, model, tokenizer, device = 'cuda', is_chat=False):
+    with torch.no_grad():
+        if is_chat:
+            message = [
+                {"role": "system", "content": "Answer directly without explanation."},
+                {"role": "user", "content": prompt},]
+            input_ids = tokenizer.apply_chat_template(message, add_generation_prompt=True,return_tensors="pt", tokenize=True, return_dict=False)[0].tolist()
+        else:
+            input_ids = tokenizer(prompt, return_tensors="pt")["input_ids"][0].tolist()
+        outputs = model(torch.tensor([input_ids]).to(device), output_hidden_states=True)
+    print("outputs.logits.shape",outputs.logits.shape)
+    model_log_probs = (
+            outputs.logits[..., :]
+            .log_softmax(-1)
+            .squeeze()
+            .detach()
+            .cpu()
+            .float()
+        )
+    print("model_log_probs.shape",model_log_probs.shape)
+    # print(model_log_probs.shape) # (seq_len, vocab_size)
+    # print(torch.exp(model_log_probs).shape, type(torch.exp(model_log_probs))) # (seq_len, vocab_size)
+    model_log_probs = model_log_probs[-1, :]
+    # print(model_log_probs.shape) # (seq_len, vocab_size)
+    # raise ValueError("!?")
+    # get the maximum indixe of model_log_probs
+    max_ind = torch.argmax(model_log_probs)
+    print("max_ind:", max_ind, torch.exp(model_log_probs[max_ind]))
+    print(f"max token--{tokenizer.decode([max_ind])}--")
+    print(torch.sum(torch.exp(model_log_probs)))
+    return torch.exp(model_log_probs)
+        
