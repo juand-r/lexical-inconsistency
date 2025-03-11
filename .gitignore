@@ -3,3 +3,5 @@ models/*
 scripts/wandb/
 src/__pycache__
 outputs/logodds
+scripts/eval_test.ipynb
+outputs/eval_results.csv

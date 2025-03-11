@@ -73,6 +73,7 @@ def get_L_prompt(task, split_type, seed):
 
 def get_base_model_name(modelname):
     # TODO: improve this
+    modelname = modelname.split("output")[-1]
     return modelname.replace('/', '-')
 
 def main(args):
@@ -112,7 +113,6 @@ def main(args):
     
     P_gen = []
     P_disc = []
-    LL = LL[:10]
     for item in tqdm(LL):
         prompt_gen = make_prompt(item, style='generator', shots=gen_shots).prompt
         prompt_disc = make_prompt(item, style='discriminator', shots=disc_shots).prompt
