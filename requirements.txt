@@ -12,7 +12,7 @@ tokenizers==0.20.3
 bitsandbytes==0.45.0
 tuned-lens==0.2.0
 accelerate==1.1.0
-nnsight==0.3.6
+nnsight==0.4.3
 peft==0.14.0
 trl==0.12.2
 scikit-learn==1.5.2
