@@ -11,7 +11,7 @@ import numpy as np
 import sklearn.metrics
 from scipy.stats import pearsonr
 from tqdm import tqdm
-from sklearn.metrics import roc_curve, auc
+from sklearn.metrics import roc_curve, auc, roc_auc_score
 
 device = "cuda:0"
 
@@ -75,8 +75,8 @@ def get_logitlens_output(prompt, model, modelname_short):
     ]
 
     # Access the 'input_ids' attribute of the invoker object to get the input words
-    input_words = [model.tokenizer.decode(t) for t in invoker.inputs[0]["input_ids"][0]]
-    # input_words = [model.tokenizer.decode(t) for t in invoker.inputs[0][0]["input_ids"][0]]
+    # input_words = [model.tokenizer.decode(t) for t in invoker.inputs[0]["input_ids"][0]]
+    input_words = [model.tokenizer.decode(t) for t in invoker.inputs[0][0]["input_ids"][0]]
     # print(len(input_words))
     # print(len(words), len(words[0]))
     # print(f"logitlens_output: {probs.shape}, {max_probs.shape}, {tokens.shape}, {words}, {input_words}")
@@ -134,8 +134,8 @@ def compute_disc_accuracy(gold, logodds_disc):
     disc_accuracy = sklearn.metrics.accuracy_score(gold, preds)
     # print("\naccuracy of discriminator fs: {}".format(disc_accuracy))
 
-    fpr, tpr, thresholds = roc_curve(gold, preds)
-    roc_auc = auc(fpr, tpr)
+    # fpr, tpr, thresholds = roc_curve(gold, preds)
+    roc_auc = roc_auc_score(gold, preds)
     # print(f'roc_auc: {roc_auc}')
     return disc_accuracy, roc_auc
 
@@ -281,13 +281,13 @@ def compute_logodds_final_layer(
 
     if task=='hypernym':
         # for ii in range(len(P_gen)):
-            # print(f'--compute-logodds, i=0:P:{P_gen[ii].shape}')
-            # print(f'--compute-logodds, i=0:P:{P_gen[ii].shape}')
-            # print(f'--compute-logodds, i=0:L:{L[ii]}')
-            # print(f'--compute-logodds, i=0:L:{L[ii].noun2}')
-            # print(f'--compute-logodds, i=0:encode:{tokenizer.encode("a " + L[ii].noun2)}')
-            # print(f'--compute-logodds, i=0:encode:{tokenizer.tokenize("a " + L[ii].noun2)}')
-            # print(f'--compute-logodds, i=0:encode:{tokenizer.encode("a " + L[ii].noun2)[first_sw_token]}')
+        #     print(f'--compute-logodds, i=0:P:{P_gen[ii].shape}')
+        #     print(f'--compute-logodds, i=0:P:{P_gen[ii].shape}')
+        #     print(f'--compute-logodds, i=0:L:{L[ii]}')
+        #     print(f'--compute-logodds, i=0:L:{L[ii].noun2}')
+        #     print(f'--compute-logodds, i=0:encode:{tokenizer.encode("a " + L[ii].noun2)}')
+        #     print(f'--compute-logodds, i=0:encode:{tokenizer.tokenize("a " + L[ii].noun2)}')
+        #     print(f'--compute-logodds, i=0:encode:{tokenizer.encode("a " + L[ii].noun2)[first_sw_token]}')
 
         ranks = [
             get_rank(

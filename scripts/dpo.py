@@ -104,7 +104,7 @@ if __name__ == "__main__":
     parser.add_argument("--epochs", type=int, default=1)
     # parser.add_argument("--device", type=str, default="7", required=False)
     parser.add_argument("--seed", type=int, default=0)
-    parser.add_argument("--model", type=str, default='google/gemma-2-2b')#default=) 'meta-llama/Meta-Llama-3-8B-Instruct'
+    parser.add_argument("--model", type=str, default='google/gemma-2-2b')#default=) 'meta-llama/Llama-3.2-3B' meta-llama/Llama-3.2-3B-Instruct
     parser.add_argument("--batch_size", type=int, default=5)
     parser.add_argument("--output_dir", type=str, default="/datastor1/wenxuand/output") 
     
@@ -117,7 +117,7 @@ if __name__ == "__main__":
     torch_dtype = torch.bfloat16
     model = AutoModelForCausalLM.from_pretrained(args.model, torch_dtype=torch_dtype).cuda()
     tokenizer = AutoTokenizer.from_pretrained(args.model)
-
+    tokenizer.pad_token = tokenizer.eos_token
     dataset = data_loader[args.task][args.direction](args.dataset_dir)
 
     output_dir = os.path.join(args.output_dir, args.task, args.model.split('/')[-1].strip(), f"dpo_{args.direction}_{time_string}")

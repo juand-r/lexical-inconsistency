@@ -436,9 +436,9 @@ def get_final_logit_prob(prompt, model, tokenizer, device = 'cuda', is_chat=Fals
     # print(model_log_probs.shape) # (seq_len, vocab_size)
     # raise ValueError("!?")
     # get the maximum indixe of model_log_probs
-    # max_ind = torch.argmax(model_log_probs)
-    # print("max_ind:", max_ind, torch.exp(model_log_probs[max_ind]))
-    # print(f"max token--{tokenizer.decode([max_ind])}--")
-    # print(torch.sum(torch.exp(model_log_probs)))
+    max_ind = torch.argmax(model_log_probs)
+    print("max_ind:", max_ind, torch.exp(model_log_probs[max_ind]))
+    print(f"max token--{tokenizer.decode([max_ind])}--")
+    print(torch.sum(torch.exp(model_log_probs)))
     return torch.exp(model_log_probs)
         
