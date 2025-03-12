@@ -75,7 +75,8 @@ def get_logitlens_output(prompt, model, modelname_short):
     ]
 
     # Access the 'input_ids' attribute of the invoker object to get the input words
-    input_words = [model.tokenizer.decode(t) for t in invoker.inputs[0][0]["input_ids"][0]]
+    input_words = [model.tokenizer.decode(t) for t in invoker.inputs[0]["input_ids"][0]]
+    # input_words = [model.tokenizer.decode(t) for t in invoker.inputs[0][0]["input_ids"][0]]
     # print(len(input_words))
     # print(len(words), len(words[0]))
     # print(f"logitlens_output: {probs.shape}, {max_probs.shape}, {tokens.shape}, {words}, {input_words}")
