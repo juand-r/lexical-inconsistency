@@ -22,6 +22,7 @@ https://wandb.ai/capecape/alpaca_ft/reports/How-to-Fine-tune-an-LLM-Part-3-The-H
 
 """
 
+import re
 import math
 import json
 import random
@@ -72,17 +73,28 @@ def load_swords_data(seed=0):
     #NOTE use their dev as my train to keep things sane.
     testset = []
     for item in test:
+        #TODO make this change permanent in the file
+        item['context'] = re.sub(r'\s+', ' ', item['context'])
+
         pos_replacement = item['substitutes'][0][0]
-        testset.append(Item(item['context'], item['target'], pos_replacement, 'yes') )
         neg_replacement = item['substitutes'][-1][0]
-        testset.append(Item(item['context'], item['target'], neg_replacement, 'no') )
+
+        context = item['context'].replace(item['target'], "*" + item['target'] + "*")
+
+        testset.append(Item(context, item['target'], pos_replacement, 'yes') )
+        testset.append(Item(context, item['target'], neg_replacement, 'no') )
 
     trainset = []
     for item in dev:
+        item['context'] = re.sub(r'\s+', ' ', item['context'])
+
         pos_replacement = item['substitutes'][0][0]
-        trainset.append(Item(item['context'], item['target'], pos_replacement, 'yes') )
         neg_replacement = item['substitutes'][-1][0]
-        trainset.append(Item(item['context'], item['target'], neg_replacement, 'no') )
+
+        context = item['context'].replace(item['target'], "*" + item['target'] + "*")
+
+        trainset.append(Item(context, item['target'], pos_replacement, 'yes') )
+        trainset.append(Item(context, item['target'], neg_replacement, 'no') )
 
     random.seed(seed)
     random.shuffle(trainset)
@@ -99,7 +111,6 @@ def make_prompt_triviaqa(item, with_context=False, style='generator', shots='zer
 
     example_question = "What kind of song is a Brindisi?"
     example_answer = "drinking song"
-
 
     if style=='generator':
         if with_context:
@@ -148,26 +159,36 @@ def make_prompt_swords(item, style="generator", shots="zero", neg=False):
         negation_word = ""
 
     if style == "generator":
-        prompt = Template(
-            "In the following sentence: $context, the word $target is$optional_negation a synonym of the word"
-            ).substitute(context=item.context, target=item.target, optional_negation=negation_word)
-        completion = " " + item.replacement
+        generator_prompt = 'Notice the word "$target" used in the context: "$context". In this context, the word "$target" is$optional_negation synonymous with "'
+        prompt = Template(generator_prompt).substitute(context=item.context, target=item.target, optional_negation=negation_word)
+        #completion = " " + item.replacement
+        completion = "" + item.replacement
         #TODO should few-shot negation case have different example..??
         if shots == "few":
-            examples = "In the following sentence: 'I thought as much. Now leave, before I call the rats on you.', the word call is a synonym of the word summon\n\n"
+            #examples = "In the following sentence: 'I thought as much. Now leave, before I call the rats on you.', the word call is a synonym of the word summon\n\n"
+            #TODO make "neg" and regular version of this example??
+            examples = 'Notice the word "artists" used in the context: "Many painters, sculptors, and other *artists* were inspired by Duchamp.". In this context, the word "artists" is not synonymous with "character".\n\nNotice the word "happen" used in the context: "I could free Tasha. If I did, one of three things would *happen*. Most likely: she would be meat..." In this context, the word "happen" is synonymous with "transpire".\n\n'
             prompt = examples + prompt
 
     elif style == "discriminator":
-        prompt = Template(
-            "In the following sentence: $context, can the word $target be replaced by the word $replacement? Answer:"
-            ).substitute(context=item.context, target=item.target, replacement=item.replacement)
-        completion = " " + item.synonym.capitalize()
+        instruction =  'Determine whether the word in context can be replaced by another word or expression without changing the meaning of the sentence.\n\n'
+        examples = 'Notice the word "artists" used in the context: "Many painters, sculptors, and other *artists* were inspired by Duchamp.". In this context, is "artists" synonymous with "character"? Answer: No\n\nNotice the word "happen" used in the context: "I could free Tasha. If I did, one of three things would *happen*. Most likely: she would be meat..." In this context, is "happen" synonymous with "transpire"? Answer: Yes\n\n'
+        template_string = 'Notice the word "$target" used in the context: "$context". In this context, is "$target" synonymous with "$replacement"? Answer:'
+
+        if shots == 'zero':
+            prompt = Template(
+                instruction + template_string
+                ).substitute(context=item.context, target=item.target, replacement=item.replacement)
+            completion = " " + item.synonym.capitalize()
 
         #TODO more than two shots??
         if shots == "few":
-            example1 = "In the following sentence: 'Well, kid, what do you think? Remember, this is your quest.', can the word think be replaced by the word mind? Answer: No\n\n"
-            example2 = "In the following sentence: 'I thought as much. Now leave, before I call the rats on you.', can the word call be replaced by the word summon? Answer: Yes\n\n"
-            prompt = example1 + example2 + prompt
+            #example1 = "In the following sentence: 'Well, kid, what do you think? Remember, this is your quest.', can the word think be replaced by the word mind? Answer: No\n\n"
+            #example2 = "In the following sentence: 'I thought as much. Now leave, before I call the rats on you.', can the word call be replaced by the word summon? Answer: Yes\n\n"
+            prompt = Template(
+                instruction + examples + template_string
+                ).substitute(context=item.context, target=item.target, replacement=item.replacement)
+            completion = " " + item.synonym.capitalize()
     else:
         raise ValueError("!?")
 
