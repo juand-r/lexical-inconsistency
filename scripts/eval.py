@@ -4,7 +4,7 @@
 # ROC for disc / gen accuract
 # MRR for 
 '''
-CUDA_VISIBLE_DEVICES={} python eval.py --model {path to model or model name}
+CUDA_VISIBLE_DEVICES={} python eval.py --model {path to model or model name} --task {}
 '''
 from pathlib import Path
 import os
@@ -19,8 +19,8 @@ from datasets import load_dataset
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 src_path = os.path.join(parent_dir, "src")
 sys.path.append(src_path)
-from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
-from utils import load_noun_pair_data, split_train_test, split_train_test_no_overlap, split_train_test_no_overlap_both, make_prompt_hypernymy, make_prompt_triviaqa, make_prompt_swords, load_swords_data, get_final_logit_prob
+from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, Gemma3ForCausalLM
+from utils import get_L_prompt, get_final_logit_prob
 from logitlens import compute_logodds_final_layer
 # from tunedlens import init_lens, obtain_prob_tensor
 
@@ -36,40 +36,45 @@ def init_model(model_name, device):
     global tokenizer
     global terminators 
     torch_dtype = "auto"#torch.bfloat16
-    model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch_dtype).to(device)
+    if 'gemma-3' in model_name:
+        model = Gemma3ForCausalLM.from_pretrained(model_name, torch_dtype=torch_dtype).to(device)
+    elif 'gemma' in model_name:
+        model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="eager", torch_dtype=torch_dtype).to(device)
+    else:
+        model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch_dtype).to(device)
     print("model.config.torch_dtype:", model.config.torch_dtype)  
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     tokenizer.pad_token = tokenizer.eos_token
     if "llama" in model_name:
         terminators = [tokenizer.eos_token_id, tokenizer.convert_tokens_to_ids("<|eot_id|>")]
 
-def get_L_prompt(task, split_type, seed):
-    if task=='hypernym':
-        L = load_noun_pair_data()
-        if split_type=='hyper':
-            L_train, L_test = split_train_test_no_overlap(L, seed=seed)
-        elif split_type=='random':
-            L_train, L_test = split_train_test(L, seed=seed, subsample=False, num_train=3000)
-        elif split_type=='both':
-            L_train, L_test = split_train_test_no_overlap_both(L, seed=2)
-        else:
-            raise ValueError("Wrong value for split-type")
-        make_prompt = make_prompt_hypernymy
-    elif task=='trivia-qa':
-        # load data here
-        L = load_dataset('lucadiliello/triviaqa') #TODO check if this is correct version.
-        #USE SUBSET FOR NOW
-        L_train =  L['train'].shuffle(seed=42).select(range(3000))
-        L_test = L['validation'].shuffle(seed=42).select(range(1000))
+# def get_L_prompt(task, split_type, seed):
+#     if task=='hypernym':
+#         L = load_noun_pair_data()
+#         if split_type=='hyper':
+#             L_train, L_test = split_train_test_no_overlap(L, seed=seed)
+#         elif split_type=='random':
+#             L_train, L_test = split_train_test(L, seed=seed, subsample=False, num_train=3000)
+#         elif split_type=='both':
+#             L_train, L_test = split_train_test_no_overlap_both(L, seed=2)
+#         else:
+#             raise ValueError("Wrong value for split-type")
+#         make_prompt = make_prompt_hypernymy
+#     elif task=='trivia-qa':
+#         # load data here
+#         L = load_dataset('lucadiliello/triviaqa') #TODO check if this is correct version.
+#         #USE SUBSET FOR NOW
+#         L_train =  L['train'].shuffle(seed=42).select(range(3000))
+#         L_test = L['validation'].shuffle(seed=42).select(range(1000))
 
-        #NOTE assumes this takes same arguments in each case
-        make_prompt = make_prompt_triviaqa
-    elif task=='swords':
-        L_train, L_test = load_swords_data(seed=0)
-        make_prompt = make_prompt_swords
-    else:
-        raise NotImplementedError("Not a task")
-    return L_train, L_test, make_prompt
+#         #NOTE assumes this takes same arguments in each case
+#         make_prompt = make_prompt_triviaqa
+#     elif task=='swords':
+#         L_train, L_test = load_swords_data(seed=0)
+#         make_prompt = make_prompt_swords
+#     else:
+#         raise NotImplementedError("Not a task")
+#     return L_train, L_test, make_prompt
 
 def get_base_model_name(modelname):
     # TODO: improve this
@@ -113,10 +118,10 @@ def main(args):
     
     P_gen = []
     P_disc = []
+
     for item in tqdm(LL):
         prompt_gen = make_prompt(item, style='generator', shots=gen_shots).prompt
         prompt_disc = make_prompt(item, style='discriminator', shots=disc_shots).prompt
-
         probs_gen = get_final_logit_prob(prompt_gen, model, tokenizer, device, is_chat = False) # TODO: change is_chat to True if instruction-tuned model
         P_gen.append(probs_gen)
         probs_disc = get_final_logit_prob(prompt_disc, model, tokenizer, device, is_chat = False) # TODO: change is_chat to True if instruction-tuned model

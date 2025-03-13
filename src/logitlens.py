@@ -135,7 +135,10 @@ def compute_disc_accuracy(gold, logodds_disc):
     # print("\naccuracy of discriminator fs: {}".format(disc_accuracy))
 
     # fpr, tpr, thresholds = roc_curve(gold, preds)
-    roc_auc = roc_auc_score(gold, preds)
+    if len(set(gold)) == 1:
+        roc_auc = np.nan
+    else:
+        roc_auc = roc_auc_score(gold, preds)
     # print(f'roc_auc: {roc_auc}')
     return disc_accuracy, roc_auc
 
@@ -174,7 +177,10 @@ def compute_metrics(task, L, logodds_gen, logodds_disc, ranks):
     logodds_disc_pos = [logodds_disc[i] for i in range(len(logodds_disc)) if golds[i] == 1]
     logodds_disc_neg = [logodds_disc[i] for i in range(len(logodds_disc)) if golds[i] == 0]
     corr_pos = pearsonr(logodds_gen_pos, logodds_disc_pos).statistic
-    corr_neg = pearsonr(logodds_gen_neg, logodds_disc_neg).statistic
+    if len(logodds_gen_neg) == 0:
+        corr_neg = np.nan
+    else:
+        corr_neg = pearsonr(logodds_gen_neg, logodds_disc_neg).statistic
     print(f"correlation: all = {corr_all}, pos = {corr_pos}, neg = {corr_neg}")
 
     disc_acc, disc_roc = compute_disc_accuracy(golds, logodds_disc)

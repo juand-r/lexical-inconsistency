@@ -28,7 +28,7 @@ import json
 import random
 from collections import namedtuple
 from string import Template
-from datasets import Dataset
+from datasets import Dataset, load_dataset
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 import numpy as np
@@ -344,8 +344,8 @@ def make_and_format_data(
         L_filter = L
 
     if style is None or both == 'union':
-        items_disc = [make_prompt(i, style='discriminator', shots=shots, neg=neg) for i in L]
-        items_gen = [make_prompt(i, style='generator', shots=shots, neg=neg) for i in L_filter]
+        items_disc = [make_prompt(i, style='discriminator', shots=shots) for i in L]
+        items_gen = [make_prompt(i, style='generator', shots=shots) for i in L_filter]
         items = items_disc + items_gen
         random.shuffle(items)
 
@@ -490,9 +490,10 @@ def get_L_prompt(task, split_type, seed):
         # load data here
         L = load_dataset('lucadiliello/triviaqa') #TODO check if this is correct version.
         #USE SUBSET FOR NOW
-        L_train =  L['train'].shuffle(seed=42).select(range(3000))
+        L_train =  L['train'].shuffle(seed=42).select(range(3000)) 
         L_test = L['validation'].shuffle(seed=42).select(range(1000))
-
+        print("L_train:", len(L_train))
+        print("L_test:", len(L_test))
         #NOTE assumes this takes same arguments in each case
         make_prompt = make_prompt_triviaqa
     elif task=='swords':

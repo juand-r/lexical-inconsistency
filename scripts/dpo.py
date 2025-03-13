@@ -115,7 +115,10 @@ if __name__ == "__main__":
     args.device = "cuda"
 
     torch_dtype = torch.bfloat16
-    model = AutoModelForCausalLM.from_pretrained(args.model, torch_dtype=torch_dtype).cuda()
+    if 'gemma' in args.model.lower():
+        model = AutoModelForCausalLM.from_pretrained(args.model, attn_implementation="eager", torch_dtype=torch_dtype,)# use this due to gemma-2 bug
+    else:
+        model = AutoModelForCausalLM.from_pretrained(args.model, torch_dtype=torch_dtype).cuda()
     tokenizer = AutoTokenizer.from_pretrained(args.model)
     tokenizer.pad_token = tokenizer.eos_token
     dataset = data_loader[args.task][args.direction](args.dataset_dir)

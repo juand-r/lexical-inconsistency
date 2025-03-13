@@ -216,6 +216,7 @@ def main():
     )
     model.to(device)
     tokenizer = AutoTokenizer.from_pretrained(model_id)
+    tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
 
     ###########################################################
@@ -288,12 +289,12 @@ def main():
 
     negstr = "--negation" if negate else ""
     if both == "none":
-        output_dir = "ftmodel--{}--{}--{}--{}{}".format(
-            model_id.split("/")[-1], style, shots, train_filter, negstr
+        output_dir = "ftmodel--{}--{}--{}--{}--{}{}".format(
+            model_id.split("/")[-1], args.task, style, shots, train_filter, negstr
         )
     else:
-        output_dir = "ftmodel--{}--{}--{}--{}{}".format(
-            model_id.split("/")[-1], both, shots, train_filter, negstr
+        output_dir = "ftmodel--{}--{}--{}--{}--{}{}".format(
+            model_id.split("/")[-1], args.task, both, shots, train_filter, negstr
         )
     output_dir = os.path.join("/datastor1/wenxuand/output/sft/", output_dir)
 
@@ -307,7 +308,7 @@ def main():
     train_args = TrainingArguments(
         output_dir=output_dir,  # directory to save and repository id
         num_train_epochs=num_epochs,  # number of training epochs
-        per_device_train_batch_size=64,  # $128, #2          # batch size per device during training
+        per_device_train_batch_size=8,  # $128, #2          # batch size per device during training
         per_device_eval_batch_size=7,  # 7#4
         # gradient_accumulation_steps=2,          # number of steps before performing a backward/update pass
         # gradient_checkpointing=True,            # use gradient checkpointing to save memory
