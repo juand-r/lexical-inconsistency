@@ -166,7 +166,7 @@ if __name__ == "__main__":
     parser.add_argument("--disc-shots", type=str, default='few', help="'zero' vs 'few'")
     parser.add_argument("--gen-shots", type=str, default='zero', help="'zero' vs 'few'")
     parser.add_argument("--train", action="store_true", default=False, help="log-odds of train or test set?")
-    parser.add_argument("--split-type", type=str, default='random', help="'random' vs 'hyper' vs 'both' ")
+    parser.add_argument("--split_type", type=str, default='random', help="'random' vs 'hyper' vs 'both' ")
     parser.add_argument("--task", type=str, default='hypernym', help="hypernym, trivia-qa, etc")
 
     args = parser.parse_args()

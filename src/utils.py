@@ -34,6 +34,20 @@ import torch
 import numpy as np
 from find_disjoint_sets import partition_items_kernighan_lin
 
+def filtering_hypernym(item, pos=True):
+    if pos:
+        return item.taxonomic == "yes"
+    else:
+        return item.taxonomic == "no"
+
+def filtering_swords(item, pos=True):
+    if pos:
+        return item.synonym == "yes"
+    else:
+        return item.synonym == "no"
+
+def filtering_triviaqa(item):
+    return True
 
 def load_noun_pair_data():
     """
@@ -313,6 +327,7 @@ def make_and_format_data(
     neg=False,
     both="union",
     instruction_masking=True,
+    filtering=None
 ):
     """
     Make prompts and completions, and tokenize and pad into a HF dataset.
@@ -321,21 +336,33 @@ def make_and_format_data(
     - combines generator and discriminator, this ignores other parameters
     `style`, `shots` and `neg`
     """
+    if filtering:
+        print("Original L length: ", len(L))
+        L_filter = list(filter(filtering, L))
+        print("Filtered L to length: ", len(L_filter))
+    else:
+        L_filter = L
 
-    items = [make_prompt(i, style=style, shots=shots, neg=neg) for i in L]
-    #items = [make_prompt(i, style=style, shots=shots) for i in L]
-
-    if both == "union":
-        items1 = [
-            #make_prompt(i, style="discriminator", shots="zero", neg=False) for i in L
-            make_prompt(i, style="discriminator", shots="zero") for i in L
-        ]
-        items2 = [make_prompt(i, style="generator", shots="zero") for i in L]
-        #items2 = [make_prompt(i, style="generator", shots="zero", neg=True) for i in L]
-        items = items1 + items2
+    if style is None or both == 'union':
+        items_disc = [make_prompt(i, style='discriminator', shots=shots, neg=neg) for i in L]
+        items_gen = [make_prompt(i, style='generator', shots=shots, neg=neg) for i in L_filter]
+        items = items_disc + items_gen
         random.shuffle(items)
 
-    if both == "joint":
+    # items = [make_prompt(i, style=style, shots=shots, neg=neg) for i in L]
+    # items = [make_prompt(i, style=style, shots=shots) for i in L]
+
+    # if both == "union":
+    #     items1 = [
+    #         #make_prompt(i, style="discriminator", shots="zero", neg=False) for i in L
+    #         make_prompt(i, style="discriminator", shots="zero") for i in L
+    #     ]
+    #     items2 = [make_prompt(i, style="generator", shots="zero") for i in L]
+    #     #items2 = [make_prompt(i, style="generator", shots="zero", neg=True) for i in L]
+    #     items = items1 + items2
+    #     random.shuffle(items)
+
+    elif both == "joint":
         items1 = [
             make_prompt(i, style="discriminator", shots="zero", neg=False) for i in L
         ]
@@ -360,13 +387,18 @@ def make_and_format_data(
         items = discfirst + genfirst
         random.shuffle(items)
 
+    else:
+        items = [make_prompt(i, style=style, shots=shots, neg=neg) for i in L_filter]
+    
     print("EXAMPLE items: ")
     print("prefix: ", items[0].prompt)
     print("completion: ", items[0].completion)
 
     instructions = []
     completions = []
+    prompt_completion_data = []
     for ii in range(len(items)):
+        prompt_completion_data.append({"prompt": items[ii].prompt.strip(), "completion": items[ii].completion})
         instruction = tokenizer(items[ii].prompt)["input_ids"]
         output = tokenizer(items[ii].completion, add_special_tokens=False)["input_ids"]
         instructions.append(instruction)
@@ -398,7 +430,7 @@ def make_and_format_data(
         }
     )
 
-    return items, hf_dataset
+    return items, hf_dataset, Dataset.from_list(prompt_completion_data)
 
 
 def load_model(peft_model_id, device):
@@ -436,9 +468,36 @@ def get_final_logit_prob(prompt, model, tokenizer, device = 'cuda', is_chat=Fals
     # print(model_log_probs.shape) # (seq_len, vocab_size)
     # raise ValueError("!?")
     # get the maximum indixe of model_log_probs
-    max_ind = torch.argmax(model_log_probs)
-    print("max_ind:", max_ind, torch.exp(model_log_probs[max_ind]))
-    print(f"max token--{tokenizer.decode([max_ind])}--")
-    print(torch.sum(torch.exp(model_log_probs)))
+    # max_ind = torch.argmax(model_log_probs)
+    # print("max_ind:", max_ind, torch.exp(model_log_probs[max_ind]))
+    # print(f"max token--{tokenizer.decode([max_ind])}--")
+    # print(torch.sum(torch.exp(model_log_probs)))
     return torch.exp(model_log_probs)
         
+def get_L_prompt(task, split_type, seed):
+    if task=='hypernym':
+        L = load_noun_pair_data()
+        if split_type=='hyper':
+            L_train, L_test = split_train_test_no_overlap(L, seed=seed)
+        elif split_type=='random':
+            L_train, L_test = split_train_test(L, seed=seed, subsample=False, num_train=3000)
+        elif split_type=='both':
+            L_train, L_test = split_train_test_no_overlap_both(L, seed=2)
+        else:
+            raise ValueError("Wrong value for split-type")
+        make_prompt = make_prompt_hypernymy
+    elif task=='trivia-qa':
+        # load data here
+        L = load_dataset('lucadiliello/triviaqa') #TODO check if this is correct version.
+        #USE SUBSET FOR NOW
+        L_train =  L['train'].shuffle(seed=42).select(range(3000))
+        L_test = L['validation'].shuffle(seed=42).select(range(1000))
+
+        #NOTE assumes this takes same arguments in each case
+        make_prompt = make_prompt_triviaqa
+    elif task=='swords':
+        L_train, L_test = load_swords_data(seed=0)
+        make_prompt = make_prompt_swords
+    else:
+        raise NotImplementedError("Not a task")
+    return L_train, L_test, make_prompt

@@ -5,6 +5,8 @@ to generator/discriminator gap in various settings.
 Example use:
 
 CUDA_VISIBLE_DEVICES=3 python fine_tune_lora.py --epochs 5 --style generator --shots zero --negate
+CUDA_VISIBLE_DEVICES=6 python fine_tune_lora.py --epochs 2 --shots zero --both union
+
 """
 
 import os
@@ -32,11 +34,18 @@ sys.path.append(src_path)
 
 from utils import (
     load_noun_pair_data,
-    make_prompt,
     split_train_test,
     make_and_format_data,
+    get_L_prompt,
+    filtering_hypernym,
+    filtering_swords,
+    filtering_triviaqa,
 )
 
+filtering_function_map = {
+    "hypernym": filtering_hypernym,
+    "swords": filtering_swords,
+    "trivia-qa": filtering_triviaqa,}
 
 # NOTE: this is currently too slow to be useful, but leaving in in case
 # I want to troubleshoot this again later.
@@ -131,6 +140,9 @@ def main():
         "--model", type=str, default="google/gemma-2-2b", help="model to train"
     )
     parser.add_argument(
+        "--task", type=str, default="hypernym", help="task to train on: hypernym, trivia-qa, swords, etc."
+    )
+    parser.add_argument(
         "--epochs", type=int, default=5, help="Number of epochs to train"
     )
     parser.add_argument(
@@ -150,6 +162,7 @@ def main():
     )
 
     parser.add_argument("--style", type=str, help="'discriminator' vs 'generator'")
+    parser.add_argument("--lr", type=float, default=2e-5, help="Learning rate for training")
     parser.add_argument("--shots", type=str, help="'zero' vs 'few'")
     parser.add_argument(
         "--both",
@@ -179,6 +192,10 @@ def main():
     seed = args.seed
     subsample = args.subsample
     train_filter = args.filter
+    if train_filter == 'pos':
+        filtering_func = filtering_function_map[args.task]
+    else:
+        filtering_func = None
     num_train = 3000
 
     # Prompt construction arguments
@@ -204,20 +221,21 @@ def main():
     ###########################################################
     # LOAD AND FORMAT DATA
     ###########################################################
-    L = load_noun_pair_data()
-    L_train, L_test = split_train_test(
-        L, seed=seed, subsample=subsample, num_train=num_train
-    )
-    if train_filter == "all":
-        print("Training with all data\n")
-    elif train_filter == "pos":
-        L_train = [i for i in L_train if i.taxonomic == "yes"]
-        print("Training with positive data only\n")
-    elif train_filter == "neg":
-        L_train = [i for i in L_train if i.taxonomic == "no"]
-        print("Training with negative data only\n")
-    else:
-        raise ValueError("!")
+    # L = load_noun_pair_data()
+    # L_train, L_test = split_train_test(
+    #     L, seed=seed, subsample=subsample, num_train=num_train
+    # )
+    # if train_filter == "all":
+    #     print("Training with all data\n")
+    # elif train_filter == "pos":
+    #     L_train = [i for i in L_train if i.taxonomic == "yes"]
+    #     print("Training with positive data only\n")
+    # elif train_filter == "neg":
+    #     L_train = [i for i in L_train if i.taxonomic == "no"]
+    #     print("Training with negative data only\n")
+    # else:
+    #     raise ValueError("!")
+    L_train, L_test, make_prompt = get_L_prompt(args.task, 'random', seed)
 
     print("Gen or disc: ", style)
     print("Shots: ", shots)
@@ -226,34 +244,43 @@ def main():
     print("Instruction masking?", instruction_mask)
     print("\nTrain dataset size: ", len(L_train))
 
-    p_train, hf_train = make_and_format_data(
-        L_train,
-        tokenizer,
+    p_train, hf_train, prompt_completion_train = make_and_format_data(
+        make_prompt,
+        L=L_train,
+        tokenizer=tokenizer,
+        style=style,
+        shots=shots,
+        neg=negate,
+        both=both,
+        instruction_masking=instruction_mask,
+        filtering=filtering_func,
+    )
+    p_test, hf_test, prompt_completion_test = make_and_format_data(
+        make_prompt,
+        L=L_test,
+        tokenizer=tokenizer,
         style=style,
         shots=shots,
         neg=negate,
         both=both,
         instruction_masking=instruction_mask,
     )
-    p_test, hf_test = make_and_format_data(
-        L_test,
-        tokenizer,
-        style=style,
-        shots=shots,
-        neg=negate,
-        both=both,
-        instruction_masking=instruction_mask,
-    )
-
+    print("Train dataset size: ", len(prompt_completion_train))
+    print("Test dataset size: ", len(prompt_completion_test))
+    
+    for i in range(10):
+        print(prompt_completion_train[i])
+        # print(tokenizer.apply_chat_template(prompt_completion_train[i]))
+    # raise ValueError("STOP")
     ################################################################
     # CONFIG FOR LoRA
     ################################################################
     # LoRA config based on QLoRA paper & Sebastian Raschka experiment
     # From: https://github.com/philschmid/deep-learning-pytorch-huggingface/blob/main/training/gemma-lora-example.ipynb
     peft_config = LoraConfig(
-        lora_alpha=8,
+        lora_alpha=16,
         lora_dropout=0.05,
-        r=6,
+        r=8,
         bias="none",
         target_modules="all-linear",
         task_type="CAUSAL_LM",
@@ -268,7 +295,7 @@ def main():
         output_dir = "ftmodel--{}--{}--{}--{}{}".format(
             model_id.split("/")[-1], both, shots, train_filter, negstr
         )
-    output_dir = os.path.join("../models/", output_dir)
+    output_dir = os.path.join("/datastor1/wenxuand/output/sft/", output_dir)
 
     #If this already exists, make sure not to overwrite it
     if os.path.exists(output_dir):
@@ -289,7 +316,7 @@ def main():
         save_strategy="epoch",  # save checkpoint every epoch
         bf16=True,  # use bfloat16 precision
         tf32=True,  # use tf32 precision
-        learning_rate=2e-4,  # learning rate, based on QLoRA paper
+        learning_rate=args.lr,  # learning rate, based on QLoRA paper
         max_grad_norm=0.3,  # max gradient norm based on QLoRA paper
         warmup_ratio=0.03,  # warmup ratio based on QLoRA paper
         lr_scheduler_type="constant",
@@ -297,18 +324,18 @@ def main():
         report_to="wandb",
         do_eval=True,
         eval_strategy="epoch",
-        # eval_steps=10,
+        eval_steps=10,
         # eval_accumulation_steps=30 #works but slow
     )
 
     trainer = SFTTrainer(
         model=model,
         args=train_args,
-        train_dataset=hf_train,
-        eval_dataset=hf_test,
+        train_dataset=prompt_completion_train,
+        eval_dataset=prompt_completion_test,
         peft_config=peft_config,
         tokenizer=tokenizer,
-        packing=False,
+        # packing=False,
     )
 
     # TODO this requires a little more tinkering to get working
@@ -335,3 +362,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+'''
+CUDA_VISIBLE_DEVICES=6 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task hypernym
+
+'''
