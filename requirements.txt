@@ -7,12 +7,13 @@ pandas>=2.2.3
 seaborn>=0.13.2
 datasets==3.1.0
 torch==2.5.1
-transformers==4.46.2
+git+https://github.com/huggingface/transformers@v4.49.0-Gemma-3
+#transformers==4.46.2
 tokenizers==0.20.3
 bitsandbytes==0.45.0
 tuned-lens==0.2.0
 accelerate==1.1.0
 nnsight==0.4.3
 peft==0.14.0
-trl==0.12.2
+trl==0.49.0
 scikit-learn==1.5.2
