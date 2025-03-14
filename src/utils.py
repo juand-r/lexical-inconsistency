@@ -167,7 +167,7 @@ def make_prompt_lambada(item, style='generator', shots='zero'):
         generator_prompt = 'What word is most likely to come next in the following text?\nText: $context '
         prompt = Template(generator_prompt).substitute(context=item['context'])
         #completion = " " + item.replacement
-        completion = "" + item['final_word']
+        completion = " " + item['final_word']
         #TODO should few-shot negation case have different example..??
         if shots == "few":
             examples = 'What word is most likely to come next in the following text?\n She gently takes him by his shoulders, forcing him to face her, and she adjusts the angle of his tie the way she might straighten a picture on the wall. "I\'m sure I don\'t need to tell you how important this gala is.\"\n\n\"You don\'t, but you will anyway.\n\n'
