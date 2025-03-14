@@ -19,9 +19,10 @@ from datasets import load_dataset
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 src_path = os.path.join(parent_dir, "src")
 sys.path.append(src_path)
-from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, Gemma3ForCausalLM
+from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
+#Gemma3ForCausalLM
 from utils import get_L_prompt, get_final_logit_prob
-from logitlens import compute_logodds_final_layer
+from logitlens import compute_logodds_final_layer, get_logodds_gen, get_logodds_disc
 # from tunedlens import init_lens, obtain_prob_tensor
 
 device = "cuda"
@@ -36,9 +37,10 @@ def init_model(model_name, device):
     global tokenizer
     global terminators 
     torch_dtype = "auto"#torch.bfloat16
-    if 'gemma-3' in model_name:
-        model = Gemma3ForCausalLM.from_pretrained(model_name, torch_dtype=torch_dtype).to(device)
-    elif 'gemma' in model_name:
+    # if 'gemma-3' in model_name:
+    #     model = Gemma3ForCausalLM.from_pretrained(model_name, torch_dtype=torch_dtype).to(device)
+    # el
+    if 'gemma' in model_name:
         model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="eager", torch_dtype=torch_dtype).to(device)
     else:
         model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch_dtype).to(device)
@@ -97,6 +99,14 @@ def main(args):
 
     init_model(modelname, device)
     
+    # TODO: test with base model, check the values
+    if "gpt" in modelname.lower():
+        first_sw_token = 1
+    elif "gemma" in modelname.lower() or "llama" in modelname.lower():
+        first_sw_token = 2
+    else:
+        raise ValueError("!?")
+    
     yestoks = [tokenizer.encode(i)[-1] for i in yes_words]
     notoks = [tokenizer.encode(i)[-1] for i in no_words]
 
@@ -119,6 +129,7 @@ def main(args):
     P_gen = []
     P_disc = []
 
+    json_list = []
     for item in tqdm(LL):
         prompt_gen = make_prompt(item, style='generator', shots=gen_shots).prompt
         prompt_disc = make_prompt(item, style='discriminator', shots=disc_shots).prompt
@@ -126,17 +137,33 @@ def main(args):
         P_gen.append(probs_gen)
         probs_disc = get_final_logit_prob(prompt_disc, model, tokenizer, device, is_chat = False) # TODO: change is_chat to True if instruction-tuned model
         P_disc.append(probs_disc)
+        if args.train:
+            if task == 'hypernym':
+                json_list.append({"noun1":item.noun1, "noun2":item.noun2, "taxonomic":item.taxonomic, "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0, 
+                                "generator-completion": ' ' + item.noun2.strip(), "discriminator-gold-completion": ' ' + item.taxonomic.strip().capitalize()})
+            elif task == 'trivia-qa':
+                # print(item.keys())
+                json_list.append({"question":item['question'], "answer":' ' + item['answers'][0].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
+                                "generator-completion": ' ' + item['answers'][0].strip(), "discriminator-gold-completion": ' Yes'})
+            else:
+                raise NotImplementedError("Not a task")
+            # print(json_list[-1])
+    if args.train:
+        logodds_gen = [get_logodds_gen(P_gen, LL, ii, tokenizer, first_sw_token, task, use_lgo=False) for ii in range(len(P_gen))]
+        logodds_disc = [get_logodds_disc(P_disc, ii, yestoks, None) for ii in range(len(P_disc))]
+        for jj in range(len(json_list)):
+            json_list[jj]["generator-log-prob"] = float(logodds_gen[jj])
+            json_list[jj]["discriminator-log-prob"] = float(logodds_disc[jj])
+            # print(json_list[jj])
+        print(f"Saving train data to ../data/{task}-train-{modelname.split('/')[-1]}.json")
+        with open(f"../data/{task}-train-{modelname.split('/')[-1]}.json", 'w') as f:
+            json.dump(json_list, f, indent=4)
+        return
 
     gc.collect()
     torch.cuda.empty_cache()
 
-    # TODO: test with base model, check the values
-    if "gpt" in modelname.lower():
-        first_sw_token = 1
-    elif "gemma" in modelname.lower() or "llama" in modelname.lower():
-        first_sw_token = 2
-    else:
-        raise ValueError("!?")
+    
     
     res_dict = compute_logodds_final_layer(task,
         P_gen, P_disc, LL, tokenizer, first_sw_token, yestoks, notoks)
@@ -176,3 +203,12 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     main(args)
+
+'''
+get data for dpo...
+CUDA_VISIBLE_DEVICES=5 python eval.py --model google/gemma-3-4b-pt --train --task hypernym
+CUDA_VISIBLE_DEVICES=6 python eval.py --model google/gemma-2-2b --train --task trivia-qa
+CUDA_VISIBLE_DEVICES=6 python eval.py --model google/gemma-2-2b --train --task swords
+
+model = {'google/gemma-2-2b', 'google/gemma-3-4b-pt', 'meta-llama/Llama-3.2-3B'}
+'''

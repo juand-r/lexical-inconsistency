@@ -48,11 +48,11 @@ def load_hypernym_disc_to_gen(file = "../data/hypernymy-train.json", threshold =
     for i in tqdm(range(len(data_hypernym))):
         d = data_hypernym[i]
         if d['generator-log-prob'] > threshold:
-            chosen.append('Yes')
-            rejected.append('No')
+            chosen.append(' Yes')
+            rejected.append(' No')
         else:
-            chosen.append('No')
-            rejected.append('Yes')
+            chosen.append(' No')
+            rejected.append(' Yes')
 
     dataset_dict = {"prompt": prompts, "chosen": chosen, "rejected": rejected}
     dataset = Dataset.from_dict(dataset_dict)
@@ -78,19 +78,48 @@ def load_hypernym_gen_to_disc(file = "../data/hypernymy-train.json"):
             for (a,b) in pairs_combinations[:len(v)]:
                 if a['discriminator-log-prob'] >= b['discriminator-log-prob']:
                     prompts.append(v[0]['generator-prompt'])
-                    chosen.append(a['noun2'])
-                    rejected.append(b['noun2'])
+                    chosen.append(' ' + a['noun2'])
+                    rejected.append(' ' + b['noun2'])
                 else:
                     prompts.append(v[0]['generator-prompt'])
-                    chosen.append(b['noun2'])
-                    rejected.append(a['noun2'])
+                    chosen.append(' ' + b['noun2'])
+                    rejected.append(' ' + a['noun2'])
     dataset_dict = {"prompt": prompts, "chosen": chosen, "rejected": rejected}
     dataset = Dataset.from_dict(dataset_dict)
     return dataset
 
+
+def load_triviaqa_disc_to_gen(file = "../data/triviaqa-train.json", threshold = None):
+    with open(file, 'r') as f:
+        data_triviaqa = json.load(f)
+
+    if threshold == None:
+        threshold = np.mean([d['generator-log-prob'] for d in data_triviaqa])
+    prompts = [d['discriminator-prompt'] for d in data_triviaqa]
+    chosen = []
+    rejected = []
+    for i in tqdm(range(len(data_triviaqa))):
+        d = data_triviaqa[i]
+        if d['generator-log-prob'] > threshold:
+            chosen.append(' Yes')
+            rejected.append(' No')
+        else:
+            chosen.append(' No')
+            rejected.append(' Yes')
+
+    dataset_dict = {"prompt": prompts, "chosen": chosen, "rejected": rejected}
+    dataset = Dataset.from_dict(dataset_dict)
+    # for item in dataset:
+    #     print(item)
+    return dataset
+
+
+
 data_loader = {'hypernym':
                {'d2g': load_hypernym_disc_to_gen,
                 'g2d': load_hypernym_gen_to_disc},
+                'trivia-qa':
+                {'d2g': load_triviaqa_disc_to_gen,}
                 }
 
 
@@ -156,3 +185,18 @@ if __name__ == "__main__":
 
     trainer.train()
 
+'''
+CUDA_VISIBLE_DEVICES=5 python dpo.py --model meta-llama/Llama-3.2-3B --task hypernym --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/hypernym-train-Llama-3.2-3B.json [ing] 
+CUDA_VISIBLE_DEVICES=6 python dpo.py --model meta-llama/Llama-3.2-3B --task hypernym --direction g2d --lr 2e-6 --epochs 2 --dataset_dir ../data/hypernym-train-Llama-3.2-3B.json [ing]
+
+CUDA_VISIBLE_DEVICES=5 python dpo.py --model meta-llama/Llama-3.2-3B --task trivia-qa --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/trivia-qa-train-Llama-3.2-3B.json
+
+#TODO:
+rerun gemma-2-2b on hypernym
+
+CUDA_VISIBLE_DEVICES=2 python dpo.py --model google/gemma-2-2b --task trivia-qa --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/trivia-qa-train-gemma-2-2b.json [ing]
+
+CUDA_VISIBLE_DEVICES=2 python dpo.py --model  google/gemma-2-2b --task hypernym --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/hypernym-train-gemma-2-2b.json 
+CUDA_VISIBLE_DEVICES=6 python dpo.py --model  google/gemma-2-2b --task hypernym --direction g2d --lr 2e-6 --epochs 2 --dataset_dir ../data/hypernym-train-gemma-2-2b.json 
+
+'''

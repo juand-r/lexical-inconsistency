@@ -92,14 +92,17 @@ def get_rank(L, ind):
 
 
 def get_logodds_disc(Ps, ii, yestoks, notoks):
-    lgo = torch.log(torch.sum(Ps[ii][..., yestoks], dim=-1)) - torch.log(
-        torch.sum(Ps[ii][..., notoks], dim=-1)
-    )
+    if notoks is None:
+        lgo = torch.log(torch.sum(Ps[ii][..., yestoks], dim=-1)) 
+    else:
+        lgo = torch.log(torch.sum(Ps[ii][..., yestoks], dim=-1)) - torch.log(
+            torch.sum(Ps[ii][..., notoks], dim=-1)
+        )
     lgo[torch.isinf(lgo)] = 35  # truncate infs
     return lgo
 
 
-def get_logodds_gen(Ps, L, ii, tokenizer, first_sw_token, task):
+def get_logodds_gen(Ps, L, ii, tokenizer, first_sw_token, task, use_lgo=True):
     #TODO should clean up this code so it takes in the completion
     if task=='hypernym':
         ind = tokenizer.encode("a " + L[ii].noun2)[first_sw_token]
@@ -109,10 +112,12 @@ def get_logodds_gen(Ps, L, ii, tokenizer, first_sw_token, task):
         ind = tokenizer.encode("a " + L[ii].replacement)[first_sw_token]
     else:
         raise ValueError("!")
-
-    lgo = torch.log(torch.abs(Ps[ii][..., ind])) - torch.log(
-        torch.abs(1 - Ps[ii][..., ind])
-    )
+    if use_lgo:
+        lgo = torch.log(torch.abs(Ps[ii][..., ind])) - torch.log(
+            torch.abs(1 - Ps[ii][..., ind])
+        )
+    else:
+        lgo = torch.log(torch.abs(Ps[ii][..., ind])) 
     lgo[torch.isinf(lgo)] = 35  # truncate infs
     return lgo
 
