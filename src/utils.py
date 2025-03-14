@@ -68,6 +68,29 @@ def load_noun_pair_data():
     return out
 
 
+def load_lambada_data(seed=0):
+    dataset =  load_dataset("EleutherAI/lambada_openai", "en", split="test")
+    # NOTE: this is the same version Jennifer Hu used, see also
+    # https://github.com/jennhu/lm-task-demands/blob/d28b94b9d83a9ad855734dae44e7582029fcc13e/src/metrics/lambada.py#L24
+    L = []
+    for i, example in enumerate(dataset):
+        text = example["text"]
+        # Get final word to be predicted (by splitting on whitespace).
+        # NOTE: there's some debate about what the "true" Lambada task is:
+        # https://github.com/EleutherAI/lm-evaluation-harness/issues/350
+        splits = text.split(" ")
+        prefix = " ".join(splits[:-1])
+        final_word = splits[-1]
+        #TODO make this optional and uniform across data loaders
+        #prefix = prefix + " "
+        # Initialize meta information for this item
+        item = {"context": prefix, "final_word": final_word}
+        L.append(item)
+    random.seed(seed)
+    random.shuffle(L)
+    trainset, testset = L[:4153], L[4153:]
+    return trainset, testset
+
 def load_swords_data(seed=0):
     """Load the swords dataset, and makes positive and negative pairs from it."""
     #NOTE for now pick the top highest ranked item in list of substitutes as positive case
@@ -115,8 +138,54 @@ def load_swords_data(seed=0):
     random.shuffle(testset)
     return trainset, testset
 
-#TODO generalize better to DRY!
 
+def make_prompt_lambada(item, style='generator', shots='zero'):
+    if style == "generator":
+
+        #generator_prompt = 'Complete the story:$context '
+        generator_prompt = 'What word is most likely to come next in the following text?\nText: $context '
+        prompt = Template(generator_prompt).substitute(context=item['context'])
+        #completion = " " + item.replacement
+        completion = "" + item['final_word']
+        #TODO should few-shot negation case have different example..??
+        if shots == "few":
+            examples = 'What word is most likely to come next in the following text?\n She gently takes him by his shoulders, forcing him to face her, and she adjusts the angle of his tie the way she might straighten a picture on the wall. "I\'m sure I don\'t need to tell you how important this gala is.\"\n\n\"You don\'t, but you will anyway.\n\n'
+            #TODO make "neg" and regular version of this example??
+            prompt = examples + prompt
+
+    elif style == "discriminator":
+        instruction =  ''
+        examples = 'Is the word "anyway" the most likely word to come next in the following text?\nText: "She gently takes him by his shoulders, forcing him to face her, and she adjusts the angle of his tie the way she might straighten a picture on the wall. "I\'m sure I don\'t need to tell you how important this gala is."\n\n"You don\'t, but you will\"\n\nAnswer: Yes\n\n'
+
+        template_string = 'Is the word "$final_word" the most likely word to come next in the following text?\nText: "$context"\n\nAnswer:'
+
+        if shots == 'zero':
+            prompt = Template(
+                instruction + template_string
+                ).substitute(context=item['context'], final_word=item['final_word'])
+            #completion = " " + item.synonym.capitalize(i)
+            #NOTE only positives yere
+            completion = " Yes"
+
+        #TODO more than two shots??
+        if shots == "few":
+            #example1 = "In the following sentence: 'Well, kid, what do you think? Remember, this is your quest.', can the word think be replaced by the word mind? Answer: No\n\n"
+            #example2 = "In the following sentence: 'I thought as much. Now leave, before I call the rats on you.', can the word call be replaced by the word summon? Answer: Yes\n\n"
+            prompt = Template(
+                instruction + examples + template_string
+                ).substitute(context=item['context'], final_word=item['final_word'])
+            #completion = " " + item.synonym.capitalize()
+            completion = " Yes"
+    else:
+        raise ValueError("!?")
+
+    prompt = prompt.strip()
+    Pt = namedtuple("PromptCompletion", ["prompt", "completion"])
+    return Pt(prompt, completion)
+
+
+
+#TODO generalize better to DRY!
 def make_prompt_triviaqa(item, with_context=False, style='generator', shots='zero'):
     """ Only positive examples for now! Also, when multiple acceptable answers are available in the dataset,
     use the first one for now. """
@@ -473,7 +542,7 @@ def get_final_logit_prob(prompt, model, tokenizer, device = 'cuda', is_chat=Fals
     # print(f"max token--{tokenizer.decode([max_ind])}--")
     # print(torch.sum(torch.exp(model_log_probs)))
     return torch.exp(model_log_probs)
-        
+
 def get_L_prompt(task, split_type, seed):
     if task=='hypernym':
         L = load_noun_pair_data()
@@ -499,6 +568,9 @@ def get_L_prompt(task, split_type, seed):
     elif task=='swords':
         L_train, L_test = load_swords_data(seed=0)
         make_prompt = make_prompt_swords
+    elif task=='lambada':
+        L_train, L_test = load_lambada_data(seed=0)
+        make_prompt = make_prompt_lambada
     else:
         raise NotImplementedError("Not a task")
     return L_train, L_test, make_prompt
