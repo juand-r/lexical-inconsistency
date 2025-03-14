@@ -87,6 +87,8 @@ def load_lambada_data(seed=0):
         # Initialize meta information for this item
         item = {"context": prefix, "final_word": final_word}
         L.append(item)
+
+
     random.seed(seed)
     random.shuffle(L)
     trainset, testset = L[:4153], L[4153:]
@@ -107,6 +109,7 @@ def load_swords_data(seed=0):
         "Item",
         ["context", "target", "replacement", "synonym"],
     )
+
 
     #NOTE use their dev as my train to keep things sane.
     testset = []
@@ -133,6 +136,23 @@ def load_swords_data(seed=0):
 
         trainset.append(Item(context, item['target'], pos_replacement, 'yes') )
         trainset.append(Item(context, item['target'], neg_replacement, 'no') )
+
+    #filter here
+    #NOTE doing it this way we don't have a perfectly even balance (e.g., one yes and one no per example)
+    # but close..
+    testset = [i for ii,i in enumerate(testset) if
+            (len(i.replacement.split(" "))<=3) and
+            (i.replacement.split(" ")[0] not in ['the','be','a', 'in' 'yet', 'at', 'by', 'do', 'dont', 'we', 'and', 'even', 'to', 'with']) and
+            i.replacement != i.target ]
+
+    trainset = [i for ii,i in enumerate(trainset) if
+            (len(i.replacement.split(" "))<=3) and
+            (i.replacement.split(" ")[0] not in ['the','be','a', 'in' 'yet', 'at', 'by', 'do', 'dont', 'we', 'and', 'even', 'to', 'with']) and
+            i.replacement != i.target ]
+
+#    trainset = [i for i in trainset if
+#            (len(i.replacement.split(" "))<=3) and
+#            True]
 
     random.seed(seed)
     random.shuffle(trainset)
@@ -244,6 +264,7 @@ def make_prompt_swords(item, style="generator", shots="zero", neg=False):
 
     if style == "generator":
         generator_prompt = 'Notice the word "$target" used in the context: "$context". In this context, the word "$target" is$optional_negation synonymous with "'
+        #generator_prompt = 'Notice the word "$target" used in the context: "$context". In this context, the word "$target" has roughly the same meaning as "'
         prompt = Template(generator_prompt).substitute(context=item.context, target=item.target, optional_negation=negation_word)
         #completion = " " + item.replacement
         completion = "" + item.replacement
