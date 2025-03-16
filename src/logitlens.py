@@ -143,7 +143,7 @@ def compute_disc_accuracy(gold, logodds_disc):
     if len(set(gold)) == 1:
         roc_auc = np.nan
     else:
-        roc_auc = roc_auc_score(gold, preds)
+        roc_auc = roc_auc_score(gold, logodds_disc)
     # print(f'roc_auc: {roc_auc}')
     return disc_accuracy, roc_auc
 
