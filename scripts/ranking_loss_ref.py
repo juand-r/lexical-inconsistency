@@ -292,7 +292,7 @@ def main(args):
         if True:#epoch % save_steps==1:
             #save_directory = "../models/v3-delta5-epoch"+str(epoch)
             #save_directory = "../models/v3-delta5-no-overlap-both-epoch"+str(epoch)
-            save_directory = "../models/v3-delta5-epoch"+str(epoch) + "--" + task
+            save_directory = "../models/v4-delta5-epoch"+str(epoch) + "--" + task
             print("Saving to ", save_directory)
             model.save_pretrained(save_directory)
             tokenizer.save_pretrained(save_directory)
