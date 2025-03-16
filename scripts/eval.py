@@ -100,13 +100,18 @@ def main(args):
     init_model(modelname, device)
     
     # TODO: test with base model, check the values
+#    if "gpt" in modelname.lower():
+#        first_sw_token = 1
+#    elif "gemma" in modelname.lower() or "llama" in modelname.lower():
+#        first_sw_token = 2
+#    else:
+#        raise ValueError("!?")
+
+    #NOTE assume we just do llama or gemma. Same situation in both:
+    first_sw_token = 2
     if "gpt" in modelname.lower():
-        first_sw_token = 1
-    elif "gemma" in modelname.lower() or "llama" in modelname.lower():
-        first_sw_token = 2
-    else:
-        raise ValueError("!?")
-    
+        raise ValueError("If you are using GPT then rewrite this bit!")
+
     yestoks = [tokenizer.encode(i)[-1] for i in yes_words]
     notoks = [tokenizer.encode(i)[-1] for i in no_words]
 

@@ -64,7 +64,7 @@ def get_logitlens_output(prompt, model, modelname_short):
 
     # Find the maximum probability and corresponding tokens for each position
     max_probs, tokens = probs.max(dim=-1)
-    print(f"logitlens_output--max_ind:{tokens[-1, -1]}, {model.tokenizer.decode([tokens[-1, -1]])}, {max_probs[-1,-1]}")
+    #print(f"logitlens_output--max_ind:{tokens[-1, -1]}, {model.tokenizer.decode([tokens[-1, -1]])}, {max_probs[-1,-1]}")
     # Decode token IDs to words for each layer
     words = [
         [
@@ -145,7 +145,7 @@ def compute_disc_accuracy(gold, logodds_disc):
     if len(set(gold)) == 1:
         roc_auc = np.nan
     else:
-        roc_auc = roc_auc_score(gold, preds)
+        roc_auc = roc_auc_score(gold, logodds_disc)
     # print(f'roc_auc: {roc_auc}')
     return disc_accuracy, roc_auc
 
