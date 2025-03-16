@@ -1,3 +1,17 @@
+"""
+This script is used to train a model to rank discriminator prompts to match the ranking of log-probabilities of generator prompts.
+
+Usage:
+python ranking_loss_ref.py --model google/gemma-2-2b --task hypernym --with_ref False --num_epochs 10 --learning_rate 1e-5 --delta 5 --total_samples 5110 --save_steps 1
+
+TODO
+- Currently this is using the ground truth ranking from the generator.
+  We should also try to use the ranking from the discriminator to align the generator.
+
+- Also, currently we are using the log-probabilities of the last layer.
+  We should also try to use the log-probabilities of the second to last layer.
+
+"""
 import os
 import sys
 import itertools
@@ -16,29 +30,23 @@ from datasets import load_dataset
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 src_path = os.path.join(parent_dir, "src")
 sys.path.append(src_path)
-import utils/
-from utils import make_prompt_triviaqa, make_prompt_hypernymy, make_prompt_swords, make_prompt_lambada
+import utils
+from utils import make_prompt_triviaqa, make_prompt_hypernymy, make_prompt_swords, make_prompt_lambada, get_final_logit_prob
 
 def main(args):
     #TODO load model also, use function above
     model_name = args.model
+    task = args.task
     with_ref = args.with_ref
     num_epochs = args.num_epochs
-    batch_size = args.batch_size
     lr = args.learning_rate
     delta = args.delta
     #TODO set delta automatically based on data?
     total_samples = args.total_samples
     save_steps = args.save_steps
-    max_length = args.max_length
-    num_train = args.num_train
-    num_test = args.num_test
-    shots = args.shots
-    neg = args.neg
-    both = args.both
     #tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-    #WITH_REF = True
+    WITH_REF = with_ref
 
     def load_model_tokenizer(model_name):
         tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -66,7 +74,6 @@ def main(args):
     # NOTE first use ground truth ranking from generator.
     # Will now use ranking loss on *discriminator* prompts to try to match it!
 
-    task = args.task
 
     if task=='hypernym':
         L = utils.load_noun_pair_data()
@@ -85,44 +92,100 @@ def main(args):
     else:
         raise NotImplementedError("Task not implemented!")
 
-
-    #TODO load the positive *train* set, not test set! Use generator order for ranking
-    #gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--gen-zero--train.pt', weights_only=True)
-
-    #gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--hypernym--gen-zero--train.pt', weights_only=True)
-    gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--swords--gen-zero--train.pt', weights_only=True)
-    #gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--gen-zero--train--hyper.pt', weights_only=True)
-    #gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--gen-zero--train--both.pt', weights_only=True)
-    #gen_logodds = torch.load('../outputs/logodds/gemma-2-2b--trivia-qa--gen-zero--train.pt', weights_only=True)
-
-    gen_logprobs_last_layer = [-math.log(1+math.exp(-l[-1].tolist())) for l in gen_logodds[:]]
-
+    # Compute log-probabilities on the fly instead of loading from disk
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.to(device)
+    
+    print("Computing log-probabilities on the fly...")
+    print(f"Using device: {device}")
+    
     if task=='hypernym':
-        gen_logprobs_last_layer_pos = [i for ii,i in enumerate(gen_logprobs_last_layer) if L_train[ii].taxonomic=='yes']
-        #NOTE train only on positive examples for now
         L_train_pos = [i for i in L_train if i.taxonomic == "yes"]
-
-        #TODO do this again on "few" shot setting which is the one I actually want.. but need memory
-        p_train, hf_train = utils.make_and_format_data(make_prompt_hypernymy, L_train_pos, tokenizer, style='discriminator', shots='few', neg=False, both=None)
+        # Generate generator prompts
+        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_hypernymy, L_train_pos, tokenizer, style='generator', shots='zero', neg=False, both=None)
+        prompts_gen = [i.prompt for i in p_train_gen]
+        
+        # Compute log-probabilities for generator prompts
+        gen_logprobs_last_layer_pos = []
+        for idx, prompt in enumerate(tqdm(prompts_gen)):
+            probs = get_final_logit_prob(prompt, model, tokenizer, device, is_chat=False)
+            # Get the log probability for the target token (noun2)
+            # For hypernymy, we want the probability of the noun2 token
+            target_text = " " + L_train_pos[idx].noun2
+            target_tokens = tokenizer.encode(target_text)
+            # Use the first token after the space
+            ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
+            log_prob = math.log(probs[ind].item() + 1e-12)
+            gen_logprobs_last_layer_pos.append(log_prob)
+        
+        # Generate discriminator prompts
+        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_hypernymy, L_train_pos, tokenizer, style='discriminator', shots='few', neg=False, both=None)
         prompts_pos = [i.prompt for i in p_train]
-    #NOTE in discriminator case the indices we're looking for is just index of " Yes"... for generator it will depend on each prompt
-    # of course.
+        
     elif task=='trivia-qa':
-        #NOTE only positive examples for now
-        gen_logprobs_last_layer_pos = gen_logprobs_last_layer
         L_train_pos = L_train
-        p_train, hf_train = utils.make_and_format_data(make_prompt_triviaqa, L_train_pos, tokenizer, style='discriminator', shots='few', neg=False, both=None)
+        # Generate generator prompts
+        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_pos, tokenizer, style='generator', shots='zero', neg=False, both=None)
+        prompts_gen = [i.prompt for i in p_train_gen]
+        
+        # Compute log-probabilities for generator prompts
+        gen_logprobs_last_layer_pos = []
+        for idx, prompt in enumerate(tqdm(prompts_gen)):
+            probs = get_final_logit_prob(prompt, model, tokenizer, device, is_chat=False)
+            # Get the log probability for the target token (answer)
+            target_text = " " + L_train_pos[idx]['answers'][0]
+            target_tokens = tokenizer.encode(target_text)
+            # Use the first token after the space
+            ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
+            log_prob = math.log(probs[ind].item() + 1e-12)
+            gen_logprobs_last_layer_pos.append(log_prob)
+        
+        # Generate discriminator prompts
+        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_pos, tokenizer, style='discriminator', shots='few', neg=False, both=None)
         prompts_pos = [i.prompt for i in p_train]
+        
     elif task=='swords':
-        gen_logprobs_last_layer_pos = gen_logprobs_last_layer
         L_train_pos = [i for i in L_train if i.synonym=='yes']
-        p_train, hf_train = utils.make_and_format_data(make_prompt_swords, L_train_pos, tokenizer, style='discriminator', shots='few', neg=False, both=None)
+        # Generate generator prompts
+        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_swords, L_train_pos, tokenizer, style='generator', shots='zero', neg=False, both=None)
+        prompts_gen = [i.prompt for i in p_train_gen]
+        
+        # Compute log-probabilities for generator prompts
+        gen_logprobs_last_layer_pos = []
+        for idx, prompt in enumerate(tqdm(prompts_gen)):
+            probs = get_final_logit_prob(prompt, model, tokenizer, device, is_chat=False)
+            # Get the log probability for the target token (replacement)
+            target_text = " " + L_train_pos[idx].replacement
+            target_tokens = tokenizer.encode(target_text)
+            # Use the first token after the space
+            ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
+            log_prob = math.log(probs[ind].item() + 1e-12)
+            gen_logprobs_last_layer_pos.append(log_prob)
+        
+        # Generate discriminator prompts
+        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_swords, L_train_pos, tokenizer, style='discriminator', shots='few', neg=False, both=None)
         prompts_pos = [i.prompt for i in p_train]
+        
     elif task=='lambada':
-        #NOTE only positive examples for now
-        gen_logprobs_last_layer_pos = gen_logprobs_last_layer
         L_train_pos = L_train
-        p_train, hf_train = utils.make_and_format_data(make_prompt_lambada, L_train_pos, tokenizer, style='discriminator', shots='few', neg=False, both=None)
+        # Generate generator prompts
+        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_lambada, L_train_pos, tokenizer, style='generator', shots='zero', neg=False, both=None)
+        prompts_gen = [i.prompt for i in p_train_gen]
+        
+        # Compute log-probabilities for generator prompts
+        gen_logprobs_last_layer_pos = []
+        for idx, prompt in enumerate(tqdm(prompts_gen)):
+            probs = get_final_logit_prob(prompt, model, tokenizer, device, is_chat=False)
+            # Get the log probability for the target token (final_word)
+            target_text = " " + L_train_pos[idx]['final_word']
+            target_tokens = tokenizer.encode(target_text)
+            # Use the first token after the space
+            ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
+            log_prob = math.log(probs[ind].item() + 1e-12)
+            gen_logprobs_last_layer_pos.append(log_prob)
+        
+        # Generate discriminator prompts
+        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_lambada, L_train_pos, tokenizer, style='discriminator', shots='few', neg=False, both=None)
         prompts_pos = [i.prompt for i in p_train]
     else:
         raise ValueError("!!")
@@ -161,8 +224,6 @@ def main(args):
     print("\n\n")
     print(pairs[1])
     print("\n\nNum Samples: ", len(pairs))
-
-    breakpoint()
 
     class PairwiseDataset(Dataset):
         def __init__(self, pairs, tokenizer, max_length=128):
@@ -218,11 +279,7 @@ def main(args):
     dataset = PairwiseDataset(pairs, tokenizer, max_length=max_context_length)
     train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
     print("\n\nDone making dataloader\n\n")
-    optimizer = AdamW(model.parameters(), lr=1e-5)
-
-
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model.to(device)
+    optimizer = AdamW(model.parameters(), lr=lr)
 
     #num_epochs = 10
     #save_steps = 1
