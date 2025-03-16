@@ -64,7 +64,7 @@ def get_logitlens_output(prompt, model, modelname_short):
 
     # Find the maximum probability and corresponding tokens for each position
     max_probs, tokens = probs.max(dim=-1)
-    print(f"logitlens_output--max_ind:{tokens[-1, -1]}, {model.tokenizer.decode([tokens[-1, -1]])}, {max_probs[-1,-1]}")
+    #print(f"logitlens_output--max_ind:{tokens[-1, -1]}, {model.tokenizer.decode([tokens[-1, -1]])}, {max_probs[-1,-1]}")
     # Decode token IDs to words for each layer
     words = [
         [
