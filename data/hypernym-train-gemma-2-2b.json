@@ -1,0 +1,112 @@
+[
+    {
+        "noun1": "blazers",
+        "noun2": "clothing",
+        "taxonomic": "yes",
+        "generator-prompt": "Complete the sentence: blazers are a kind of",
+        "discriminator-prompt": "Do you think bees are furniture? Answer: No\n\nDo you think corgis are dogs? Answer: Yes\n\nDo you think trucks are a fruit? Answer: No\n\nDo you think robins are birds? Answer: Yes\n\nDo you think blazers are a clothing? Answer:",
+        "generator-log-prob": -3.293804168701172,
+        "discriminator-log-prob": -0.5964572429656982,
+        "generator-completion": " clothing",
+        "discriminator-gold-completion": " Yes"
+    },
+    {
+        "noun1": "kittens",
+        "noun2": "clothing",
+        "taxonomic": "no",
+        "generator-prompt": "Complete the sentence: kittens are a kind of",
+        "discriminator-prompt": "Do you think bees are furniture? Answer: No\n\nDo you think corgis are dogs? Answer: Yes\n\nDo you think trucks are a fruit? Answer: No\n\nDo you think robins are birds? Answer: Yes\n\nDo you think kittens are a clothing? Answer:",
+        "generator-log-prob": -14.020520210266113,
+        "discriminator-log-prob": -1.2694716453552246,
+        "generator-completion": " clothing",
+        "discriminator-gold-completion": " No"
+    },
+    {
+        "noun1": "suitcases",
+        "noun2": "container",
+        "taxonomic": "yes",
+        "generator-prompt": "Complete the sentence: suitcases are a kind of",
+        "discriminator-prompt": "Do you think bees are furniture? Answer: No\n\nDo you think corgis are dogs? Answer: Yes\n\nDo you think trucks are a fruit? Answer: No\n\nDo you think robins are birds? Answer: Yes\n\nDo you think suitcases are a container? Answer:",
+        "generator-log-prob": -5.800041675567627,
+        "discriminator-log-prob": -0.7537726163864136,
+        "generator-completion": " container",
+        "discriminator-gold-completion": " Yes"
+    },
+    {
+        "noun1": "camels",
+        "noun2": "mammal",
+        "taxonomic": "yes",
+        "generator-prompt": "Complete the sentence: camels are a kind of",
+        "discriminator-prompt": "Do you think bees are furniture? Answer: No\n\nDo you think corgis are dogs? Answer: Yes\n\nDo you think trucks are a fruit? Answer: No\n\nDo you think robins are birds? Answer: Yes\n\nDo you think camels are a mammal? Answer:",
+        "generator-log-prob": -1.549525260925293,
+        "discriminator-log-prob": -0.592230498790741,
+        "generator-completion": " mammal",
+        "discriminator-gold-completion": " Yes"
+    },
+    {
+        "noun1": "gazelles",
+        "noun2": "mammal",
+        "taxonomic": "yes",
+        "generator-prompt": "Complete the sentence: gazelles are a kind of",
+        "discriminator-prompt": "Do you think bees are furniture? Answer: No\n\nDo you think corgis are dogs? Answer: Yes\n\nDo you think trucks are a fruit? Answer: No\n\nDo you think robins are birds? Answer: Yes\n\nDo you think gazelles are a mammal? Answer:",
+        "generator-log-prob": -3.965554714202881,
+        "discriminator-log-prob": -0.5826759338378906,
+        "generator-completion": " mammal",
+        "discriminator-gold-completion": " Yes"
+    },
+    {
+        "noun1": "ants",
+        "noun2": "food",
+        "taxonomic": "no",
+        "generator-prompt": "Complete the sentence: ants are a kind of",
+        "discriminator-prompt": "Do you think bees are furniture? Answer: No\n\nDo you think corgis are dogs? Answer: Yes\n\nDo you think trucks are a fruit? Answer: No\n\nDo you think robins are birds? Answer: Yes\n\nDo you think ants are a food? Answer:",
+        "generator-log-prob": -8.089825630187988,
+        "discriminator-log-prob": -1.289997935295105,
+        "generator-completion": " food",
+        "discriminator-gold-completion": " No"
+    },
+    {
+        "noun1": "clippers",
+        "noun2": "garden tool",
+        "taxonomic": "yes",
+        "generator-prompt": "Complete the sentence: clippers are a kind of",
+        "discriminator-prompt": "Do you think bees are furniture? Answer: No\n\nDo you think corgis are dogs? Answer: Yes\n\nDo you think trucks are a fruit? Answer: No\n\nDo you think robins are birds? Answer: Yes\n\nDo you think clippers are a garden tool? Answer:",
+        "generator-log-prob": -6.845544815063477,
+        "discriminator-log-prob": -0.8650680780410767,
+        "generator-completion": " garden tool",
+        "discriminator-gold-completion": " Yes"
+    },
+    {
+        "noun1": "hyenas",
+        "noun2": "animal",
+        "taxonomic": "yes",
+        "generator-prompt": "Complete the sentence: hyenas are a kind of",
+        "discriminator-prompt": "Do you think bees are furniture? Answer: No\n\nDo you think corgis are dogs? Answer: Yes\n\nDo you think trucks are a fruit? Answer: No\n\nDo you think robins are birds? Answer: Yes\n\nDo you think hyenas are a animal? Answer:",
+        "generator-log-prob": -3.9063644409179688,
+        "discriminator-log-prob": -0.6085622310638428,
+        "generator-completion": " animal",
+        "discriminator-gold-completion": " Yes"
+    },
+    {
+        "noun1": "flatirons",
+        "noun2": "toiletry",
+        "taxonomic": "yes",
+        "generator-prompt": "Complete the sentence: flatirons are a kind of",
+        "discriminator-prompt": "Do you think bees are furniture? Answer: No\n\nDo you think corgis are dogs? Answer: Yes\n\nDo you think trucks are a fruit? Answer: No\n\nDo you think robins are birds? Answer: Yes\n\nDo you think flatirons are a toiletry? Answer:",
+        "generator-log-prob": -15.626154899597168,
+        "discriminator-log-prob": -1.2796810865402222,
+        "generator-completion": " toiletry",
+        "discriminator-gold-completion": " Yes"
+    },
+    {
+        "noun1": "soups",
+        "noun2": "food",
+        "taxonomic": "yes",
+        "generator-prompt": "Complete the sentence: soups are a kind of",
+        "discriminator-prompt": "Do you think bees are furniture? Answer: No\n\nDo you think corgis are dogs? Answer: Yes\n\nDo you think trucks are a fruit? Answer: No\n\nDo you think robins are birds? Answer: Yes\n\nDo you think soups are a food? Answer:",
+        "generator-log-prob": -2.3354239463806152,
+        "discriminator-log-prob": -0.5156388282775879,
+        "generator-completion": " food",
+        "discriminator-gold-completion": " Yes"
+    }
+]

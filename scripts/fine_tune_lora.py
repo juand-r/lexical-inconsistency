@@ -40,12 +40,15 @@ from utils import (
     filtering_hypernym,
     filtering_swords,
     filtering_triviaqa,
+    filtering_lambada
 )
 
 filtering_function_map = {
     "hypernym": filtering_hypernym,
     "swords": filtering_swords,
-    "trivia-qa": filtering_triviaqa,}
+    "trivia-qa": filtering_triviaqa,
+    "lambada": filtering_lambada
+    }
 
 # NOTE: this is currently too slow to be useful, but leaving in in case
 # I want to troubleshoot this again later.
@@ -308,7 +311,7 @@ def main():
     train_args = TrainingArguments(
         output_dir=output_dir,  # directory to save and repository id
         num_train_epochs=num_epochs,  # number of training epochs
-        per_device_train_batch_size=8,  # $128, #2          # batch size per device during training
+        per_device_train_batch_size=16,  # $128, #2          # batch size per device during training
         per_device_eval_batch_size=7,  # 7#4
         # gradient_accumulation_steps=2,          # number of steps before performing a backward/update pass
         # gradient_checkpointing=True,            # use gradient checkpointing to save memory
@@ -365,6 +368,7 @@ if __name__ == "__main__":
     main()
 
 '''
-CUDA_VISIBLE_DEVICES=6 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task hypernym
+CUDA_VISIBLE_DEVICES=5 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task lambada --model google/gemma-2-2b
+CUDA_VISIBLE_DEVICES=6 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task lambada --model meta-llama/Llama-3.2-3B
 
 '''
