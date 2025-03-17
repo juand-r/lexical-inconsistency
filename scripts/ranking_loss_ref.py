@@ -125,7 +125,7 @@ def main(args):
     elif task=='trivia-qa':
         L_train_pos = L_train
         # Generate generator prompts
-        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_pos, tokenizer, style='generator', shots='zero', neg=False, both=None)
+        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_pos, tokenizer, style='generator', shots='zero', both=None)
         prompts_gen = [i.prompt for i in p_train_gen]
         
         # Compute log-probabilities for generator prompts
@@ -169,7 +169,7 @@ def main(args):
     elif task=='lambada':
         L_train_pos = L_train
         # Generate generator prompts
-        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_lambada, L_train_pos, tokenizer, style='generator', shots='zero', neg=False, both=None)
+        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_lambada, L_train_pos, tokenizer, style='generator', shots='zero', both=None)
         prompts_gen = [i.prompt for i in p_train_gen]
         
         # Compute log-probabilities for generator prompts
@@ -273,8 +273,14 @@ def main(args):
     #18 fine for zero-shot
     if task=='swords':
         batch_size = 6
-    else:
+    elif task=='trivia-qa':
+        batch_size = 6
+    elif task=='lambada':
+        batch_size = 6
+    elif task =='hypernym':
         batch_size = 32
+    else:
+        raise ValueError("define batch size for this case")
 
     dataset = PairwiseDataset(pairs, tokenizer, max_length=max_context_length)
     train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
