@@ -543,10 +543,10 @@ def get_final_logit_prob(prompt, model, tokenizer, device = 'cuda', is_chat=Fals
         else:
             input_ids = tokenizer(prompt, return_tensors="pt")["input_ids"][0].tolist()
         outputs = model(torch.tensor([input_ids]).to(device), output_hidden_states=True)
-        # response = model.generate(
-        #     input_ids=torch.tensor([input_ids]).to(device),max_new_tokens=10,do_sample=False)
-        # decoded_response = tokenizer.decode(response[0][len(input_ids):], skip_special_tokens=False)
-        # print(f"decoded_response::{decoded_response}::")
+    #     response = model.generate(
+    #         input_ids=torch.tensor([input_ids]).to(device),max_new_tokens=10,do_sample=False)
+    #     decoded_response = tokenizer.decode(response[0][len(input_ids):], skip_special_tokens=False)
+    #     print(f"decoded_response::{decoded_response}::")
     # print("outputs.logits.shape",outputs.logits.shape)
     model_log_probs = (
             outputs.logits[..., :]

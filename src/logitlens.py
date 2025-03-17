@@ -327,9 +327,15 @@ def compute_logodds_final_layer(
         ]
     elif task=='trivia-qa':
         ranks = [
-            get_rank(
-                P_gen[ii][:], tokenizer.encode(prefix + L[ii]['answers'][0])[first_sw_token]
+            min(
+                get_rank(
+                    P_gen[ii][:], tokenizer.encode(prefix + L[ii]['answers'][0])[first_sw_token]
+                ),
+                get_rank(
+                    P_gen[ii][:], tokenizer.encode(prefix + L[ii]['answers'][0].capitalize())[first_sw_token]
+                )
             )
+            
             for ii in tqdm(range(len(P_gen)))
         ]
     elif task=='swords':
