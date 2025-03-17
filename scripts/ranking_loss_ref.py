@@ -48,6 +48,10 @@ def main(args):
 
     WITH_REF = with_ref
 
+    # Define device first
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"Using device: {device}")
+
     def load_model_tokenizer(model_name):
         tokenizer = AutoTokenizer.from_pretrained(model_name)
         model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="eager", torch_dtype=torch.bfloat16)
@@ -56,9 +60,11 @@ def main(args):
         return tokenizer, model
 
     tokenizer, model = load_model_tokenizer(model_name)
+    model.to(device)  # Move model to device right after creation
 
     if WITH_REF:
         model_ref = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="eager", torch_dtype=torch.bfloat16)
+        model_ref.to(device)  # Move model_ref to the same device as model
     else:
         model_ref = None
 
@@ -93,8 +99,8 @@ def main(args):
         raise NotImplementedError("Task not implemented!")
 
     # Compute log-probabilities on the fly instead of loading from disk
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model.to(device)
+    #device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    #model.to(device)
     
     print("Computing log-probabilities on the fly...")
     print(f"Using device: {device}")
@@ -226,14 +232,16 @@ def main(args):
     print("\n\nNum Samples: ", len(pairs))
 
     class PairwiseDataset(Dataset):
-        def __init__(self, pairs, tokenizer, max_length=128):
+        def __init__(self, pairs, tokenizer, max_length=128, device='cuda'):
             """
             pairs: list of ((prompt_i, prompt_j), (token_i, token_j))
             tokenizer: Hugging Face tokenizer
+            device: device to place tensors on
             """
             self.pairs = pairs
             self.tokenizer = tokenizer
             self.max_length = max_length
+            self.device = device
 
         def __len__(self):
             return len(self.pairs)
@@ -264,22 +272,21 @@ def main(args):
                 'input_ids_j': enc_j['input_ids'].squeeze(0),
                 'attention_mask_j': enc_j['attention_mask'].squeeze(0),
                 'token_id_j': torch.tensor(token_j, dtype=torch.long),
-                # For simplicity, label=1 means "i < j"
-                # If you have a different label scheme, store that accordingly.
                 'label': torch.tensor(1.0, dtype=torch.float)
             }
             return item
 
+
     #18 fine for zero-shot
     if with_ref:
         if task=='swords':
-            batch_size = 3
+            batch_size = 2
         elif task=='trivia-qa':
-            batch_size = 3
+            batch_size = 2
         elif task=='lambada':
-            batch_size = 3
+            batch_size = 2
         elif task =='hypernym':
-            batch_size = 16
+            batch_size = 4
         else:
             raise ValueError("define batch size for this case")
     else:
@@ -294,7 +301,7 @@ def main(args):
         else:
             raise ValueError("define batch size for this case")
 
-    dataset = PairwiseDataset(pairs, tokenizer, max_length=max_context_length)
+    dataset = PairwiseDataset(pairs, tokenizer, max_length=max_context_length, device=device)
     train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
     print("\n\nDone making dataloader\n\n")
     optimizer = AdamW(model.parameters(), lr=lr)
@@ -310,7 +317,10 @@ def main(args):
         if True:#epoch % save_steps==1:
             #save_directory = "../models/v3-delta5-epoch"+str(epoch)
             #save_directory = "../models/v3-delta5-no-overlap-both-epoch"+str(epoch)
-            save_directory = "../models/v4-delta"+str(delta)+"-epoch"+str(epoch) + "--" + task
+            if with_ref:
+                save_directory = "../models/v4-delta"+str(delta)+"-epoch"+str(epoch) + "--" + task + "-with-ref"
+            else:
+                save_directory = "../models/v4-delta"+str(delta)+"-epoch"+str(epoch) + "--" + task
             print("Saving to ", save_directory)
             model.save_pretrained(save_directory)
             tokenizer.save_pretrained(save_directory)
@@ -318,7 +328,7 @@ def main(args):
         for batch in tqdm(train_loader):
             optimizer.zero_grad()
 
-            # Move inputs to device
+            # Move all inputs to device
             input_ids_i = batch["input_ids_i"].to(device)
             attention_mask_i = batch["attention_mask_i"].to(device)
             token_id_i = batch["token_id_i"].to(device)
@@ -327,7 +337,7 @@ def main(args):
             attention_mask_j = batch["attention_mask_j"].to(device)
             token_id_j = batch["token_id_j"].to(device)
 
-            label = batch["label"].to(device)  # typically 1.0 for "i < j"
+            label = batch["label"].to(device)
 
             # Forward pass for prompt i
             outputs_i = model(input_ids=input_ids_i, attention_mask=attention_mask_i)
@@ -352,8 +362,8 @@ def main(args):
 
             # Score for example i is the log-prob of token_id_i
             # shape [B]
-            score_i = log_probs_i[torch.arange(log_probs_i.size(0)), token_id_i]
-
+            #score_i = log_probs_i[torch.arange(log_probs_i.size(0)), token_id_i]
+            score_i = log_probs_i[torch.arange(log_probs_i.size(0), device=device), token_id_i]
             # Forward pass for prompt j
             outputs_j = model(input_ids=input_ids_j, attention_mask=attention_mask_j)
             logits_j = outputs_j.logits
@@ -370,8 +380,8 @@ def main(args):
 
             selected_logits_j = torch.cat(selected_logits_j, dim=0)
             log_probs_j = F.log_softmax(selected_logits_j, dim=-1)  # [B, vocab_size]
-            score_j = log_probs_j[torch.arange(log_probs_j.size(0)), token_id_j]
-
+            #score_j = log_probs_j[torch.arange(log_probs_j.size(0)), token_id_j]
+            score_j = log_probs_j[torch.arange(log_probs_j.size(0), device=device), token_id_j]
             
             # TODO: with torch.no_grad(): compute ref logits diff
 
@@ -387,7 +397,8 @@ def main(args):
                         selected_logits_i_ref.append(logits_i_ref[b, last_idx_i, :].unsqueeze(0))
                     selected_logits_i_ref = torch.cat(selected_logits_i_ref, dim=0)
                     log_probs_i_ref = F.log_softmax(selected_logits_i_ref, dim=-1)  # [B, vocab_size]
-                    score_i_ref = log_probs_i_ref[torch.arange(log_probs_i_ref.size(0)), token_id_i]
+                    #score_i_ref = log_probs_i_ref[torch.arange(log_probs_i_ref.size(0)), token_id_i]
+                    score_i_ref = log_probs_i_ref[torch.arange(log_probs_i_ref.size(0), device=device), token_id_i]
 
                     # Forward pass for prompt j
                     outputs_j_ref = model_ref(input_ids=input_ids_j, attention_mask=attention_mask_j)
@@ -399,7 +410,8 @@ def main(args):
                         selected_logits_j_ref.append(logits_j_ref[b, last_idx_j, :].unsqueeze(0))
                     selected_logits_j_ref = torch.cat(selected_logits_j_ref, dim=0)
                     log_probs_j_ref = F.log_softmax(selected_logits_j_ref, dim=-1)  # [B, vocab_size]
-                    score_j_ref = log_probs_j_ref[torch.arange(log_probs_j_ref.size(0)), token_id_j]
+                    #score_j_ref = log_probs_j_ref[torch.arange(log_probs_j_ref.size(0)), token_id_j]
+                    score_j_ref = log_probs_j_ref[torch.arange(log_probs_j_ref.size(0), device=device), token_id_j]
                 diff_ref = score_j_ref - score_i_ref
             else:
                 diff_ref = 0
