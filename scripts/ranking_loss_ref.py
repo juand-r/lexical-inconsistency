@@ -409,7 +409,7 @@ if __name__ == "__main__":
     parser.add_argument("--with_ref", default=False, action="store_true", help="Whether to use reference model")
     parser.add_argument("--num_epochs", type=int, default=10, help="Number of epochs to train")
     parser.add_argument("--learning_rate", type=float, default=1e-5, help="Learning rate")
-    parser.add_argument("--delta", type=int, default=10, help="Delta")
+    parser.add_argument("--delta", type=float, default=10, help="Delta")
     parser.add_argument("--total_samples", type=int, default=5110, help="Total samples")
     parser.add_argument("--save_steps", type=int, default=1, help="Save steps")
     args = parser.parse_args()
