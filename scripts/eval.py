@@ -141,7 +141,7 @@ def main(args):
     P_disc = []
 
     json_list = []
-    LL = LL[:10]
+    # LL = LL[:10]
     for item in tqdm(LL):
         prompt_gen = make_prompt(item, style='generator', shots=gen_shots).prompt
         prompt_disc = make_prompt(item, style='discriminator', shots=disc_shots).prompt
