@@ -111,7 +111,7 @@ def get_logodds_gen(Ps, L, ii, tokenizer, first_sw_token, task, is_chat = False,
     if task=='hypernym':
         ind = tokenizer.encode(prefix + L[ii].noun2)[first_sw_token]
     elif task=='trivia-qa':
-        ind = tokenizer.encode(prefix + L[ii]['answers'][0])[first_sw_token]
+        ind = tokenizer.encode(prefix + L[ii]['answers'][0].capitalize())[first_sw_token]
     elif task=='swords':
         ind = tokenizer.encode(prefix + L[ii].replacement)[first_sw_token]
     elif task=='lambada':

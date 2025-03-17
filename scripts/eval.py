@@ -148,6 +148,8 @@ def main(args):
         probs_gen = get_final_logit_prob(prompt_gen, model, tokenizer, device, is_chat = model_is_chat) # TODO: change is_chat to True if instruction-tuned model
         P_gen.append(probs_gen)
         probs_disc = get_final_logit_prob(prompt_disc, model, tokenizer, device, is_chat = model_is_chat) # TODO: change is_chat to True if instruction-tuned model
+        # print(f"prompt_gen: {prompt_gen}")
+        # print(f"prompt_disc: {prompt_disc}")
         P_disc.append(probs_disc)
         if args.train:
             if task == 'hypernym':
