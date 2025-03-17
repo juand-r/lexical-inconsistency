@@ -371,4 +371,6 @@ if __name__ == "__main__":
 CUDA_VISIBLE_DEVICES=5 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task lambada --model google/gemma-2-2b
 CUDA_VISIBLE_DEVICES=6 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task lambada --model meta-llama/Llama-3.2-3B
 
+CUDA_VISIBLE_DEVICES=5 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task swords --model google/gemma-2-2b
+CUDA_VISIBLE_DEVICES=4 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task swords --model meta-llama/Llama-3.2-3B
 '''

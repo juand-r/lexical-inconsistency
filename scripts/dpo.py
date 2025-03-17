@@ -137,13 +137,66 @@ def load_lambada_disc_to_gen(file = "../data/lambada-train.json", threshold = No
     #     print(item)
     return dataset
 
+def load_swords_disc_to_gen(file = "../data/swords-train.json", threshold = None):
+    with open(file, 'r') as f:
+        data_swords = json.load(f)
+    if threshold == None:
+        threshold = np.mean([d['generator-log-prob'] for d in data_swords])
+    prompts = [d['discriminator-prompt'] for d in data_swords]
+    chosen = []
+    rejected = []
+    for i in tqdm(range(len(data_swords))):
+        d = data_swords[i]
+        if d['generator-log-prob'] > threshold:
+            chosen.append(' Yes')
+            rejected.append(' No')
+        else:
+            chosen.append(' No')
+            rejected.append(' Yes')
+    
+    dataset_dict = {"prompt": prompts, "chosen": chosen, "rejected": rejected}
+    dataset = Dataset.from_dict(dataset_dict)
+    return dataset
+
+def load_swords_gen_to_disc(file = "../data/swords-train.json", threshold = None):
+    with open(file, "r") as f:
+        data_swd = json.load(f)
+    same_context = defaultdict(list)
+    for item in data_swd:
+        same_context[item['context']].append(item)
+    prompts = []
+    chosen = []
+    rejected = []
+
+    for k, v in same_context.items():
+        if len(v) > 1:
+            prompts.append(v[0]['generator-prompt'])
+            a = v[0]
+            b = v[1]
+            if a['discriminator-log-prob'] >= b['discriminator-log-prob']:
+                chosen.append(a['generator-completion'])
+                rejected.append(b['generator-completion'])
+            else:
+                chosen.append(b['generator-completion'])
+                rejected.append(a['generator-completion'])
+    print(len(prompts))
+    print(len(chosen))
+    print(len(rejected))
+    dataset_dict = {"prompt": prompts, "chosen": chosen, "rejected": rejected}
+    dataset = Dataset.from_dict(dataset_dict)
+    return dataset
+    
+
 data_loader = {'hypernym':
                {'d2g': load_hypernym_disc_to_gen,
                 'g2d': load_hypernym_gen_to_disc},
                 'trivia-qa':
                 {'d2g': load_triviaqa_disc_to_gen,},
                 'lambada':
-                {'d2g': load_lambada_disc_to_gen}
+                {'d2g': load_lambada_disc_to_gen},
+                'swords':
+                {'d2g': load_swords_disc_to_gen,
+                 'g2d': load_swords_gen_to_disc}
                 }
 
 

@@ -153,6 +153,10 @@ def main(args):
             elif task == 'lambada':
                 json_list.append({"context":item['context'], "completion":' ' + item['final_word'].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
                                 "generator-completion": ' ' + item['final_word'].strip(), "discriminator-gold-completion": ' Yes'})
+            elif task == 'swords':
+                json_list.append({"context":item.context, "target":item.target, "replacement":item.replacement, "synonym":item.synonym,
+                                "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
+                                "generator-completion": item.replacement.strip(), "discriminator-gold-completion": ' ' + item.synonym.strip().capitalize()})
             else:
                 raise NotImplementedError("Not a task")
             # print(json_list[-1])
