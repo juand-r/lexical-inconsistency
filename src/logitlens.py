@@ -102,18 +102,20 @@ def get_logodds_disc(Ps, ii, yestoks, notoks):
     return lgo
 
 
-def get_logodds_gen(Ps, L, ii, tokenizer, first_sw_token, task, use_lgo=True):
+def get_logodds_gen(Ps, L, ii, tokenizer, first_sw_token, task, is_chat = False, use_lgo=True):
     #TODO should clean up this code so it takes in the completion
+    if is_chat:
+        prefix = ""
+    else:
+        prefix = "a "
     if task=='hypernym':
-        ind = tokenizer.encode("a " + L[ii].noun2)[first_sw_token]
+        ind = tokenizer.encode(prefix + L[ii].noun2)[first_sw_token]
     elif task=='trivia-qa':
-        ind = tokenizer.encode("a " + L[ii]['answers'][0])[first_sw_token]
+        ind = tokenizer.encode(prefix + L[ii]['answers'][0])[first_sw_token]
     elif task=='swords':
-        ind = tokenizer.encode("a " + L[ii].replacement)[first_sw_token]
+        ind = tokenizer.encode(prefix + L[ii].replacement)[first_sw_token]
     elif task=='lambada':
-        ind = tokenizer.encode("a " + L[ii]['final_word'])[first_sw_token]
-    elif task== 'lambada':
-        ind = tokenizer.encode("a " + L[ii]['final_word'])[first_sw_token]
+        ind = tokenizer.encode(prefix + L[ii]['final_word'])[first_sw_token]
     else:
         raise ValueError("!")
     if use_lgo:
@@ -260,53 +262,53 @@ def compute_accuracy_and_correlations(task, L, logodds_gen, logodds_disc, ranks,
     return disc_accuracy, gen_accuracies, corr
 
 
-def compute_logodds(
-    task, P_gen, P_disc, L, tokenizer, first_sw_token, yestoks, notoks, layer_gen=-1, layer_disc=-1
-):
+# def compute_logodds(
+#     task, P_gen, P_disc, L, tokenizer, first_sw_token, yestoks, notoks, layer_gen=-1, layer_disc=-1
+# ):
 
-    if task=='hypernym':
-        ranks = [
-            get_rank(
-                P_gen[ii][layer_gen, :], tokenizer.encode("a " + L[ii].noun2)[first_sw_token]
-            )
-            for ii in tqdm(range(len(P_gen)))
-        ]
-    elif task=='trivia-qa':
-        ranks = [
-            get_rank(
-                P_gen[ii][layer_gen, :], tokenizer.encode("a " + L[ii]['answers'][0])[first_sw_token]
-            )
-            for ii in tqdm(range(len(P_gen)))
-        ]
-    elif task=='swords':
-        ranks = [
-            get_rank(
-                P_gen[ii][layer_gen, :], tokenizer.encode("a " + L[ii].replacement)[first_sw_token]
-            )
-            for ii in tqdm(range(len(P_gen)))
-        ]
-    elif task=='lambada':
-        ranks = [
-            get_rank(
-                P_gen[ii][layer_gen, :], tokenizer.encode("a " + L[ii]['final_word'])[first_sw_token]
-            )
-            for ii in tqdm(range(len(P_gen)))
-        ]
-    else:
-        raise ValueError("!!")
+#     if task=='hypernym':
+#         ranks = [
+#             get_rank(
+#                 P_gen[ii][layer_gen, :], tokenizer.encode("a " + L[ii].noun2)[first_sw_token]
+#             )
+#             for ii in tqdm(range(len(P_gen)))
+#         ]
+#     elif task=='trivia-qa':
+#         ranks = [
+#             get_rank(
+#                 P_gen[ii][layer_gen, :], tokenizer.encode("a " + L[ii]['answers'][0])[first_sw_token]
+#             )
+#             for ii in tqdm(range(len(P_gen)))
+#         ]
+#     elif task=='swords':
+#         ranks = [
+#             get_rank(
+#                 P_gen[ii][layer_gen, :], tokenizer.encode("a " + L[ii].replacement)[first_sw_token]
+#             )
+#             for ii in tqdm(range(len(P_gen)))
+#         ]
+#     elif task=='lambada':
+#         ranks = [
+#             get_rank(
+#                 P_gen[ii][layer_gen, :], tokenizer.encode("a " + L[ii]['final_word'])[first_sw_token]
+#             )
+#             for ii in tqdm(range(len(P_gen)))
+#         ]
+#     else:
+#         raise ValueError("!!")
 
-    logodds_gen = [get_logodds_gen(P_gen, L, ii, tokenizer, first_sw_token, task) for ii in range(len(P_gen))]
-    logodds_disc = [get_logodds_disc(P_disc, ii, yestoks, notoks) for ii in range(len(P_disc))]
+#     logodds_gen = [get_logodds_gen(P_gen, L, ii, tokenizer, first_sw_token, task) for ii in range(len(P_gen))]
+#     logodds_disc = [get_logodds_disc(P_disc, ii, yestoks, notoks) for ii in range(len(P_disc))]
 
-    disc_accuracy, gen_accuracies, corr = compute_accuracy_and_correlations(task, L, logodds_gen, logodds_disc, ranks, layer_gen=layer_gen, layer_disc=layer_disc)
-    res_dict = compute_metrics(task, L, logodds_gen, logodds_disc, ranks)
-    # return res_dict
-    return ranks, logodds_gen, logodds_disc, corr
+#     disc_accuracy, gen_accuracies, corr = compute_accuracy_and_correlations(task, L, logodds_gen, logodds_disc, ranks, layer_gen=layer_gen, layer_disc=layer_disc)
+#     res_dict = compute_metrics(task, L, logodds_gen, logodds_disc, ranks)
+#     # return res_dict
+#     return ranks, logodds_gen, logodds_disc, corr
 
 
 def compute_logodds_final_layer(
-    task, P_gen, P_disc, L, tokenizer, first_sw_token, yestoks, notoks):
-
+    task, P_gen, P_disc, L, tokenizer, first_sw_token, yestoks, notoks, is_chat = False):
+    prefix = "a " if not is_chat else ""
     if task=='hypernym':
         # for ii in range(len(P_gen)):
         #     print(f'--compute-logodds, i=0:P:{P_gen[ii].shape}')
@@ -319,21 +321,21 @@ def compute_logodds_final_layer(
 
         ranks = [
             get_rank(
-                P_gen[ii][:], tokenizer.encode("a " + L[ii].noun2)[first_sw_token]
+                P_gen[ii][:], tokenizer.encode(prefix + L[ii].noun2)[first_sw_token]
             )
             for ii in tqdm(range(len(P_gen)))
         ]
     elif task=='trivia-qa':
         ranks = [
             get_rank(
-                P_gen[ii][:], tokenizer.encode("a " + L[ii]['answers'][0])[first_sw_token]
+                P_gen[ii][:], tokenizer.encode(prefix + L[ii]['answers'][0])[first_sw_token]
             )
             for ii in tqdm(range(len(P_gen)))
         ]
     elif task=='swords':
         ranks = [
             get_rank(
-                P_gen[ii][:], tokenizer.encode("a " + L[ii].replacement)[first_sw_token]
+                P_gen[ii][:], tokenizer.encode(prefix + L[ii].replacement)[first_sw_token]
             )
             for ii in tqdm(range(len(P_gen)))
         ]
@@ -341,14 +343,14 @@ def compute_logodds_final_layer(
     elif task == 'lambada':
         ranks = [
             get_rank(
-                P_gen[ii][:], tokenizer.encode("a " + L[ii]['final_word'])[first_sw_token]
+                P_gen[ii][:], tokenizer.encode(prefix + L[ii]['final_word'])[first_sw_token]
             )
             for ii in tqdm(range(len(P_gen)))
         ]
     else:
         raise ValueError("!!")
 
-    logodds_gen = [get_logodds_gen(P_gen, L, ii, tokenizer, first_sw_token, task) for ii in range(len(P_gen))]
+    logodds_gen = [get_logodds_gen(P_gen, L, ii, tokenizer, first_sw_token, task, is_chat=is_chat) for ii in range(len(P_gen))]
     logodds_disc = [get_logodds_disc(P_disc, ii, yestoks, notoks) for ii in range(len(P_disc))]
 
     # disc_accuracy, gen_accuracies, corr = compute_accuracy_and_correlations(task, L, logodds_gen, logodds_disc, ranks)

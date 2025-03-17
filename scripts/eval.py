@@ -4,7 +4,7 @@
 # ROC for disc / gen accuract
 # MRR for 
 '''
-CUDA_VISIBLE_DEVICES={} python eval.py --model {path to model or model name} --task {}
+CUDA_VISIBLE_DEVICES={} python eval.py --model meta-llama/Llama-3.2-3B-Instruct --task trivia-qa
 '''
 from pathlib import Path
 import os
@@ -109,6 +109,12 @@ def main(args):
 
     #NOTE assume we just do llama or gemma. Same situation in both:
     first_sw_token = 2
+
+    model_is_chat = False
+    if 'instruct' in modelname.lower():
+        model_is_chat = True
+        first_sw_token = 1
+        print("Model is chat model!")
     if "gpt" in modelname.lower():
         raise ValueError("If you are using GPT then rewrite this bit!")
 
@@ -135,12 +141,13 @@ def main(args):
     P_disc = []
 
     json_list = []
+    LL = LL[:10]
     for item in tqdm(LL):
         prompt_gen = make_prompt(item, style='generator', shots=gen_shots).prompt
         prompt_disc = make_prompt(item, style='discriminator', shots=disc_shots).prompt
-        probs_gen = get_final_logit_prob(prompt_gen, model, tokenizer, device, is_chat = False) # TODO: change is_chat to True if instruction-tuned model
+        probs_gen = get_final_logit_prob(prompt_gen, model, tokenizer, device, is_chat = model_is_chat) # TODO: change is_chat to True if instruction-tuned model
         P_gen.append(probs_gen)
-        probs_disc = get_final_logit_prob(prompt_disc, model, tokenizer, device, is_chat = False) # TODO: change is_chat to True if instruction-tuned model
+        probs_disc = get_final_logit_prob(prompt_disc, model, tokenizer, device, is_chat = model_is_chat) # TODO: change is_chat to True if instruction-tuned model
         P_disc.append(probs_disc)
         if args.train:
             if task == 'hypernym':
@@ -161,7 +168,7 @@ def main(args):
                 raise NotImplementedError("Not a task")
             # print(json_list[-1])
     if args.train:
-        logodds_gen = [get_logodds_gen(P_gen, LL, ii, tokenizer, first_sw_token, task, use_lgo=False) for ii in range(len(P_gen))]
+        logodds_gen = [get_logodds_gen(P_gen, LL, ii, tokenizer, first_sw_token, task, is_chat = model_is_chat, use_lgo=False) for ii in range(len(P_gen))]
         logodds_disc = [get_logodds_disc(P_disc, ii, yestoks, None) for ii in range(len(P_disc))]
         for jj in range(len(json_list)):
             json_list[jj]["generator-log-prob"] = float(logodds_gen[jj])
@@ -178,7 +185,7 @@ def main(args):
     
     
     res_dict = compute_logodds_final_layer(task,
-        P_gen, P_disc, LL, tokenizer, first_sw_token, yestoks, notoks)
+        P_gen, P_disc, LL, tokenizer, first_sw_token, yestoks, notoks, is_chat=model_is_chat)
 
     
     basename = get_base_model_name(modelname)
