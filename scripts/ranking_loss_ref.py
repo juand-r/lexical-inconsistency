@@ -196,32 +196,31 @@ def main(args):
 
     Z = list(zip(prompts_pos, gen_logprobs_last_layer_pos))
     Z = sorted(Z, key = lambda i: i[-1])
-    # sample k points uniformly after each j, for j from 0 to len(Z)-k
-    #NOTE since we sorted them previously, they are in the right order, first one < second one
+    
+    # Calculate delta based on range of logprobs
+    min_logprob = Z[0][1]
+    max_logprob = Z[-1][1]
+    
+    NN = (max_logprob - min_logprob) / delta
+    print(f"Delta (minimum separation): {delta}")
+    print(f"NN: {NN}")
+    print(f"Min logprob: {min_logprob}")
+    print(f"Max logprob: {max_logprob}")
 
-
-    #delta = 5 #maybe 10
-
-    #NOTE this is too sparse at the start! Don't do this
-    #pairs = [(Z[j],  Z[j+1:][i*( len(Z)-(j+1) -1)//(k-1)]  ) for j in range(len(Z)-k-1) for i in range(k)]
-    #total_samples = 20000 #used 20k for when delta=10 6000
-    #total_samples = 5110
-    #TODO check if total_samples should be same for all tasks
-    #Uniform random maybe better
     indices = range(len(Z))
     pair_inds = list(itertools.product(indices, repeat=2))
     pair_inds = [i for i in pair_inds if i[0] < i[1]]
     pair_inds = random.sample(pair_inds, total_samples)
-    pairs = [ (Z[i[0]] , Z[i[1]]) for i in pair_inds]
-    #TODO confirm mass is mostly on Yes and No
-    token_id = tokenizer.encode(" Yes")[-1]
-    #NOTE can ignore the actual values now! The order is what matters.
+    pairs = [(Z[i[0]], Z[i[1]]) for i in pair_inds]
 
-    #pairs = [((pair[0][0],pair[1][0]), (token_id, token_id)) for pair in pairs]
-    pairs = [((pair[0][0],pair[1][0]), (token_id, token_id)) for pair in pairs if abs(pair[0][1] - pair[1][1]) > delta]
- 
+    token_id = tokenizer.encode(" Yes")[-1]
+
+    # Filter pairs that maintain minimum separation of delta
+    pairs = [((pair[0][0],pair[1][0]), (token_id, token_id)) for pair in pairs 
+            if pair[1][1] - pair[0][1] > delta]
+
     print(pairs[0])
-    print("\n\n")
+    print("\n\n") 
     print(pairs[1])
     print("\n\nNum Samples: ", len(pairs))
 
@@ -298,7 +297,7 @@ def main(args):
         if True:#epoch % save_steps==1:
             #save_directory = "../models/v3-delta5-epoch"+str(epoch)
             #save_directory = "../models/v3-delta5-no-overlap-both-epoch"+str(epoch)
-            save_directory = "../models/v4-delta5-epoch"+str(epoch) + "--" + task
+            save_directory = "../models/v4-delta"+str(delta)+"-epoch"+str(epoch) + "--" + task
             print("Saving to ", save_directory)
             model.save_pretrained(save_directory)
             tokenizer.save_pretrained(save_directory)
@@ -410,7 +409,7 @@ if __name__ == "__main__":
     parser.add_argument("--with_ref", default=False, action="store_true", help="Whether to use reference model")
     parser.add_argument("--num_epochs", type=int, default=10, help="Number of epochs to train")
     parser.add_argument("--learning_rate", type=float, default=1e-5, help="Learning rate")
-    parser.add_argument("--delta", type=int, default=5, help="Delta")
+    parser.add_argument("--delta", type=int, default=10, help="Delta")
     parser.add_argument("--total_samples", type=int, default=5110, help="Total samples")
     parser.add_argument("--save_steps", type=int, default=1, help="Save steps")
     args = parser.parse_args()
