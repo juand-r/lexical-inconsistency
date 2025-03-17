@@ -247,7 +247,7 @@ def make_prompt_triviaqa(item, with_context=False, style='generator', shots='zer
             prompt = example + query
     
     prompt = prompt.strip()
-    completion = " " + completion.strip()
+    completion = " " + completion.strip().capitalize()
     Pt = namedtuple("PromptCompletion", ["prompt", "completion"])
     return Pt(prompt, completion)
 
