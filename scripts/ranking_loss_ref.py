@@ -2,7 +2,7 @@
 This script is used to train a model to rank discriminator prompts to match the ranking of log-probabilities of generator prompts.
 
 Usage:
-python ranking_loss_ref.py --model google/gemma-2-2b --task hypernym --with_ref False --num_epochs 10 --learning_rate 1e-5 --delta 5 --total_samples 5110 --save_steps 1
+python ranking_loss_ref.py --model google/gemma-2-2b --task hypernym --with_ref --num_epochs 10 --learning_rate 1e-5 --delta 5 --total_samples 5110 --save_steps 1
 
 TODO
 - Currently this is using the ground truth ranking from the generator.
