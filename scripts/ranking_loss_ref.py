@@ -272,7 +272,7 @@ def main(args):
 
     #18 fine for zero-shot
     if with_ref:
-         if task=='swords':
+        if task=='swords':
             batch_size = 3
         elif task=='trivia-qa':
             batch_size = 3
