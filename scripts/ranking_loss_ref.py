@@ -407,7 +407,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", type=str, default="google/gemma-2-2b", help="Model name/path")
     parser.add_argument("--task", type=str, choices=["hypernym", "trivia-qa", "swords", "lambada"], help="Task to run")
-    parser.add_argument("--with_ref", type=bool, default=False, help="Whether to use reference model")
+    parser.add_argument("--with_ref", default=False, action="store_true", help="Whether to use reference model")
     parser.add_argument("--num_epochs", type=int, default=10, help="Number of epochs to train")
     parser.add_argument("--learning_rate", type=float, default=1e-5, help="Learning rate")
     parser.add_argument("--delta", type=int, default=5, help="Delta")
