@@ -160,7 +160,7 @@ def load_swords_data(seed=0):
     return trainset, testset
 
 
-def make_prompt_lambada(item, style='generator', shots='zero'):
+def make_prompt_lambada(item, style='generator', shots='zero', neg=False):
     if style == "generator":
 
         #generator_prompt = 'Complete the story:$context '
@@ -207,7 +207,7 @@ def make_prompt_lambada(item, style='generator', shots='zero'):
 
 
 #TODO generalize better to DRY!
-def make_prompt_triviaqa(item, with_context=False, style='generator', shots='zero'):
+def make_prompt_triviaqa(item, with_context=False, style='generator', shots='zero', neg=False):
     """ Only positive examples for now! Also, when multiple acceptable answers are available in the dataset,
     use the first one for now. """
 
