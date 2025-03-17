@@ -201,9 +201,10 @@ def main(args):
     min_logprob = Z[0][1]
     max_logprob = Z[-1][1]
     
-    NN = (max_logprob - min_logprob) / delta
     print(f"Delta (minimum separation): {delta}")
-    print(f"NN: {NN}")
+    if delta!=0:
+        NN = (max_logprob - min_logprob) / delta
+        print(f"NN: {NN}")
     print(f"Min logprob: {min_logprob}")
     print(f"Max logprob: {max_logprob}")
 
