@@ -110,6 +110,8 @@ def get_logodds_gen(Ps, L, ii, tokenizer, first_sw_token, task, use_lgo=True):
         ind = tokenizer.encode("a " + L[ii]['answers'][0])[first_sw_token]
     elif task=='swords':
         ind = tokenizer.encode("a " + L[ii].replacement)[first_sw_token]
+    elif task=='lambada':
+        ind = tokenizer.encode("a " + L[ii]['final_word'])[first_sw_token]
     elif task== 'lambada':
         ind = tokenizer.encode("a " + L[ii]['final_word'])[first_sw_token]
     else:
@@ -173,7 +175,8 @@ def compute_metrics(task, L, logodds_gen, logodds_disc, ranks):
         golds = [1 for i in L]
     elif task=='swords':
         golds = [1 if i.synonym.capitalize() == 'Yes' else 0 for i in L]
-    elif task == 'lambada':
+    elif task=='lambada':
+        #TODO will need to do this differently if include negative examples
         golds = [1 for i in L]
     else:
         raise ValueError("!")
@@ -223,7 +226,8 @@ def compute_accuracy_and_correlations(task, L, logodds_gen, logodds_disc, ranks,
         gold = ['Yes' for i in L]
     elif task=='swords':
         gold = [i.synonym.capitalize() for i in L]
-    elif task == 'lambada':
+    elif task=='lambada':
+        #TODO will need to do this differently if include negative examples
         gold = ['Yes' for i in L]
     else:
         raise ValueError("!")
@@ -281,6 +285,13 @@ def compute_logodds(
             )
             for ii in tqdm(range(len(P_gen)))
         ]
+    elif task=='lambada':
+        ranks = [
+            get_rank(
+                P_gen[ii][layer_gen, :], tokenizer.encode("a " + L[ii]['final_word'])[first_sw_token]
+            )
+            for ii in tqdm(range(len(P_gen)))
+        ]
     else:
         raise ValueError("!!")
 
@@ -326,6 +337,7 @@ def compute_logodds_final_layer(
             )
             for ii in tqdm(range(len(P_gen)))
         ]
+    
     elif task == 'lambada':
         ranks = [
             get_rank(

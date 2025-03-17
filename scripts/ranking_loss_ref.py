@@ -2,7 +2,7 @@
 This script is used to train a model to rank discriminator prompts to match the ranking of log-probabilities of generator prompts.
 
 Usage:
-python ranking_loss_ref.py --model google/gemma-2-2b --task hypernym --with_ref False --num_epochs 10 --learning_rate 1e-5 --delta 5 --total_samples 5110 --save_steps 1
+python ranking_loss_ref.py --model google/gemma-2-2b --task hypernym --with_ref --num_epochs 10 --learning_rate 1e-5 --delta 5 --total_samples 5110 --save_steps 1
 
 TODO
 - Currently this is using the ground truth ranking from the generator.
@@ -48,6 +48,10 @@ def main(args):
 
     WITH_REF = with_ref
 
+    # Define device first
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"Using device: {device}")
+
     def load_model_tokenizer(model_name):
         tokenizer = AutoTokenizer.from_pretrained(model_name)
         model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="eager", torch_dtype=torch.bfloat16)
@@ -56,9 +60,11 @@ def main(args):
         return tokenizer, model
 
     tokenizer, model = load_model_tokenizer(model_name)
+    model.to(device)  # Move model to device right after creation
 
     if WITH_REF:
         model_ref = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="eager", torch_dtype=torch.bfloat16)
+        model_ref.to(device)  # Move model_ref to the same device as model
     else:
         model_ref = None
 
@@ -93,8 +99,8 @@ def main(args):
         raise NotImplementedError("Task not implemented!")
 
     # Compute log-probabilities on the fly instead of loading from disk
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model.to(device)
+    #device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    #model.to(device)
     
     print("Computing log-probabilities on the fly...")
     print(f"Using device: {device}")
@@ -125,7 +131,7 @@ def main(args):
     elif task=='trivia-qa':
         L_train_pos = L_train
         # Generate generator prompts
-        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_pos, tokenizer, style='generator', shots='zero', neg=False, both=None)
+        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_pos, tokenizer, style='generator', shots='zero', both=None)
         prompts_gen = [i.prompt for i in p_train_gen]
         
         # Compute log-probabilities for generator prompts
@@ -169,7 +175,7 @@ def main(args):
     elif task=='lambada':
         L_train_pos = L_train
         # Generate generator prompts
-        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_lambada, L_train_pos, tokenizer, style='generator', shots='zero', neg=False, both=None)
+        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_lambada, L_train_pos, tokenizer, style='generator', shots='zero', both=None)
         prompts_gen = [i.prompt for i in p_train_gen]
         
         # Compute log-probabilities for generator prompts
@@ -196,44 +202,46 @@ def main(args):
 
     Z = list(zip(prompts_pos, gen_logprobs_last_layer_pos))
     Z = sorted(Z, key = lambda i: i[-1])
-    # sample k points uniformly after each j, for j from 0 to len(Z)-k
-    #NOTE since we sorted them previously, they are in the right order, first one < second one
+    
+    # Calculate delta based on range of logprobs
+    min_logprob = Z[0][1]
+    max_logprob = Z[-1][1]
+    
+    print(f"Delta (minimum separation): {delta}")
+    if delta!=0:
+        NN = (max_logprob - min_logprob) / delta
+        print(f"NN: {NN}")
+    print(f"Min logprob: {min_logprob}")
+    print(f"Max logprob: {max_logprob}")
 
-
-    #delta = 5 #maybe 10
-
-    #NOTE this is too sparse at the start! Don't do this
-    #pairs = [(Z[j],  Z[j+1:][i*( len(Z)-(j+1) -1)//(k-1)]  ) for j in range(len(Z)-k-1) for i in range(k)]
-    #total_samples = 20000 #used 20k for when delta=10 6000
-    #total_samples = 5110
-    #TODO check if total_samples should be same for all tasks
-    #Uniform random maybe better
     indices = range(len(Z))
     pair_inds = list(itertools.product(indices, repeat=2))
     pair_inds = [i for i in pair_inds if i[0] < i[1]]
     pair_inds = random.sample(pair_inds, total_samples)
-    pairs = [ (Z[i[0]] , Z[i[1]]) for i in pair_inds]
-    #TODO confirm mass is mostly on Yes and No
-    token_id = tokenizer.encode(" Yes")[-1]
-    #NOTE can ignore the actual values now! The order is what matters.
+    pairs = [(Z[i[0]], Z[i[1]]) for i in pair_inds]
 
-    #pairs = [((pair[0][0],pair[1][0]), (token_id, token_id)) for pair in pairs]
-    pairs = [((pair[0][0],pair[1][0]), (token_id, token_id)) for pair in pairs if abs(pair[0][1] - pair[1][1]) > delta]
- 
+    token_id = tokenizer.encode(" Yes")[-1]
+
+    # Filter pairs that maintain minimum separation of delta
+    pairs = [((pair[0][0],pair[1][0]), (token_id, token_id)) for pair in pairs 
+            if pair[1][1] - pair[0][1] > delta]
+
     print(pairs[0])
-    print("\n\n")
+    print("\n\n") 
     print(pairs[1])
     print("\n\nNum Samples: ", len(pairs))
 
     class PairwiseDataset(Dataset):
-        def __init__(self, pairs, tokenizer, max_length=128):
+        def __init__(self, pairs, tokenizer, max_length=128, device='cuda'):
             """
             pairs: list of ((prompt_i, prompt_j), (token_i, token_j))
             tokenizer: Hugging Face tokenizer
+            device: device to place tensors on
             """
             self.pairs = pairs
             self.tokenizer = tokenizer
             self.max_length = max_length
+            self.device = device
 
         def __len__(self):
             return len(self.pairs)
@@ -264,19 +272,36 @@ def main(args):
                 'input_ids_j': enc_j['input_ids'].squeeze(0),
                 'attention_mask_j': enc_j['attention_mask'].squeeze(0),
                 'token_id_j': torch.tensor(token_j, dtype=torch.long),
-                # For simplicity, label=1 means "i < j"
-                # If you have a different label scheme, store that accordingly.
                 'label': torch.tensor(1.0, dtype=torch.float)
             }
             return item
 
-    #18 fine for zero-shot
-    if task=='swords':
-        batch_size = 6
-    else:
-        batch_size = 32
 
-    dataset = PairwiseDataset(pairs, tokenizer, max_length=max_context_length)
+    #18 fine for zero-shot
+    if with_ref:
+        if task=='swords':
+            batch_size = 2
+        elif task=='trivia-qa':
+            batch_size = 2
+        elif task=='lambada':
+            batch_size = 2
+        elif task =='hypernym':
+            batch_size = 4
+        else:
+            raise ValueError("define batch size for this case")
+    else:
+        if task=='swords':
+            batch_size = 6
+        elif task=='trivia-qa':
+            batch_size = 6
+        elif task=='lambada':
+            batch_size = 6
+        elif task =='hypernym':
+            batch_size = 32
+        else:
+            raise ValueError("define batch size for this case")
+
+    dataset = PairwiseDataset(pairs, tokenizer, max_length=max_context_length, device=device)
     train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
     print("\n\nDone making dataloader\n\n")
     optimizer = AdamW(model.parameters(), lr=lr)
@@ -292,7 +317,10 @@ def main(args):
         if True:#epoch % save_steps==1:
             #save_directory = "../models/v3-delta5-epoch"+str(epoch)
             #save_directory = "../models/v3-delta5-no-overlap-both-epoch"+str(epoch)
-            save_directory = "../models/v4-delta5-epoch"+str(epoch) + "--" + task
+            if with_ref:
+                save_directory = "../models/v4-delta"+str(delta)+"-epoch"+str(epoch) + "--" + task + "-with-ref"
+            else:
+                save_directory = "../models/v4-delta"+str(delta)+"-epoch"+str(epoch) + "--" + task
             print("Saving to ", save_directory)
             model.save_pretrained(save_directory)
             tokenizer.save_pretrained(save_directory)
@@ -300,7 +328,7 @@ def main(args):
         for batch in tqdm(train_loader):
             optimizer.zero_grad()
 
-            # Move inputs to device
+            # Move all inputs to device
             input_ids_i = batch["input_ids_i"].to(device)
             attention_mask_i = batch["attention_mask_i"].to(device)
             token_id_i = batch["token_id_i"].to(device)
@@ -309,7 +337,7 @@ def main(args):
             attention_mask_j = batch["attention_mask_j"].to(device)
             token_id_j = batch["token_id_j"].to(device)
 
-            label = batch["label"].to(device)  # typically 1.0 for "i < j"
+            label = batch["label"].to(device)
 
             # Forward pass for prompt i
             outputs_i = model(input_ids=input_ids_i, attention_mask=attention_mask_i)
@@ -334,8 +362,8 @@ def main(args):
 
             # Score for example i is the log-prob of token_id_i
             # shape [B]
-            score_i = log_probs_i[torch.arange(log_probs_i.size(0)), token_id_i]
-
+            #score_i = log_probs_i[torch.arange(log_probs_i.size(0)), token_id_i]
+            score_i = log_probs_i[torch.arange(log_probs_i.size(0), device=device), token_id_i]
             # Forward pass for prompt j
             outputs_j = model(input_ids=input_ids_j, attention_mask=attention_mask_j)
             logits_j = outputs_j.logits
@@ -352,8 +380,8 @@ def main(args):
 
             selected_logits_j = torch.cat(selected_logits_j, dim=0)
             log_probs_j = F.log_softmax(selected_logits_j, dim=-1)  # [B, vocab_size]
-            score_j = log_probs_j[torch.arange(log_probs_j.size(0)), token_id_j]
-
+            #score_j = log_probs_j[torch.arange(log_probs_j.size(0)), token_id_j]
+            score_j = log_probs_j[torch.arange(log_probs_j.size(0), device=device), token_id_j]
             
             # TODO: with torch.no_grad(): compute ref logits diff
 
@@ -369,7 +397,8 @@ def main(args):
                         selected_logits_i_ref.append(logits_i_ref[b, last_idx_i, :].unsqueeze(0))
                     selected_logits_i_ref = torch.cat(selected_logits_i_ref, dim=0)
                     log_probs_i_ref = F.log_softmax(selected_logits_i_ref, dim=-1)  # [B, vocab_size]
-                    score_i_ref = log_probs_i_ref[torch.arange(log_probs_i_ref.size(0)), token_id_i]
+                    #score_i_ref = log_probs_i_ref[torch.arange(log_probs_i_ref.size(0)), token_id_i]
+                    score_i_ref = log_probs_i_ref[torch.arange(log_probs_i_ref.size(0), device=device), token_id_i]
 
                     # Forward pass for prompt j
                     outputs_j_ref = model_ref(input_ids=input_ids_j, attention_mask=attention_mask_j)
@@ -381,7 +410,8 @@ def main(args):
                         selected_logits_j_ref.append(logits_j_ref[b, last_idx_j, :].unsqueeze(0))
                     selected_logits_j_ref = torch.cat(selected_logits_j_ref, dim=0)
                     log_probs_j_ref = F.log_softmax(selected_logits_j_ref, dim=-1)  # [B, vocab_size]
-                    score_j_ref = log_probs_j_ref[torch.arange(log_probs_j_ref.size(0)), token_id_j]
+                    #score_j_ref = log_probs_j_ref[torch.arange(log_probs_j_ref.size(0)), token_id_j]
+                    score_j_ref = log_probs_j_ref[torch.arange(log_probs_j_ref.size(0), device=device), token_id_j]
                 diff_ref = score_j_ref - score_i_ref
             else:
                 diff_ref = 0
@@ -401,10 +431,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", type=str, default="google/gemma-2-2b", help="Model name/path")
     parser.add_argument("--task", type=str, choices=["hypernym", "trivia-qa", "swords", "lambada"], help="Task to run")
-    parser.add_argument("--with_ref", type=bool, default=False, help="Whether to use reference model")
+    parser.add_argument("--with_ref", default=False, action="store_true", help="Whether to use reference model")
     parser.add_argument("--num_epochs", type=int, default=10, help="Number of epochs to train")
     parser.add_argument("--learning_rate", type=float, default=1e-5, help="Learning rate")
-    parser.add_argument("--delta", type=int, default=5, help="Delta")
+    parser.add_argument("--delta", type=float, default=10, help="Delta")
     parser.add_argument("--total_samples", type=int, default=5110, help="Total samples")
     parser.add_argument("--save_steps", type=int, default=1, help="Save steps")
     args = parser.parse_args()
