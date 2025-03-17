@@ -270,16 +270,28 @@ def main(args):
             return item
 
     #18 fine for zero-shot
-    if task=='swords':
-        batch_size = 6
-    elif task=='trivia-qa':
-        batch_size = 6
-    elif task=='lambada':
-        batch_size = 6
-    elif task =='hypernym':
-        batch_size = 32
+    if with_ref:
+         if task=='swords':
+            batch_size = 3
+        elif task=='trivia-qa':
+            batch_size = 3
+        elif task=='lambada':
+            batch_size = 3
+        elif task =='hypernym':
+            batch_size = 16
+        else:
+            raise ValueError("define batch size for this case")
     else:
-        raise ValueError("define batch size for this case")
+        if task=='swords':
+            batch_size = 6
+        elif task=='trivia-qa':
+            batch_size = 6
+        elif task=='lambada':
+            batch_size = 6
+        elif task =='hypernym':
+            batch_size = 32
+        else:
+            raise ValueError("define batch size for this case")
 
     dataset = PairwiseDataset(pairs, tokenizer, max_length=max_context_length)
     train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
