@@ -102,10 +102,10 @@ def main(args):
     # Compute log-probabilities on the fly instead of loading from disk
     #device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     #model.to(device)
-    
+
     print("Computing log-probabilities on the fly...")
     print(f"Using device: {device}")
-    
+
     if task=='hypernym':
         if use_all:
             L_train_all = L_train
@@ -114,7 +114,7 @@ def main(args):
         # Generate generator prompts
         p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_hypernymy, L_train_all, tokenizer, style='generator', shots='zero', neg=False, both=None)
         prompts_gen = [i.prompt for i in p_train_gen]
-        
+
         # Compute log-probabilities for generator prompts
         gen_logprobs_last_layer_pos = []
         for idx, prompt in enumerate(tqdm(prompts_gen)):
@@ -127,33 +127,32 @@ def main(args):
             ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
             log_prob = math.log(probs[ind].item() + 1e-12)
             gen_logprobs_last_layer_pos.append(log_prob)
-        
+
         # Generate discriminator prompts
         p_train, hf_train, _ = utils.make_and_format_data(make_prompt_hypernymy, L_train_all, tokenizer, style='discriminator', shots='few', neg=False, both=None)
         prompts_pos = [i.prompt for i in p_train]
-        
+
     elif task=='trivia-qa':
         L_train_all = L_train  # Already using all examples for trivia-qa
         # Generate generator prompts
         p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style='generator', shots='zero', both=None)
         prompts_gen = [i.prompt for i in p_train_gen]
-        
         # Compute log-probabilities for generator prompts
         gen_logprobs_last_layer_pos = []
         for idx, prompt in enumerate(tqdm(prompts_gen)):
             probs = get_final_logit_prob(prompt, model, tokenizer, device, is_chat=False)
             # Get the log probability for the target token (answer)
-            target_text = " " + L_train_all[idx]['answers'][0]
+            target_text = " " + L_train_all[idx]['answers'][0].capitalize()
             target_tokens = tokenizer.encode(target_text)
             # Use the first token after the space
             ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
             log_prob = math.log(probs[ind].item() + 1e-12)
             gen_logprobs_last_layer_pos.append(log_prob)
-        
+
         # Generate discriminator prompts
         p_train, hf_train, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style='discriminator', shots='few', neg=False, both=None)
         prompts_pos = [i.prompt for i in p_train]
-        
+
     elif task=='swords':
         if use_all:
             L_train_all = L_train
@@ -162,7 +161,7 @@ def main(args):
         # Generate generator prompts
         p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_swords, L_train_all, tokenizer, style='generator', shots='zero', neg=False, both=None)
         prompts_gen = [i.prompt for i in p_train_gen]
-        
+
         # Compute log-probabilities for generator prompts
         gen_logprobs_last_layer_pos = []
         for idx, prompt in enumerate(tqdm(prompts_gen)):
@@ -174,17 +173,17 @@ def main(args):
             ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
             log_prob = math.log(probs[ind].item() + 1e-12)
             gen_logprobs_last_layer_pos.append(log_prob)
-        
+
         # Generate discriminator prompts
         p_train, hf_train, _ = utils.make_and_format_data(make_prompt_swords, L_train_all, tokenizer, style='discriminator', shots='few', neg=False, both=None)
         prompts_pos = [i.prompt for i in p_train]
-        
+
     elif task=='lambada':
         L_train_all = L_train  # Already using all examples for lambada
         # Generate generator prompts
         p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_lambada, L_train_all, tokenizer, style='generator', shots='zero', both=None)
         prompts_gen = [i.prompt for i in p_train_gen]
-        
+
         # Compute log-probabilities for generator prompts
         gen_logprobs_last_layer_pos = []
         for idx, prompt in enumerate(tqdm(prompts_gen)):
@@ -196,7 +195,7 @@ def main(args):
             ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
             log_prob = math.log(probs[ind].item() + 1e-12)
             gen_logprobs_last_layer_pos.append(log_prob)
-        
+
         # Generate discriminator prompts
         p_train, hf_train, _ = utils.make_and_format_data(make_prompt_lambada, L_train_all, tokenizer, style='discriminator', shots='few', neg=False, both=None)
         prompts_pos = [i.prompt for i in p_train]
@@ -207,13 +206,14 @@ def main(args):
     print("MAX CONTEXT LENGTH: ", max_context_length)
 
 
-    Z = list(zip(prompts_pos, gen_logprobs_last_layer_pos))
+    #Z = list(zip(prompts_pos, gen_logprobs_last_layer_pos))
+    Z = list(zip(p_train, gen_logprobs_last_layer_pos))
     Z = sorted(Z, key = lambda i: i[-1])
-    
+
     # Calculate delta based on range of logprobs
     min_logprob = Z[0][1]
     max_logprob = Z[-1][1]
-    
+
     print(f"Delta (minimum separation): {delta}")
     if delta!=0:
         NN = (max_logprob - min_logprob) / delta
@@ -227,14 +227,32 @@ def main(args):
     pair_inds = random.sample(pair_inds, total_samples)
     pairs = [(Z[i[0]], Z[i[1]]) for i in pair_inds]
 
+    #breakpoint()
     token_id = tokenizer.encode(" Yes")[-1]
+    #first_token_id = tokenizer.encode(pairs[0][0].completion)[-1]
+    #second_token_id = tokenizer.encode(pairs[1][0].completion)[-1]
 
     # Filter pairs that maintain minimum separation of delta
-    pairs = [((pair[0][0],pair[1][0]), (token_id, token_id)) for pair in pairs 
+#    pairs = [((pair[0][0].prompt ,pair[1][0].prompt),  (tokenizer.encode(pair[0][0].completion)[-1], tokenizer.encode(pair[1][0].completion)[-1] )  ) for pair in pairs
+#            if pair[1][1] - pair[0][1] > delta]
+
+    pairs = [((pair[0][0].prompt ,pair[1][0].prompt),  (token_id, token_id) ) for pair in pairs
             if pair[1][1] - pair[0][1] > delta]
 
+    #if not use_all:
+    #    assert all([pair[0][0].completion== " Yes" for pair in pairs])
+    #    assert all([pair[1][0].completion== " Yes" for pair in pairs])
+    
+    # Debug prints
+    #print("\nDebugging pairs structure:")
+    #print("First pair structure:", pairs[0])
+    #print("First pair token types:", type(pairs[0][1][0]), type(pairs[0][1][1]))
+    #print("First pair tokens:", pairs[0][1][0], pairs[0][1][1])
+    
+    #breakpoint()
+
     print(pairs[0])
-    print("\n\n") 
+    print("\n\n")
     print(pairs[1])
     print("\n\nNum Samples: ", len(pairs))
 
@@ -249,12 +267,31 @@ def main(args):
             self.tokenizer = tokenizer
             self.max_length = max_length
             self.device = device
+            
+            # Debug print first pair
+            #print("\nDebugging PairwiseDataset initialization:")
+            #print("First pair:", pairs[0])
+            #print("Token types:", type(pairs[0][1][0]), type(pairs[0][1][1]))
+            #print("Tokens:", pairs[0][1][0], pairs[0][1][1])
+            
+            # Try to encode the tokens
+            #print("\nTrying to encode tokens:")
+            #try:
+            #    print("Encoding first token:", tokenizer.encode(pairs[0][1][0]))
+            #    print("Encoding second token:", tokenizer.encode(pairs[0][1][1]))
+            #except Exception as e:
+            #    print("Error encoding tokens:", e)
 
         def __len__(self):
             return len(self.pairs)
 
         def __getitem__(self, idx):
             (prompt_i, prompt_j), (token_i, token_j) = self.pairs[idx]
+            # Debug print
+            #print(f"\nProcessing item {idx}:")
+            #print("Token types:", type(token_i), type(token_j))
+            #print("Tokens:", token_i, token_j)
+            
             # Tokenize prompt i
             enc_i = self.tokenizer(
                 prompt_i,
@@ -321,7 +358,8 @@ def main(args):
     for epoch in range(num_epochs):
         model.train()
         total_loss = 0.0
-        if True:#epoch % save_steps==1:
+        #if True:#epoch % save_steps==1:
+        if epoch!=0:
             #save_directory = "../models/v3-delta5-epoch"+str(epoch)
             #save_directory = "../models/v3-delta5-no-overlap-both-epoch"+str(epoch)
             with_ref_str = "-with-ref" if with_ref else ""
@@ -388,7 +426,7 @@ def main(args):
             log_probs_j = F.log_softmax(selected_logits_j, dim=-1)  # [B, vocab_size]
             #score_j = log_probs_j[torch.arange(log_probs_j.size(0)), token_id_j]
             score_j = log_probs_j[torch.arange(log_probs_j.size(0), device=device), token_id_j]
-            
+
             # TODO: with torch.no_grad(): compute ref logits diff
 
             # Forward pass for prompt i
@@ -423,7 +461,6 @@ def main(args):
                 diff_ref = 0
 
             # Pairwise logistic loss: - log( sigmoid( (score_j) - (score_i) ) )
-            
             diff = score_j - score_i - diff_ref
             loss = -torch.log(torch.sigmoid(diff) + 1e-12).mean()
             loss.backward()
