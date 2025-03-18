@@ -4,7 +4,9 @@
 # ROC for disc / gen accuract
 # MRR for 
 '''
-CUDA_VISIBLE_DEVICES={} python eval.py --model meta-llama/Llama-3.2-3B-Instruct --task trivia-qa
+CUDA_VISIBLE_DEVICES=6 python eval.py --model meta-llama/Llama-3.2-3B-Instruct --task trivia-qa --train --disc_shots zero
+CUDA_VISIBLE_DEVICES=6 python eval.py --model meta-llama/Llama-3.2-3B-Instruct --task swords --train --disc_shots zero
+
 '''
 from pathlib import Path
 import os
@@ -90,6 +92,8 @@ def main(args):
     seed = args.seed
     gen_shots = args.gen_shots
     disc_shots = args.disc_shots
+    print(f"gen_shots: {gen_shots}, disc_shots: {disc_shots}")
+    # raise ValueError("Check this!")
     train_flag = args.train
     split_type = args.split_type
 
@@ -152,20 +156,21 @@ def main(args):
         # print(f"prompt_disc: {prompt_disc}")
         P_disc.append(probs_disc)
         if args.train:
+            prefix = " " if not model_is_chat else ""
             if task == 'hypernym':
                 json_list.append({"noun1":item.noun1, "noun2":item.noun2, "taxonomic":item.taxonomic, "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0, 
-                                "generator-completion": ' ' + item.noun2.strip(), "discriminator-gold-completion": ' ' + item.taxonomic.strip().capitalize()})
+                                "generator-completion": prefix + item.noun2.strip(), "discriminator-gold-completion": prefix + item.taxonomic.strip().capitalize()})
             elif task == 'trivia-qa':
                 # print(item.keys())
-                json_list.append({"question":item['question'], "answer":' ' + item['answers'][0].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
-                                "generator-completion": ' ' + item['answers'][0].strip(), "discriminator-gold-completion": ' Yes'})
+                json_list.append({"question":item['question'], "answer":prefix + item['answers'][0].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
+                                "generator-completion": prefix + item['answers'][0].strip(), "discriminator-gold-completion": prefix + 'Yes'})
             elif task == 'lambada':
-                json_list.append({"context":item['context'], "completion":' ' + item['final_word'].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
-                                "generator-completion": ' ' + item['final_word'].strip(), "discriminator-gold-completion": ' Yes'})
+                json_list.append({"context":item['context'], "completion":prefix + item['final_word'].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
+                                "generator-completion": prefix + item['final_word'].strip(), "discriminator-gold-completion": prefix + 'Yes'})
             elif task == 'swords':
                 json_list.append({"context":item.context, "target":item.target, "replacement":item.replacement, "synonym":item.synonym,
                                 "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
-                                "generator-completion": item.replacement.strip(), "discriminator-gold-completion": ' ' + item.synonym.strip().capitalize()})
+                                "generator-completion": item.replacement.strip(), "discriminator-gold-completion": prefix + item.synonym.strip().capitalize()})
             else:
                 raise NotImplementedError("Not a task")
             # print(json_list[-1])

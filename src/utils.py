@@ -418,7 +418,8 @@ def make_and_format_data(
     neg=False,
     both="union",
     instruction_masking=True,
-    filtering=None
+    filtering=None,
+    is_chat = False,
 ):
     """
     Make prompts and completions, and tokenize and pad into a HF dataset.
@@ -487,13 +488,26 @@ def make_and_format_data(
 
     instructions = []
     completions = []
-    prompt_completion_data = []
-    for ii in range(len(items)):
-        prompt_completion_data.append({"prompt": items[ii].prompt.strip(), "completion": items[ii].completion})
-        instruction = tokenizer(items[ii].prompt)["input_ids"]
-        output = tokenizer(items[ii].completion, add_special_tokens=False)["input_ids"]
-        instructions.append(instruction)
-        completions.append(output)
+    if not is_chat:
+        prompt_completion_data = []
+        for ii in range(len(items)):
+            prompt_completion_data.append({"prompt": items[ii].prompt.strip(), "completion": items[ii].completion})
+            instruction = tokenizer(items[ii].prompt)["input_ids"]
+            output = tokenizer(items[ii].completion, add_special_tokens=False)["input_ids"]
+            instructions.append(instruction)
+            completions.append(output)
+    else:
+        prompt_completion_data = []
+        for ii in range(len(items)):
+            prompt_completion_data.append(
+                {"messages": [{"role": "system", "content": "Answer directly without explanation."}, 
+                              {"role": "user", "content": items[ii].prompt.strip()}, 
+                              {"role": "assistant", "content": items[ii].completion.strip()}]}
+            )
+            instruction = tokenizer(items[ii].prompt)["input_ids"]
+            output = tokenizer(items[ii].completion, add_special_tokens=False)["input_ids"]
+            instructions.append(instruction)
+            completions.append(output)
 
     inputs = [instructions[ii] + completions[ii] for ii in range(len(completions))]
 

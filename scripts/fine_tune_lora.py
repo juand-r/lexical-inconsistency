@@ -191,6 +191,12 @@ def main():
     model_id = args.model
     num_epochs = args.epochs
 
+    if "instruct" in model_id.lower():
+        model_is_chat = True
+    else:
+        model_is_chat = False
+    
+    print("Model is chat: ", model_is_chat)
     # Data shuffling, subsampling and filtering arguments
     seed = args.seed
     subsample = args.subsample
@@ -260,6 +266,7 @@ def main():
         both=both,
         instruction_masking=instruction_mask,
         filtering=filtering_func,
+        is_chat=model_is_chat
     )
     p_test, hf_test, prompt_completion_test = make_and_format_data(
         make_prompt,
@@ -270,6 +277,7 @@ def main():
         neg=negate,
         both=both,
         instruction_masking=instruction_mask,
+        is_chat=model_is_chat
     )
     print("Train dataset size: ", len(prompt_completion_train))
     print("Test dataset size: ", len(prompt_completion_test))
@@ -374,5 +382,5 @@ CUDA_VISIBLE_DEVICES=5 python fine_tune_lora.py --epochs 2 --shots zero --both u
 CUDA_VISIBLE_DEVICES=6 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task lambada --model meta-llama/Llama-3.2-3B
 
 CUDA_VISIBLE_DEVICES=2 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task trivia-qa --model google/gemma-2-2b
-CUDA_VISIBLE_DEVICES=3 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task trivia-qa --model meta-llama/Llama-3.2-3B
+CUDA_VISIBLE_DEVICES=7 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task swords --model meta-llama/Llama-3.2-3B-Instruct
 '''

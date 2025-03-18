@@ -186,6 +186,21 @@ def load_swords_gen_to_disc(file = "../data/swords-train.json", threshold = None
     dataset = Dataset.from_dict(dataset_dict)
     return dataset
     
+def convert_to_conversation(dataset):
+    chosen_list = []
+    rejected_list = []
+    for d in dataset:
+        cc = [{"role": "system", "content": "Answer directly without explanation."},
+              {"role": "user", "content": d['prompt'].strip()}, 
+              {"role": "assistant", "content": d['chosen'].strip()}]
+        rr = [{"role": "system", "content": "Answer directly without explanation."},
+              {"role": "user", "content": d['prompt'].strip()}, 
+              {"role": "assistant", "content": d['rejected'].strip()}]
+        chosen_list.append(cc)
+        rejected_list.append(rr)
+    dataset_dict = {"chosen": chosen_list, "rejected": rejected_list}
+    dataset = Dataset.from_dict(dataset_dict)
+    return dataset
 
 data_loader = {'hypernym':
                {'d2g': load_hypernym_disc_to_gen,
@@ -229,6 +244,20 @@ if __name__ == "__main__":
     tokenizer.pad_token = tokenizer.eos_token
     dataset = data_loader[args.task][args.direction](args.dataset_dir)
 
+    if "instruct" in args.model.lower():
+        model_is_chat = True
+    else:
+        model_is_chat = False
+    
+    print(f"Model is chat: {model_is_chat}")
+    if model_is_chat:
+        dataset = convert_to_conversation(dataset)
+    print(f"Dataset length: {len(dataset)}")
+
+    for d in dataset:
+        print(d)
+        break
+    # raise ValueError("Stop here")
     output_dir = os.path.join(args.output_dir, args.task, args.model.split('/')[-1].strip(), f"dpo_{args.direction}_{time_string}")
     os.makedirs(output_dir, exist_ok=True)
     training_args = DPOConfig(
@@ -279,5 +308,9 @@ CUDA_VISIBLE_DEVICES=6 python dpo.py --model  google/gemma-2-2b --task hypernym 
 
 CUDA_VISIBLE_DEVICES=2 python dpo.py --model google/gemma-2-2b --task lambada --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/lambada-train-gemma-2-2b.json
 CUDA_VISIBLE_DEVICES=3 python dpo.py --model meta-llama/Llama-3.2-3B --task lambada --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/lambada-train-Llama-3.2-3B.json
+
+CUDA_VISIBLE_DEVICES=1 python dpo.py --model meta-llama/Llama-3.2-3B-Instruct --task trivia-qa --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/trivia-qa-train-Llama-3.2-3B-Instruct.json
+CUDA_VISIBLE_DEVICES=2 python dpo.py --model  meta-llama/Llama-3.2-3B-Instruct --task swords --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/swords-train-Llama-3.2-3B-Instruct.json 
+CUDA_VISIBLE_DEVICES=0 python dpo.py --model  meta-llama/Llama-3.2-3B-Instruct --task swords --direction g2d --lr 2e-6 --epochs 2 --dataset_dir ../data/swords-train-Llama-3.2-3B-Instruct.json
 
 '''
