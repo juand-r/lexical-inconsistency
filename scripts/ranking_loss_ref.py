@@ -44,6 +44,7 @@ def main(args):
     #TODO set delta automatically based on data?
     total_samples = args.total_samples
     save_steps = args.save_steps
+    use_all = args.all  # New flag for using all examples
     #tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     WITH_REF = with_ref
@@ -106,9 +107,12 @@ def main(args):
     print(f"Using device: {device}")
     
     if task=='hypernym':
-        L_train_pos = [i for i in L_train if i.taxonomic == "yes"]
+        if use_all:
+            L_train_all = L_train
+        else:
+            L_train_all = [i for i in L_train if i.taxonomic == "yes"]
         # Generate generator prompts
-        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_hypernymy, L_train_pos, tokenizer, style='generator', shots='zero', neg=False, both=None)
+        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_hypernymy, L_train_all, tokenizer, style='generator', shots='zero', neg=False, both=None)
         prompts_gen = [i.prompt for i in p_train_gen]
         
         # Compute log-probabilities for generator prompts
@@ -117,7 +121,7 @@ def main(args):
             probs = get_final_logit_prob(prompt, model, tokenizer, device, is_chat=False)
             # Get the log probability for the target token (noun2)
             # For hypernymy, we want the probability of the noun2 token
-            target_text = " " + L_train_pos[idx].noun2
+            target_text = " " + L_train_all[idx].noun2
             target_tokens = tokenizer.encode(target_text)
             # Use the first token after the space
             ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
@@ -125,13 +129,13 @@ def main(args):
             gen_logprobs_last_layer_pos.append(log_prob)
         
         # Generate discriminator prompts
-        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_hypernymy, L_train_pos, tokenizer, style='discriminator', shots='few', neg=False, both=None)
+        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_hypernymy, L_train_all, tokenizer, style='discriminator', shots='few', neg=False, both=None)
         prompts_pos = [i.prompt for i in p_train]
         
     elif task=='trivia-qa':
-        L_train_pos = L_train
+        L_train_all = L_train  # Already using all examples for trivia-qa
         # Generate generator prompts
-        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_pos, tokenizer, style='generator', shots='zero', both=None)
+        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style='generator', shots='zero', both=None)
         prompts_gen = [i.prompt for i in p_train_gen]
         
         # Compute log-probabilities for generator prompts
@@ -139,7 +143,7 @@ def main(args):
         for idx, prompt in enumerate(tqdm(prompts_gen)):
             probs = get_final_logit_prob(prompt, model, tokenizer, device, is_chat=False)
             # Get the log probability for the target token (answer)
-            target_text = " " + L_train_pos[idx]['answers'][0]
+            target_text = " " + L_train_all[idx]['answers'][0]
             target_tokens = tokenizer.encode(target_text)
             # Use the first token after the space
             ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
@@ -147,13 +151,16 @@ def main(args):
             gen_logprobs_last_layer_pos.append(log_prob)
         
         # Generate discriminator prompts
-        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_pos, tokenizer, style='discriminator', shots='few', neg=False, both=None)
+        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style='discriminator', shots='few', neg=False, both=None)
         prompts_pos = [i.prompt for i in p_train]
         
     elif task=='swords':
-        L_train_pos = [i for i in L_train if i.synonym=='yes']
+        if use_all:
+            L_train_all = L_train
+        else:
+            L_train_all = [i for i in L_train if i.synonym=='yes']
         # Generate generator prompts
-        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_swords, L_train_pos, tokenizer, style='generator', shots='zero', neg=False, both=None)
+        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_swords, L_train_all, tokenizer, style='generator', shots='zero', neg=False, both=None)
         prompts_gen = [i.prompt for i in p_train_gen]
         
         # Compute log-probabilities for generator prompts
@@ -161,7 +168,7 @@ def main(args):
         for idx, prompt in enumerate(tqdm(prompts_gen)):
             probs = get_final_logit_prob(prompt, model, tokenizer, device, is_chat=False)
             # Get the log probability for the target token (replacement)
-            target_text = " " + L_train_pos[idx].replacement
+            target_text = " " + L_train_all[idx].replacement
             target_tokens = tokenizer.encode(target_text)
             # Use the first token after the space
             ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
@@ -169,13 +176,13 @@ def main(args):
             gen_logprobs_last_layer_pos.append(log_prob)
         
         # Generate discriminator prompts
-        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_swords, L_train_pos, tokenizer, style='discriminator', shots='few', neg=False, both=None)
+        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_swords, L_train_all, tokenizer, style='discriminator', shots='few', neg=False, both=None)
         prompts_pos = [i.prompt for i in p_train]
         
     elif task=='lambada':
-        L_train_pos = L_train
+        L_train_all = L_train  # Already using all examples for lambada
         # Generate generator prompts
-        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_lambada, L_train_pos, tokenizer, style='generator', shots='zero', both=None)
+        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_lambada, L_train_all, tokenizer, style='generator', shots='zero', both=None)
         prompts_gen = [i.prompt for i in p_train_gen]
         
         # Compute log-probabilities for generator prompts
@@ -183,7 +190,7 @@ def main(args):
         for idx, prompt in enumerate(tqdm(prompts_gen)):
             probs = get_final_logit_prob(prompt, model, tokenizer, device, is_chat=False)
             # Get the log probability for the target token (final_word)
-            target_text = " " + L_train_pos[idx]['final_word']
+            target_text = " " + L_train_all[idx]['final_word']
             target_tokens = tokenizer.encode(target_text)
             # Use the first token after the space
             ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
@@ -191,7 +198,7 @@ def main(args):
             gen_logprobs_last_layer_pos.append(log_prob)
         
         # Generate discriminator prompts
-        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_lambada, L_train_pos, tokenizer, style='discriminator', shots='few', neg=False, both=None)
+        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_lambada, L_train_all, tokenizer, style='discriminator', shots='few', neg=False, both=None)
         prompts_pos = [i.prompt for i in p_train]
     else:
         raise ValueError("!!")
@@ -317,10 +324,9 @@ def main(args):
         if True:#epoch % save_steps==1:
             #save_directory = "../models/v3-delta5-epoch"+str(epoch)
             #save_directory = "../models/v3-delta5-no-overlap-both-epoch"+str(epoch)
-            if with_ref:
-                save_directory = "../models/v4-delta"+str(delta)+"-epoch"+str(epoch) + "--" + task + "-with-ref"
-            else:
-                save_directory = "../models/v4-delta"+str(delta)+"-epoch"+str(epoch) + "--" + task
+            with_ref_str = "-with-ref" if with_ref else ""
+            all_str = "-all" if use_all else ""
+            save_directory = "../models/v4-delta"+str(delta)+"-epoch"+str(epoch) + "--" + task + with_ref_str + all_str
             print("Saving to ", save_directory)
             model.save_pretrained(save_directory)
             tokenizer.save_pretrained(save_directory)
@@ -437,5 +443,6 @@ if __name__ == "__main__":
     parser.add_argument("--delta", type=float, default=10, help="Delta")
     parser.add_argument("--total_samples", type=int, default=5110, help="Total samples")
     parser.add_argument("--save_steps", type=int, default=1, help="Save steps")
+    parser.add_argument("--all", default=False, action="store_true", help="Whether to use all examples or just positive ones")
     args = parser.parse_args()
     main(args)
