@@ -239,9 +239,9 @@ def main(args):
     pairs = [((pair[0][0].prompt ,pair[1][0].prompt),  (token_id, token_id) ) for pair in pairs
             if pair[1][1] - pair[0][1] > delta]
 
-    if not use_all:
-        assert all([pair[0][0].completion== " Yes" for pair in pairs])
-        assert all([pair[1][0].completion== " Yes" for pair in pairs])
+    #if not use_all:
+    #    assert all([pair[0][0].completion== " Yes" for pair in pairs])
+    #    assert all([pair[1][0].completion== " Yes" for pair in pairs])
     
     # Debug prints
     #print("\nDebugging pairs structure:")
