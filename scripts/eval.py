@@ -236,5 +236,8 @@ CUDA_VISIBLE_DEVICES=3 python eval.py --model meta-llama/Llama-3.2-3B --train --
 CUDA_VISIBLE_DEVICES=3 python eval.py --model google/gemma-2-2b --train --task swords
 CUDA_VISIBLE_DEVICES=3 python eval.py --model meta-llama/Llama-3.2-3B --train --task swords
 
+CUDA_VISIBLE_DEVICES=3 python eval.py --model google/gemma-2-2b --train --task trivia-qa
+CUDA_VISIBLE_DEVICES=3 python eval.py --model meta-llama/Llama-3.2-3B --train --task trivia-qa
+
 model = {'google/gemma-2-2b', 'google/gemma-3-4b-pt', 'meta-llama/Llama-3.2-3B'}
 '''

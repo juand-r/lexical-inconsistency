@@ -271,7 +271,8 @@ CUDA_VISIBLE_DEVICES=5 python dpo.py --model meta-llama/Llama-3.2-3B --task triv
 #TODO:
 rerun gemma-2-2b on hypernym
 
-CUDA_VISIBLE_DEVICES=2 python dpo.py --model google/gemma-2-2b --task trivia-qa --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/trivia-qa-train-gemma-2-2b.json [ing]
+CUDA_VISIBLE_DEVICES=0 python dpo.py --model google/gemma-2-2b --task trivia-qa --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/trivia-qa-train-gemma-2-2b.json [ing]
+CUDA_VISIBLE_DEVICES=1 python dpo.py --model meta-llama/Llama-3.2-3B --task trivia-qa --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/trivia-qa-train-Llama-3.2-3B.json
 
 CUDA_VISIBLE_DEVICES=2 python dpo.py --model  google/gemma-2-2b --task hypernym --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/hypernym-train-gemma-2-2b.json 
 CUDA_VISIBLE_DEVICES=6 python dpo.py --model  google/gemma-2-2b --task hypernym --direction g2d --lr 2e-6 --epochs 2 --dataset_dir ../data/hypernym-train-gemma-2-2b.json 

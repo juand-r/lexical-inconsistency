@@ -240,6 +240,8 @@ def main():
     # else:
     #     raise ValueError("!")
     L_train, L_test, make_prompt = get_L_prompt(args.task, 'random', seed)
+    print(f"len L_train: {len(L_train)}")
+    print(f"len L_test: {len(L_test)}")
 
     print("Gen or disc: ", style)
     print("Shots: ", shots)
@@ -271,7 +273,7 @@ def main():
     )
     print("Train dataset size: ", len(prompt_completion_train))
     print("Test dataset size: ", len(prompt_completion_test))
-    
+    # raise ValueError("STOP")
     for i in range(10):
         print(prompt_completion_train[i])
         # print(tokenizer.apply_chat_template(prompt_completion_train[i]))
@@ -371,6 +373,6 @@ if __name__ == "__main__":
 CUDA_VISIBLE_DEVICES=5 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task lambada --model google/gemma-2-2b
 CUDA_VISIBLE_DEVICES=6 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task lambada --model meta-llama/Llama-3.2-3B
 
-CUDA_VISIBLE_DEVICES=5 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task swords --model google/gemma-2-2b
-CUDA_VISIBLE_DEVICES=4 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task swords --model meta-llama/Llama-3.2-3B
+CUDA_VISIBLE_DEVICES=2 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task trivia-qa --model google/gemma-2-2b
+CUDA_VISIBLE_DEVICES=3 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task trivia-qa --model meta-llama/Llama-3.2-3B
 '''
