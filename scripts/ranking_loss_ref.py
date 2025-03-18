@@ -137,13 +137,12 @@ def main(args):
         # Generate generator prompts
         p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style='generator', shots='zero', both=None)
         prompts_gen = [i.prompt for i in p_train_gen]
-
         # Compute log-probabilities for generator prompts
         gen_logprobs_last_layer_pos = []
         for idx, prompt in enumerate(tqdm(prompts_gen)):
             probs = get_final_logit_prob(prompt, model, tokenizer, device, is_chat=False)
             # Get the log probability for the target token (answer)
-            target_text = " " + L_train_all[idx]['answers'][0]
+            target_text = " " + L_train_all[idx]['answers'][0].capitalize()
             target_tokens = tokenizer.encode(target_text)
             # Use the first token after the space
             ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
