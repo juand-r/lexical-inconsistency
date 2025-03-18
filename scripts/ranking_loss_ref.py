@@ -364,7 +364,7 @@ def main(args):
             #save_directory = "../models/v3-delta5-no-overlap-both-epoch"+str(epoch)
             with_ref_str = "-with-ref" if with_ref else ""
             all_str = "-all" if use_all else ""
-            save_directory = "../models/v4-delta"+str(delta)+"-epoch"+str(epoch) + "--" + task + with_ref_str + all_str
+            save_directory = "../models/v4-" + model_name.replace('/','--')  + "-delta"+str(delta)+"-epoch"+str(epoch) + "--" + task + with_ref_str + all_str
             print("Saving to ", save_directory)
             model.save_pretrained(save_directory)
             tokenizer.save_pretrained(save_directory)
