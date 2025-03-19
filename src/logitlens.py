@@ -341,7 +341,7 @@ def compute_logodds_final_layer(
     elif task=='swords':
         ranks = [
             get_rank(
-                P_gen[ii][:], tokenizer.encode(prefix + L[ii].replacement)[first_sw_token]
+                P_gen[ii][:], tokenizer.encode(L[ii].replacement)[first_sw_token-1]
             )
             for ii in tqdm(range(len(P_gen)))
         ]

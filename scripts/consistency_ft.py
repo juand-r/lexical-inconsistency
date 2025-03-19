@@ -4,8 +4,8 @@ to generator/discriminator gap in various settings.
 
 Example use:
 
-CUDA_VISIBLE_DEVICES=3 python fine_tune_lora.py --epochs 5 --style generator --shots zero --negate
-CUDA_VISIBLE_DEVICES=6 python fine_tune_lora.py --epochs 2 --shots zero --both union
+CUDA_VISIBLE_DEVICES=3 python consistency_ft.py --epochs 5 --style generator --shots zero --negate
+CUDA_VISIBLE_DEVICES=6 python consistency_ft.py --epochs 2 --shots zero --both union
 
 """
 
@@ -14,8 +14,10 @@ import sys
 import json
 import argparse
 import numpy as np
+from tqdm import tqdm
 import torch
 import random
+import gc
 from datetime import datetime
 from peft import AutoPeftModelForCausalLM, LoraConfig
 from transformers import (
@@ -33,15 +35,18 @@ src_path = os.path.join(parent_dir, "src")
 sys.path.append(src_path)
 
 from utils import (
-    load_noun_pair_data,
-    split_train_test,
     make_and_format_data,
     get_L_prompt,
     filtering_hypernym,
     filtering_swords,
     filtering_triviaqa,
-    filtering_lambada
+    filtering_lambada,
+    get_final_logit_prob
 )
+from logitlens import compute_logodds_final_layer, get_logodds_gen, get_logodds_disc
+
+yes_words = ["Yes", " Yes", "YES", "yes", " yes"]
+no_words = ["No", " No", "NO", "no", " no"]
 
 filtering_function_map = {
     "hypernym": filtering_hypernym,
@@ -185,6 +190,12 @@ def main():
         default=True,
         help="Use instruction masking (SFT) or not.",
     )
+    parser.add_argument(
+        "--round",
+        type=int,
+        default=0,
+        help="Round of consistent fine-tuning",
+    )
     args = parser.parse_args()
 
     # Model & training arguments
@@ -256,9 +267,84 @@ def main():
     print("Instruction masking?", instruction_mask)
     print("\nTrain dataset size: ", len(L_train))
 
+    '''
+    filtering consistent data
+    '''
+    LL = L_train
+    P_gen = []
+    P_disc = []
+    json_list = []
+    task = args.task
+    first_sw_token = 2
+
+    model_is_chat = False
+    if 'instruct' in model_id.lower():
+        model_is_chat = True
+        first_sw_token = 1
+        print("Model is chat model!")
+    if "gpt" in model_id.lower():
+        raise ValueError("If you are using GPT then rewrite this bit!")
+
+    yestoks = [tokenizer.encode(i)[-1] for i in yes_words]
+    notoks = [tokenizer.encode(i)[-1] for i in no_words]
+
+    for item in tqdm(LL):
+        prompt_gen = make_prompt(item, style='generator', shots=shots).prompt
+        prompt_disc = make_prompt(item, style='discriminator', shots=shots).prompt
+        probs_gen = get_final_logit_prob(prompt_gen, model, tokenizer, device, is_chat = model_is_chat) 
+        P_gen.append(probs_gen)
+        probs_disc = get_final_logit_prob(prompt_disc, model, tokenizer, device, is_chat = model_is_chat) 
+        P_disc.append(probs_disc)
+
+        prefix = " " if not model_is_chat else ""
+        if task == 'hypernym':
+            json_list.append({"noun1":item.noun1, "noun2":item.noun2, "taxonomic":item.taxonomic, "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0, 
+                            "generator-completion": prefix + item.noun2.strip(), "discriminator-gold-completion": prefix + item.taxonomic.strip().capitalize()})
+        elif task == 'trivia-qa':
+            # print(item.keys())
+            json_list.append({"question":item['question'], "answer":prefix + item['answers'][0].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
+                            "generator-completion": prefix + item['answers'][0].strip(), "discriminator-gold-completion": prefix + 'Yes'})
+        elif task == 'lambada':
+            json_list.append({"context":item['context'], "completion":prefix + item['final_word'].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
+                            "generator-completion": prefix + item['final_word'].strip(), "discriminator-gold-completion": prefix + 'Yes'})
+        elif task == 'swords':
+            json_list.append({"context":item.context, "target":item.target, "replacement":item.replacement, "synonym":item.synonym,
+                            "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
+                            "generator-completion": item.replacement.strip(), "discriminator-gold-completion": prefix + item.synonym.strip().capitalize()})
+        else:
+            raise NotImplementedError("Not a task")
+            # print(json_list[-1])
+   
+    logodds_gen = [get_logodds_gen(P_gen, LL, ii, tokenizer, first_sw_token, task, is_chat = model_is_chat, use_lgo=False) for ii in range(len(P_gen))]
+    logodds_disc = [get_logodds_disc(P_disc, ii, yestoks, None) for ii in range(len(P_disc))]
+    
+    consistent_LL = []
+    gen_threshold = sum(logodds_gen)/len(logodds_gen)
+    disc_threshold = sum(logodds_disc)/len(logodds_disc)
+
+    for jj, item in tqdm(enumerate(LL)):
+        score_gen = logodds_gen[jj]
+        score_disc = logodds_disc[jj]
+        if (score_gen > gen_threshold) == (score_disc > disc_threshold):
+            consistent_LL.append(item)
+    if type(LL) != list:
+        consistent_LL = Dataset.from_list(consistent_LL)
+    print(f"!!!!!!after filtering:")
+    print(f"len consistent_LL: {len(consistent_LL)}")
+    print(f"len LL: {len(LL)}")
+
+    gc.collect()
+    torch.cuda.empty_cache()
+
+
+
+
+
+
+    print("Preparing and formating data for training...")
     p_train, hf_train, prompt_completion_train = make_and_format_data(
         make_prompt,
-        L=L_train,
+        L=consistent_LL,
         tokenizer=tokenizer,
         style=style,
         shots=shots,
@@ -279,12 +365,12 @@ def main():
         instruction_masking=instruction_mask,
         is_chat=model_is_chat
     )
-    print("!!!fine_tune_lora after pos filtering:")
     print("Train dataset size: ", len(prompt_completion_train))
     print("Test dataset size: ", len(prompt_completion_test))
     # raise ValueError("STOP")
-    for i in range(10):
+    for i in range(5):
         print(prompt_completion_train[i])
+    # raise ValueError("STOP")
         # print(tokenizer.apply_chat_template(prompt_completion_train[i]))
     # raise ValueError("STOP")
     ################################################################
@@ -303,14 +389,16 @@ def main():
 
     negstr = "--negation" if negate else ""
     if both == "none":
-        output_dir = "ftmodel--{}--{}--{}--{}--{}{}".format(
-            model_id.split("/")[-1], args.task, style, shots, train_filter, negstr
+        output_dir = "conftmodel_{}--{}--{}--{}--{}--{}{}--size_{}-{}".format(
+            args.round,
+            model_id.split("/")[-1], args.task, style, shots, train_filter, negstr, len(L_train), len(consistent_LL)
         )
     else:
-        output_dir = "ftmodel--{}--{}--{}--{}--{}{}".format(
-            model_id.split("/")[-1], args.task, both, shots, train_filter, negstr
+        output_dir = "conftmodel_{}--{}--{}--{}--{}--{}{}--size_{}-{}".format(
+            args.round,
+            model_id.split("/")[-1], args.task, both, shots, train_filter, negstr, len(L_train), len(consistent_LL)
         )
-    output_dir = os.path.join("/datastor1/wenxuand/output/sft/", output_dir)
+    output_dir = os.path.join("/datastor1/wenxuand/output/consistent_sft/", output_dir)
 
     #If this already exists, make sure not to overwrite it
     if os.path.exists(output_dir):
@@ -379,9 +467,11 @@ if __name__ == "__main__":
     main()
 
 '''
-CUDA_VISIBLE_DEVICES=5 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task lambada --model google/gemma-2-2b
-CUDA_VISIBLE_DEVICES=6 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task lambada --model meta-llama/Llama-3.2-3B
+CUDA_VISIBLE_DEVICES=5 python consistency_ft.py --epochs 2 --shots zero --both union --filter pos --task lambada --model google/gemma-2-2b
+CUDA_VISIBLE_DEVICES=6 python consistency_ft.py --epochs 2 --shots zero --both union --filter pos --task lambada --model meta-llama/Llama-3.2-3B
 
-CUDA_VISIBLE_DEVICES=2 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task trivia-qa --model google/gemma-2-2b
-CUDA_VISIBLE_DEVICES=7 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task swords --model meta-llama/Llama-3.2-3B-Instruct
+CUDA_VISIBLE_DEVICES=2 python consistency_ft.py --epochs 2 --shots zero --both union --filter pos --task trivia-qa --model google/gemma-2-2b
+CUDA_VISIBLE_DEVICES=7 python consistency_ft.py --epochs 2 --shots zero --both union --filter pos --task swords --model meta-llama/Llama-3.2-3B-Instruct
+CUDA_VISIBLE_DEVICES=7 python consistency_ft.py --epochs 2 --shots zero --both union --filter pos --task swords --model meta-llama/Llama-3.2-3B
+
 '''
