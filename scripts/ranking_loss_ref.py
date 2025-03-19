@@ -54,9 +54,12 @@ def main(args):
         print(f"Detected instruct model: {model_name}")
         print("Using chat template formatting for prompts")
         disc_shots = "zero"
+        #TODO understand this properly:
+        space_prefix = ""
     else:
         with_chat = False
         disc_shots = "few"
+        space_prefix = " "
         print(f"Using standard formatting for model: {model_name}")
 
     #TODO generalize to other models other than llama!
@@ -78,17 +81,6 @@ def main(args):
 
     tokenizer, model = load_model_tokenizer(model_name)
     model.to(device)  # Move model to device right after creation
-
-    # Verify the model has chat template support
-    try:
-        test_message = [{"role": "user", "content": "Hello"}]
-        tokenizer.apply_chat_template(test_message, add_generation_prompt=True)
-        print("Chat template verified and working")
-    except Exception as e:
-        print(f"Warning: Model {model_name} doesn't support chat templates: {e}")
-        print("Falling back to standard formatting")
-        with_chat = False
-        disc_shots = "few"
 
     if WITH_REF:
         model_ref = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="eager", torch_dtype=torch.bfloat16)
@@ -139,7 +131,7 @@ def main(args):
         else:
             L_train_all = [i for i in L_train if i.taxonomic == "yes"]
         # Generate generator prompts
-        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_hypernymy, L_train_all, tokenizer, style='generator', shots='zero', neg=False, both=None, is_chat=with_chat)
+        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_hypernymy, L_train_all, tokenizer, style='generator', shots='zero', neg=False, both=None)
         prompts_gen = [i.prompt for i in p_train_gen]
 
         # Compute log-probabilities for generator prompts
@@ -148,7 +140,7 @@ def main(args):
             probs = get_final_logit_prob(prompt, model, tokenizer, device, is_chat=with_chat)
             # Get the log probability for the target token (noun2)
             # For hypernymy, we want the probability of the noun2 token
-            target_text = " " + L_train_all[idx].noun2
+            target_text = space_prefix + L_train_all[idx].noun2
             target_tokens = tokenizer.encode(target_text)
             # Use the first token after the space
             ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
@@ -157,19 +149,20 @@ def main(args):
 
         # Generate discriminator prompts
         p_train, hf_train, _ = utils.make_and_format_data(make_prompt_hypernymy, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
-        prompts_pos = [i.prompt for i in p_train]
+        #prompts_pos = [i.prompt for i in p_train]
 
     elif task=='trivia-qa':
         L_train_all = L_train  # Already using all examples for trivia-qa
         # Generate generator prompts
         p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style='generator', shots='zero', both=None)
         prompts_gen = [i.prompt for i in p_train_gen]
+
         # Compute log-probabilities for generator prompts
         gen_logprobs_last_layer_pos = []
         for idx, prompt in enumerate(tqdm(prompts_gen)):
             probs = get_final_logit_prob(prompt, model, tokenizer, device, is_chat=with_chat)
             # Get the log probability for the target token (answer)
-            target_text = " " + L_train_all[idx]['answers'][0].capitalize()
+            target_text = space_prefix + L_train_all[idx]['answers'][0].capitalize()
             target_tokens = tokenizer.encode(target_text)
             # Use the first token after the space
             ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
@@ -178,7 +171,7 @@ def main(args):
 
         # Generate discriminator prompts
         p_train, hf_train, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
-        prompts_pos = [i.prompt for i in p_train]
+        #prompts_pos = [i.prompt for i in p_train]
 
     elif task=='swords':
         if use_all:
@@ -192,9 +185,9 @@ def main(args):
         # Compute log-probabilities for generator prompts
         gen_logprobs_last_layer_pos = []
         for idx, prompt in enumerate(tqdm(prompts_gen)):
-            probs = get_final_logit_prob(prompt, model, tokenizer, device, is_chat=False)
+            probs = get_final_logit_prob(prompt, model, tokenizer, device, is_chat=with_chat)
             # Get the log probability for the target token (replacement)
-            target_text = " " + L_train_all[idx].replacement
+            target_text = space_prefix + L_train_all[idx].replacement
             target_tokens = tokenizer.encode(target_text)
             # Use the first token after the space
             ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
@@ -203,7 +196,7 @@ def main(args):
 
         # Generate discriminator prompts
         p_train, hf_train, _ = utils.make_and_format_data(make_prompt_swords, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
-        prompts_pos = [i.prompt for i in p_train]
+        #prompts_pos = [i.prompt for i in p_train]
 
     elif task=='lambada':
         L_train_all = L_train  # Already using all examples for lambada
@@ -216,7 +209,7 @@ def main(args):
         for idx, prompt in enumerate(tqdm(prompts_gen)):
             probs = get_final_logit_prob(prompt, model, tokenizer, device, is_chat=with_chat)
             # Get the log probability for the target token (final_word)
-            target_text = " " + L_train_all[idx]['final_word']
+            target_text = space_prefix + L_train_all[idx]['final_word']
             target_tokens = tokenizer.encode(target_text)
             # Use the first token after the space
             ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
@@ -225,11 +218,17 @@ def main(args):
 
         # Generate discriminator prompts
         p_train, hf_train, _ = utils.make_and_format_data(make_prompt_lambada, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
-        prompts_pos = [i.prompt for i in p_train]
+        #prompts_pos = [i.prompt for i in p_train]
     else:
         raise ValueError("!!")
 
-    max_context_length = len(hf_train[0]['input_ids'])
+    if with_chat:
+        ms = [ [ {"role": "system", "content": "Answer directly without explanation."},  {"role": "user", "content": i.prompt.strip()} ] for i in p_train]
+        toks = tokenizer.apply_chat_template(ms, add_generation_prompt=True, padding=True, truncation=True, return_tensors='pt')
+        max_context_length = toks.shape[1]
+    else:
+        #TODO later should make this cleaner in utils.make_and_format_data
+        max_context_length = len(hf_train[0]['input_ids'])
     print("MAX CONTEXT LENGTH: ", max_context_length)
 
 
@@ -255,7 +254,7 @@ def main(args):
     pairs = [(Z[i[0]], Z[i[1]]) for i in pair_inds]
 
     #breakpoint()
-    token_id = tokenizer.encode(" Yes")[-1]
+    token_id = tokenizer.encode(space_prefix +"Yes")[-1]
     #first_token_id = tokenizer.encode(pairs[0][0].completion)[-1]
     #second_token_id = tokenizer.encode(pairs[1][0].completion)[-1]
 
@@ -263,7 +262,21 @@ def main(args):
 #    pairs = [((pair[0][0].prompt ,pair[1][0].prompt),  (tokenizer.encode(pair[0][0].completion)[-1], tokenizer.encode(pair[1][0].completion)[-1] )  ) for pair in pairs
 #            if pair[1][1] - pair[0][1] > delta]
 
-    pairs = [((pair[0][0].prompt ,pair[1][0].prompt),  (token_id, token_id) ) for pair in pairs
+#    pairs = [((pair[0][0].prompt ,pair[1][0].prompt),  (token_id, token_id) ) for pair in pairs
+#            if pair[1][1] - pair[0][1] > delta]
+
+    def format_with_inst(prompt):
+        message = [
+            {"role": "system", "content": "Answer directly without explanation."},
+            {"role": "user", "content": prompt},]
+        toks = tokenizer.apply_chat_template(message, add_generation_prompt=True, return_tensors='pt')[0]
+        return tokenizer.decode(toks[1:])
+
+    if with_chat:
+         pairs = [(  ( format_with_inst(pair[0][0].prompt),  format_with_inst(pair[1][0].prompt)),  (token_id, token_id) ) for pair in pairs
+            if pair[1][1] - pair[0][1] > delta]
+    else:
+        pairs = [((pair[0][0].prompt ,pair[1][0].prompt),  (token_id, token_id) ) for pair in pairs
             if pair[1][1] - pair[0][1] > delta]
 
     #if not use_all:
@@ -284,18 +297,16 @@ def main(args):
     print("\n\nNum Samples: ", len(pairs))
 
     class PairwiseDataset(Dataset):
-        def __init__(self, pairs, tokenizer, max_length=128, device='cuda', is_chat=False):
+        def __init__(self, pairs, tokenizer, max_length=128, device='cuda'):
             """
             pairs: list of ((prompt_i, prompt_j), (token_i, token_j))
             tokenizer: Hugging Face tokenizer
             device: device to place tensors on
-            is_chat: whether to use chat template formatting
             """
             self.pairs = pairs
             self.tokenizer = tokenizer
             self.max_length = max_length
             self.device = device
-            self.is_chat = is_chat
             
             # Debug print first pair
             #print("\nDebugging PairwiseDataset initialization:")
@@ -322,105 +333,22 @@ def main(args):
             #print("Tokens:", token_i, token_j)
             
             # Tokenize prompt i
-            if self.is_chat:
-                # Use chat template for instruct models
-                message_i = [
-                    {"role": "system", "content": "Answer directly without explanation."},
-                    {"role": "user", "content": prompt_i},
-                ]
-                input_ids_i = self.tokenizer.apply_chat_template(
-                    message_i, 
-                    add_generation_prompt=True, 
-                    return_tensors="pt"
-                )
-                
-                # Handle truncation if needed
-                if input_ids_i.size(1) > self.max_length:
-                    input_ids_i = input_ids_i[:, :self.max_length]
-                    attention_mask_i = torch.ones_like(input_ids_i)
-                # Handle padding if needed (left padding to match the tokenizer's padding_side)
-                elif input_ids_i.size(1) < self.max_length:
-                    pad_length = self.max_length - input_ids_i.size(1)
-                    if self.tokenizer.padding_side == 'left':
-                        input_ids_i = torch.cat([
-                            torch.full((1, pad_length), self.tokenizer.pad_token_id, device=input_ids_i.device),
-                            input_ids_i
-                        ], dim=1)
-                        attention_mask_i = torch.cat([
-                            torch.zeros(1, pad_length, device=input_ids_i.device),
-                            torch.ones(1, input_ids_i.size(1) - pad_length, device=input_ids_i.device)
-                        ], dim=1)
-                    else:
-                        input_ids_i = torch.cat([
-                            input_ids_i,
-                            torch.full((1, pad_length), self.tokenizer.pad_token_id, device=input_ids_i.device)
-                        ], dim=1)
-                        attention_mask_i = torch.ones_like(input_ids_i)
-                else:
-                    attention_mask_i = torch.ones_like(input_ids_i)
-                
-                enc_i = {
-                    "input_ids": input_ids_i,
-                    "attention_mask": attention_mask_i
-                }
-                
-                # Same for prompt j
-                message_j = [
-                    {"role": "system", "content": "Answer directly without explanation."},
-                    {"role": "user", "content": prompt_j},
-                ]
-                input_ids_j = self.tokenizer.apply_chat_template(
-                    message_j, 
-                    add_generation_prompt=True, 
-                    return_tensors="pt"
-                )
-                
-                # Handle truncation if needed
-                if input_ids_j.size(1) > self.max_length:
-                    input_ids_j = input_ids_j[:, :self.max_length]
-                    attention_mask_j = torch.ones_like(input_ids_j)
-                # Handle padding if needed (left padding to match the tokenizer's padding_side)
-                elif input_ids_j.size(1) < self.max_length:
-                    pad_length_j = self.max_length - input_ids_j.size(1)
-                    if self.tokenizer.padding_side == 'left':
-                        input_ids_j = torch.cat([
-                            torch.full((1, pad_length_j), self.tokenizer.pad_token_id, device=input_ids_j.device),
-                            input_ids_j
-                        ], dim=1)
-                        attention_mask_j = torch.cat([
-                            torch.zeros(1, pad_length_j, device=input_ids_j.device),
-                            torch.ones(1, input_ids_j.size(1) - pad_length_j, device=input_ids_j.device)
-                        ], dim=1)
-                    else:
-                        input_ids_j = torch.cat([
-                            input_ids_j,
-                            torch.full((1, pad_length_j), self.tokenizer.pad_token_id, device=input_ids_j.device)
-                        ], dim=1)
-                        attention_mask_j = torch.ones_like(input_ids_j)
-                else:
-                    attention_mask_j = torch.ones_like(input_ids_j)
-                
-                enc_j = {
-                    "input_ids": input_ids_j,
-                    "attention_mask": attention_mask_j
-                }
-            else:
-                # Regular tokenization for non-instruct models
-                enc_i = self.tokenizer(
-                    prompt_i,
-                    padding='max_length',
-                    truncation=True,
-                    max_length=self.max_length,
-                    return_tensors='pt'
-                )
-                # Tokenize prompt j
-                enc_j = self.tokenizer(
-                    prompt_j,
-                    padding='max_length',
-                    truncation=True,
-                    max_length=self.max_length,
-                    return_tensors='pt'
-                )
+            # Regular tokenization for non-instruct models
+            enc_i = self.tokenizer(
+                prompt_i,
+                padding='max_length',
+                truncation=True,
+                max_length=self.max_length,
+                return_tensors='pt'
+            )
+            # Tokenize prompt j
+            enc_j = self.tokenizer(
+                prompt_j,
+                padding='max_length',
+                truncation=True,
+                max_length=self.max_length,
+                return_tensors='pt'
+            )
             
             # Squeeze to remove the batch dimension (shape: [seq_len])
             item = {
@@ -444,7 +372,7 @@ def main(args):
         elif task=='lambada':
             batch_size = 2
         elif task =='hypernym':
-            batch_size = 4
+            batch_size = 1 #4
         else:
             raise ValueError("define batch size for this case")
     else:
@@ -459,7 +387,8 @@ def main(args):
         else:
             raise ValueError("define batch size for this case")
 
-    dataset = PairwiseDataset(pairs, tokenizer, max_length=max_context_length, device=device, is_chat=with_chat)
+    dataset = PairwiseDataset(pairs, tokenizer, max_length=max_context_length, device=device)
+    #breakpoint()
     train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
     print("\n\nDone making dataloader\n\n")
     optimizer = AdamW(model.parameters(), lr=lr)
@@ -542,6 +471,7 @@ def main(args):
             score_j = log_probs_j[torch.arange(log_probs_j.size(0), device=device), token_id_j]
 
             # TODO: with torch.no_grad(): compute ref logits diff
+            #breakpoint()
 
             # Forward pass for prompt i
             if WITH_REF:
