@@ -141,7 +141,7 @@ def main(args):
             gen_logprobs_last_layer_pos.append(log_prob)
 
         # Generate discriminator prompts
-        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_hypernymy, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
+        p_train_disc, hf_train, _ = utils.make_and_format_data(make_prompt_hypernymy, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
         #prompts_pos = [i.prompt for i in p_train]
 
     elif task=='trivia-qa':
@@ -163,7 +163,7 @@ def main(args):
             gen_logprobs_last_layer_pos.append(log_prob)
 
         # Generate discriminator prompts
-        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
+        p_train_disc, hf_train, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
         #prompts_pos = [i.prompt for i in p_train]
 
     elif task=='swords':
@@ -188,7 +188,7 @@ def main(args):
             gen_logprobs_last_layer_pos.append(log_prob)
 
         # Generate discriminator prompts
-        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_swords, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
+        p_train_disc, hf_train, _ = utils.make_and_format_data(make_prompt_swords, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
         #prompts_pos = [i.prompt for i in p_train]
 
     elif task=='lambada':
@@ -210,13 +210,13 @@ def main(args):
             gen_logprobs_last_layer_pos.append(log_prob)
 
         # Generate discriminator prompts
-        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_lambada, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
+        p_train_disc, hf_train, _ = utils.make_and_format_data(make_prompt_lambada, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
         #prompts_pos = [i.prompt for i in p_train]
     else:
         raise ValueError("Task unsupported!")
 
     if with_chat:
-        ms = [ [ {"role": "system", "content": "Answer directly without explanation."},  {"role": "user", "content": i.prompt.strip()} ] for i in p_train]
+        ms = [ [ {"role": "system", "content": "Answer directly without explanation."},  {"role": "user", "content": i.prompt.strip()} ] for i in p_train_disc]
         toks = tokenizer.apply_chat_template(ms, add_generation_prompt=True, padding=True, truncation=True, return_tensors='pt')
         max_context_length = toks.shape[1]
     else:
@@ -224,9 +224,8 @@ def main(args):
         max_context_length = len(hf_train[0]['input_ids'])
     print("MAX CONTEXT LENGTH: ", max_context_length)
 
-
     #Z = list(zip(prompts_pos, gen_logprobs_last_layer_pos))
-    Z = list(zip(p_train, gen_logprobs_last_layer_pos))
+    Z = list(zip(p_train_disc, gen_logprobs_last_layer_pos))
     Z = sorted(Z, key = lambda i: i[-1])
 
     # Calculate delta based on range of logprobs
