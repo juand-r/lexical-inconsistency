@@ -45,6 +45,7 @@ def main(args):
     total_samples = args.total_samples
     save_steps = args.save_steps
     use_all = args.all  # New flag for using all examples
+    train_g_or_d = args.train_g_od_d
     #tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     WITH_REF = with_ref
@@ -73,6 +74,7 @@ def main(args):
         if 'gemma' in model_name.lower():
             model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="eager", torch_dtype=torch.bfloat16)
         else:
+            #TODO check if bfloat16 was default for llama-3.2-3B
             model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16)
         if tokenizer.pad_token is None:
             tokenizer.pad_token = tokenizer.eos_token
@@ -91,15 +93,10 @@ def main(args):
     # see if padding right works??
     tokenizer.padding_side = 'left'
 
-    #TODO assume generator is ground truth
-    #TODO assume discriminator is ground truth
-
     # assume label of 1 meaning left < right in ground truth
-
 
     # NOTE first use ground truth ranking from generator.
     # Will now use ranking loss on *discriminator* prompts to try to match it!
-
 
     if task=='hypernym':
         L = utils.load_noun_pair_data()
@@ -117,10 +114,6 @@ def main(args):
         L_train, L_test = utils.load_lambada_data(seed=0)
     else:
         raise NotImplementedError("Task not implemented!")
-
-    # Compute log-probabilities on the fly instead of loading from disk
-    #device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    #model.to(device)
 
     print("Computing log-probabilities on the fly...")
     print(f"Using device: {device}")
@@ -148,7 +141,7 @@ def main(args):
             gen_logprobs_last_layer_pos.append(log_prob)
 
         # Generate discriminator prompts
-        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_hypernymy, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
+        p_train_disc, hf_train, _ = utils.make_and_format_data(make_prompt_hypernymy, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
         #prompts_pos = [i.prompt for i in p_train]
 
     elif task=='trivia-qa':
@@ -170,7 +163,7 @@ def main(args):
             gen_logprobs_last_layer_pos.append(log_prob)
 
         # Generate discriminator prompts
-        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
+        p_train_disc, hf_train, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
         #prompts_pos = [i.prompt for i in p_train]
 
     elif task=='swords':
@@ -195,7 +188,7 @@ def main(args):
             gen_logprobs_last_layer_pos.append(log_prob)
 
         # Generate discriminator prompts
-        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_swords, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
+        p_train_disc, hf_train, _ = utils.make_and_format_data(make_prompt_swords, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
         #prompts_pos = [i.prompt for i in p_train]
 
     elif task=='lambada':
@@ -217,13 +210,13 @@ def main(args):
             gen_logprobs_last_layer_pos.append(log_prob)
 
         # Generate discriminator prompts
-        p_train, hf_train, _ = utils.make_and_format_data(make_prompt_lambada, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
+        p_train_disc, hf_train, _ = utils.make_and_format_data(make_prompt_lambada, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
         #prompts_pos = [i.prompt for i in p_train]
     else:
-        raise ValueError("!!")
+        raise ValueError("Task unsupported!")
 
     if with_chat:
-        ms = [ [ {"role": "system", "content": "Answer directly without explanation."},  {"role": "user", "content": i.prompt.strip()} ] for i in p_train]
+        ms = [ [ {"role": "system", "content": "Answer directly without explanation."},  {"role": "user", "content": i.prompt.strip()} ] for i in p_train_disc]
         toks = tokenizer.apply_chat_template(ms, add_generation_prompt=True, padding=True, truncation=True, return_tensors='pt')
         max_context_length = toks.shape[1]
     else:
@@ -231,9 +224,8 @@ def main(args):
         max_context_length = len(hf_train[0]['input_ids'])
     print("MAX CONTEXT LENGTH: ", max_context_length)
 
-
     #Z = list(zip(prompts_pos, gen_logprobs_last_layer_pos))
-    Z = list(zip(p_train, gen_logprobs_last_layer_pos))
+    Z = list(zip(p_train_disc, gen_logprobs_last_layer_pos))
     Z = sorted(Z, key = lambda i: i[-1])
 
     # Calculate delta based on range of logprobs
@@ -253,17 +245,9 @@ def main(args):
     pair_inds = random.sample(pair_inds, total_samples)
     pairs = [(Z[i[0]], Z[i[1]]) for i in pair_inds]
 
-    #breakpoint()
     token_id = tokenizer.encode(space_prefix +"Yes")[-1]
     #first_token_id = tokenizer.encode(pairs[0][0].completion)[-1]
     #second_token_id = tokenizer.encode(pairs[1][0].completion)[-1]
-
-    # Filter pairs that maintain minimum separation of delta
-#    pairs = [((pair[0][0].prompt ,pair[1][0].prompt),  (tokenizer.encode(pair[0][0].completion)[-1], tokenizer.encode(pair[1][0].completion)[-1] )  ) for pair in pairs
-#            if pair[1][1] - pair[0][1] > delta]
-
-#    pairs = [((pair[0][0].prompt ,pair[1][0].prompt),  (token_id, token_id) ) for pair in pairs
-#            if pair[1][1] - pair[0][1] > delta]
 
     def format_with_inst(prompt):
         message = [
@@ -278,18 +262,6 @@ def main(args):
     else:
         pairs = [((pair[0][0].prompt ,pair[1][0].prompt),  (token_id, token_id) ) for pair in pairs
             if pair[1][1] - pair[0][1] > delta]
-
-    #if not use_all:
-    #    assert all([pair[0][0].completion== " Yes" for pair in pairs])
-    #    assert all([pair[1][0].completion== " Yes" for pair in pairs])
-    
-    # Debug prints
-    #print("\nDebugging pairs structure:")
-    #print("First pair structure:", pairs[0])
-    #print("First pair token types:", type(pairs[0][1][0]), type(pairs[0][1][1]))
-    #print("First pair tokens:", pairs[0][1][0], pairs[0][1][1])
-    
-    #breakpoint()
 
     print(pairs[0])
     print("\n\n")
@@ -307,13 +279,13 @@ def main(args):
             self.tokenizer = tokenizer
             self.max_length = max_length
             self.device = device
-            
+
             # Debug print first pair
             #print("\nDebugging PairwiseDataset initialization:")
             #print("First pair:", pairs[0])
             #print("Token types:", type(pairs[0][1][0]), type(pairs[0][1][1]))
             #print("Tokens:", pairs[0][1][0], pairs[0][1][1])
-            
+
             # Try to encode the tokens
             #print("\nTrying to encode tokens:")
             #try:
@@ -331,9 +303,8 @@ def main(args):
             #print(f"\nProcessing item {idx}:")
             #print("Token types:", type(token_i), type(token_j))
             #print("Tokens:", token_i, token_j)
-            
+
             # Tokenize prompt i
-            # Regular tokenization for non-instruct models
             enc_i = self.tokenizer(
                 prompt_i,
                 padding='max_length',
@@ -349,7 +320,7 @@ def main(args):
                 max_length=self.max_length,
                 return_tensors='pt'
             )
-            
+
             # Squeeze to remove the batch dimension (shape: [seq_len])
             item = {
                 'input_ids_i': enc_i['input_ids'].squeeze(0),
@@ -388,23 +359,17 @@ def main(args):
             raise ValueError("define batch size for this case")
 
     dataset = PairwiseDataset(pairs, tokenizer, max_length=max_context_length, device=device)
-    #breakpoint()
     train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
     print("\n\nDone making dataloader\n\n")
     optimizer = AdamW(model.parameters(), lr=lr)
 
-    #num_epochs = 10
-    #save_steps = 1
     losses = []
-
 
     for epoch in range(num_epochs):
         model.train()
         total_loss = 0.0
         #if True:#epoch % save_steps==1:
         if epoch!=0:
-            #save_directory = "../models/v3-delta5-epoch"+str(epoch)
-            #save_directory = "../models/v3-delta5-no-overlap-both-epoch"+str(epoch)
             with_ref_str = "-with-ref" if with_ref else ""
             all_str = "-all" if use_all else ""
             save_directory = "../models/v4-" + model_name.replace('/','--')  + "-delta"+str(delta)+"-epoch"+str(epoch) + "--" + task + with_ref_str + all_str
@@ -431,11 +396,7 @@ def main(args):
             # logits_i: [batch_size, seq_len, vocab_size]
             logits_i = outputs_i.logits
 
-            # We'll take the last timestep for each prompt (seq_len - 1).
-            # If you want something different (e.g. next token's logit), adjust accordingly.
-    #        last_idx_i = attention_mask_i.sum(dim=1) - 1  # last non-pad index for each example
             last_idx_i = attention_mask_i.size(1) - 1
-            # Alternatively, if you want the absolute last index in the tensor: last_idx_i = logits_i.size(1) - 1
 
             # Gather the logits for the chosen position and compute log-softmax
             # shape [B, vocab_size]
@@ -451,6 +412,7 @@ def main(args):
             # shape [B]
             #score_i = log_probs_i[torch.arange(log_probs_i.size(0)), token_id_i]
             score_i = log_probs_i[torch.arange(log_probs_i.size(0), device=device), token_id_i]
+
             # Forward pass for prompt j
             outputs_j = model(input_ids=input_ids_j, attention_mask=attention_mask_j)
             logits_j = outputs_j.logits
@@ -470,10 +432,7 @@ def main(args):
             #score_j = log_probs_j[torch.arange(log_probs_j.size(0)), token_id_j]
             score_j = log_probs_j[torch.arange(log_probs_j.size(0), device=device), token_id_j]
 
-            # TODO: with torch.no_grad(): compute ref logits diff
-            #breakpoint()
-
-            # Forward pass for prompt i
+            # Use frozen reference model
             if WITH_REF:
                 with torch.no_grad():
                     outputs_i_ref = model_ref(input_ids=input_ids_i, attention_mask=attention_mask_i)
@@ -525,5 +484,6 @@ if __name__ == "__main__":
     parser.add_argument("--total_samples", type=int, default=5110, help="Total samples")
     parser.add_argument("--save_steps", type=int, default=1, help="Save steps")
     parser.add_argument("--all", default=False, action="store_true", help="Whether to use all examples or just positive ones")
+    parser.add_argument("--train_g_or_d", type=str, default='d', choices=["d","g","iter"], help="Train generator or discriminator.")
     args = parser.parse_args()
     main(args)
