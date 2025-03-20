@@ -339,12 +339,20 @@ def compute_logodds_final_layer(
             for ii in tqdm(range(len(P_gen)))
         ]
     elif task=='swords':
-        ranks = [
-            get_rank(
-                P_gen[ii][:], tokenizer.encode(L[ii].replacement)[first_sw_token-1]
-            )
-            for ii in tqdm(range(len(P_gen)))
-        ]
+        if is_chat:
+            ranks = [
+                get_rank(
+                    P_gen[ii][:], tokenizer.encode(L[ii].replacement)[first_sw_token]
+                )
+                for ii in tqdm(range(len(P_gen)))
+            ]
+        else:
+            ranks = [
+                get_rank(
+                    P_gen[ii][:], tokenizer.encode(L[ii].replacement)[first_sw_token-1]
+                )
+                for ii in tqdm(range(len(P_gen)))
+            ]
     
     elif task == 'lambada':
         ranks = [
