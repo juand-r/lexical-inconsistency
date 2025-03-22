@@ -241,8 +241,6 @@ def main(args):
         #prompts_pos = [i.prompt for i in p_train]
 
     elif task=='lambada':
-        raise ValueError("TODO if works with hypernym then do same here!")
-
         L_train_all = L_train  # Already using all examples for lambada
         # Generate generator prompts
         p_train_gold, hf_train_gen, _ = utils.make_and_format_data(make_prompt_lambada, L_train_all, tokenizer, style=gold_prompt_style, shots=gold_prompt_shots, both=None)
