@@ -179,12 +179,12 @@ def main(args):
         #p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style='generator', shots='zero', both=None)
         #prompts_gen = [i.prompt for i in p_train_gen]
         # Generate generator prompts
-        p_train_gold, hf_train_gold, _ = utils.make_and_format_data(make_prompt_hypernymy, L_train_all, tokenizer, style=gold_prompt_style, shots=gold_prompt_shots, neg=False, both=None)
+        p_train_gold, hf_train_gold, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style=gold_prompt_style, shots=gold_prompt_shots, neg=False, both=None)
         prompts_gold = [i.prompt for i in p_train_gold]
 
         # Compute log-probabilities for generator prompts
         logprobs_last_layer = []
-        for idx, prompt in enumerate(tqdm(prompts_gen)):
+        for idx, prompt in enumerate(tqdm(prompts_gold)):
             probs = get_final_logit_prob(prompt, model, tokenizer, device, is_chat=with_chat)
             if train_g_or_d=='d':
                 # Get the log probability for the target token (answer)
@@ -204,7 +204,7 @@ def main(args):
         # Generate discriminator prompts
         #p_train_disc, hf_train, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
         #prompts_pos = [i.prompt for i in p_train]
-        p_train_tune, hf_train, _ = utils.make_and_format_data(make_prompt_hypernymy, L_train_all, tokenizer, style=tune_prompt_style, shots=tune_prompt_shots, neg=False, both=None)
+        p_train_tune, hf_train, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style=tune_prompt_style, shots=tune_prompt_shots, neg=False, both=None)
 
     elif task=='swords':
         raise ValueError("TODO if works with hypernym then do same here!")
