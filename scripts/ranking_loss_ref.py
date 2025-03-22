@@ -207,30 +207,37 @@ def main(args):
         p_train_tune, hf_train, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style=tune_prompt_style, shots=tune_prompt_shots, neg=False, both=None)
 
     elif task=='swords':
-        raise ValueError("TODO if works with hypernym then do same here!")
-
         if use_all:
             L_train_all = L_train
         else:
             L_train_all = [i for i in L_train if i.synonym=='yes']
         # Generate generator prompts
-        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_swords, L_train_all, tokenizer, style='generator', shots='zero', neg=False, both=None)
-        prompts_gen = [i.prompt for i in p_train_gen]
+        p_train_gold, hf_train_gen, _ = utils.make_and_format_data(make_prompt_swords, L_train_all, tokenizer, style=gold_prompt_style, shots=gold_prompt_shots, neg=False, both=None)
+        prompts_gold = [i.prompt for i in p_train_gold]
 
         # Compute log-probabilities for generator prompts
         logprobs_last_layer = []
-        for idx, prompt in enumerate(tqdm(prompts_gen)):
+        for idx, prompt in enumerate(tqdm(prompts_gold)):
             probs = get_final_logit_prob(prompt, model, tokenizer, device, is_chat=with_chat)
             # Get the log probability for the target token (replacement)
-            target_text = space_prefix + L_train_all[idx].replacement
-            target_tokens = tokenizer.encode(target_text)
+            #target_text = space_prefix + L_train_all[idx].replacement
+            #target_tokens = tokenizer.encode(target_text)
+            if train_g_or_d=='d':
+                target_text = space_prefix + L_train_all[idx].replacement
+                target_tokens = tokenizer.encode(target_text)
+            elif train_g_or_d=='g':
+                target_text = space_prefix +"Yes"
+                target_tokens = tokenizer.encode(target_text)
+            else:
+                raise ValueError("No.")
+
             # Use the first token after the space
             ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
             log_prob = math.log(probs[ind].item() + 1e-12)
             logprobs_last_layer.append(log_prob)
 
         # Generate discriminator prompts
-        p_train_disc, hf_train, _ = utils.make_and_format_data(make_prompt_swords, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
+        p_train_tune, hf_train, _ = utils.make_and_format_data(make_prompt_swords, L_train_all, tokenizer, style=tune_prompt_style, shots=tune_prompt_shots, neg=False, both=None)
         #prompts_pos = [i.prompt for i in p_train]
 
     elif task=='lambada':
@@ -238,23 +245,33 @@ def main(args):
 
         L_train_all = L_train  # Already using all examples for lambada
         # Generate generator prompts
-        p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_lambada, L_train_all, tokenizer, style='generator', shots='zero', both=None)
-        prompts_gen = [i.prompt for i in p_train_gen]
+        p_train_gold, hf_train_gen, _ = utils.make_and_format_data(make_prompt_lambada, L_train_all, tokenizer, style=gold_prompt_style, shots=gold_prompt_shots, both=None)
+        prompts_gold = [i.prompt for i in p_train_gold]
 
         # Compute log-probabilities for generator prompts
         logprobs_last_layer = []
-        for idx, prompt in enumerate(tqdm(prompts_gen)):
+        for idx, prompt in enumerate(tqdm(prompts_gold)):
             probs = get_final_logit_prob(prompt, model, tokenizer, device, is_chat=with_chat)
             # Get the log probability for the target token (final_word)
-            target_text = space_prefix + L_train_all[idx]['final_word']
-            target_tokens = tokenizer.encode(target_text)
+            #target_text = space_prefix + L_train_all[idx]['final_word']
+            #target_tokens = tokenizer.encode(target_text)
+            if train_g_or_d=='d':
+                target_text = space_prefix + L_train_all[idx]['final_word']
+                target_tokens = tokenizer.encode(target_text)
+            elif train_g_or_d=='g':
+                target_text = space_prefix +"Yes"
+                target_tokens = tokenizer.encode(target_text)
+            else:
+                raise ValueError("No.")
+            # Use the first token after the space
+
             # Use the first token after the space
             ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
             log_prob = math.log(probs[ind].item() + 1e-12)
             logprobs_last_layer.append(log_prob)
 
         # Generate discriminator prompts
-        p_train_disc, hf_train, _ = utils.make_and_format_data(make_prompt_lambada, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
+        p_train_tune, hf_train, _ = utils.make_and_format_data(make_prompt_lambada, L_train_all, tokenizer, style=tune_prompt_style, shots=tune_prompt_shots, neg=False, both=None)
         #prompts_pos = [i.prompt for i in p_train]
     else:
         raise ValueError("Task unsupported!")
