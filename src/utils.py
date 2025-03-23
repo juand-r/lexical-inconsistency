@@ -275,7 +275,8 @@ def make_prompt_swords(item, style="generator", shots="zero", neg=False, gen_res
         if shots == "few":
             #examples = "In the following sentence: 'I thought as much. Now leave, before I call the rats on you.', the word call is a synonym of the word summon\n\n"
             #TODO make "neg" and regular version of this example??
-            examples = 'Notice the word "artists" used in the context: "Many painters, sculptors, and other *artists* were inspired by Duchamp.". In this context, the word "artists" is not synonymous with "character".\n\nNotice the word "happen" used in the context: "I could free Tasha. If I did, one of three things would *happen*. Most likely: she would be meat..." In this context, the word "happen" is synonymous with "transpire".\n\n'
+            #examples = 'Notice the word "artists" used in the context: "Many painters, sculptors, and other *artists* were inspired by Duchamp.". In this context, the word "artists" is not synonymous with "character".\n\nNotice the word "happen" used in the context: "I could free Tasha. If I did, one of three things would *happen*. Most likely: she would be meat..." In this context, the word "happen" is synonymous with "transpire".\n\n'
+            examples = 'Notice the word "happen" used in the context: "I could free Tasha. If I did, one of three things would *happen*. Most likely: she would be meat..." In this context, the word "happen" is synonymous with "transpire".\n\n'
             prompt = examples + prompt
 
     elif style == "discriminator":
