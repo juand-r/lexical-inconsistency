@@ -160,7 +160,7 @@ def load_swords_data(seed=0):
     return trainset, testset
 
 
-def make_prompt_lambada(item, style='generator', shots='zero', neg=False):
+def make_prompt_lambada(item, style='generator', shots='zero', neg=False, gen_response = None):
     if style == "generator":
 
         #generator_prompt = 'Complete the story:$context '
@@ -180,10 +180,11 @@ def make_prompt_lambada(item, style='generator', shots='zero', neg=False):
 
         template_string = 'Is the word "$final_word" the most likely word to come next in the following text?\nText: "$context"\n\nAnswer:'
 
+        cur_final_word = gen_response if gen_response else item['final_word']
         if shots == 'zero':
             prompt = Template(
                 instruction + template_string
-                ).substitute(context=item['context'], final_word=item['final_word'])
+                ).substitute(context=item['context'], final_word=cur_final_word)
             #completion = " " + item.synonym.capitalize(i)
             #NOTE only positives yere
             completion = " Yes"
@@ -194,7 +195,7 @@ def make_prompt_lambada(item, style='generator', shots='zero', neg=False):
             #example2 = "In the following sentence: 'I thought as much. Now leave, before I call the rats on you.', can the word call be replaced by the word summon? Answer: Yes\n\n"
             prompt = Template(
                 instruction + examples + template_string
-                ).substitute(context=item['context'], final_word=item['final_word'])
+                ).substitute(context=item['context'], final_word=cur_final_word)
             #completion = " " + item.synonym.capitalize()
             completion = " Yes"
     else:
@@ -207,7 +208,7 @@ def make_prompt_lambada(item, style='generator', shots='zero', neg=False):
 
 
 #TODO generalize better to DRY!
-def make_prompt_triviaqa(item, with_context=False, style='generator', shots='zero', neg=False):
+def make_prompt_triviaqa(item, with_context=False, style='generator', shots='zero', neg=False, gen_response=None):
     """ Only positive examples for now! Also, when multiple acceptable answers are available in the dataset,
     use the first one for now. """
 
@@ -232,12 +233,14 @@ def make_prompt_triviaqa(item, with_context=False, style='generator', shots='zer
         else:
             prompt = example + query
     else: #discriminator
+
         completion = "Yes"
         example = "Is the correct answer to the question \"" + example_question + "\" given by \""+ example_answer + "\"? Answer Yes or No: " + completion + "\n\n"
         if with_context:
             example = "Context: " + example_context + "\n\n" + example + "\n\n"
 
-        query = "Is the correct answer to the question \"" + item['question'] + "\" given by \""+ item['answers'][0] + "\"? Answer Yes or No: "
+        cur_answer = gen_response if gen_response else item['answers'][0]
+        query = "Is the correct answer to the question \"" + item['question'] + "\" given by \""+ cur_answer + "\"? Answer Yes or No: "
         if with_context:
             query = "Context: "+ item['context']  + "\n\n" + query
 
@@ -252,7 +255,7 @@ def make_prompt_triviaqa(item, with_context=False, style='generator', shots='zer
     return Pt(prompt, completion)
 
 
-def make_prompt_swords(item, style="generator", shots="zero", neg=False):
+def make_prompt_swords(item, style="generator", shots="zero", neg=False, gen_response=None):
     """
     Make a prompt based on the item.
     """
@@ -280,10 +283,11 @@ def make_prompt_swords(item, style="generator", shots="zero", neg=False):
         examples = 'Notice the word "artists" used in the context: "Many painters, sculptors, and other *artists* were inspired by Duchamp.". In this context, is "artists" synonymous with "character"? Answer: No\n\nNotice the word "happen" used in the context: "I could free Tasha. If I did, one of three things would *happen*. Most likely: she would be meat..." In this context, is "happen" synonymous with "transpire"? Answer: Yes\n\n'
         template_string = 'Notice the word "$target" used in the context: "$context". In this context, is "$target" synonymous with "$replacement"? Answer:'
 
+        cur_replacement = gen_response if gen_response else item.replacement
         if shots == 'zero':
             prompt = Template(
                 instruction + template_string
-                ).substitute(context=item.context, target=item.target, replacement=item.replacement)
+                ).substitute(context=item.context, target=item.target, replacement=cur_replacement)
             completion = " " + item.synonym.capitalize()
 
         #TODO more than two shots??
@@ -292,7 +296,7 @@ def make_prompt_swords(item, style="generator", shots="zero", neg=False):
             #example2 = "In the following sentence: 'I thought as much. Now leave, before I call the rats on you.', can the word call be replaced by the word summon? Answer: Yes\n\n"
             prompt = Template(
                 instruction + examples + template_string
-                ).substitute(context=item.context, target=item.target, replacement=item.replacement)
+                ).substitute(context=item.context, target=item.target, replacement=cur_replacement)
             completion = " " + item.synonym.capitalize()
     else:
         raise ValueError("!?")
@@ -302,7 +306,7 @@ def make_prompt_swords(item, style="generator", shots="zero", neg=False):
     return Pt(prompt, completion)
 
 
-def make_prompt_hypernymy(item, style="generator", shots="zero", neg=False):
+def make_prompt_hypernymy(item, style="generator", shots="zero", neg=False, gen_response=None):
     """
     Make a prompt based on the item.
     """
@@ -338,15 +342,16 @@ def make_prompt_hypernymy(item, style="generator", shots="zero", neg=False):
                 ).substitute(word=item.noun1)
             completion = " " + item.noun2
     elif style == "discriminator":
+        cur_hypernym = gen_response if gen_response else item.noun2
         if shots == "zero":
             prompt = Template("Do you think $word are a $hypernym? Answer:").substitute(
-                word=item.noun1, hypernym=item.noun2
+                word=item.noun1, hypernym=cur_hypernym
             )
             completion = " " + item.taxonomic.capitalize()
         else:
             prompt = Template(
                 "Do you think bees are furniture? Answer: No\n\nDo you think corgis are dogs? Answer: Yes\n\nDo you think trucks are a fruit? Answer: No\n\nDo you think robins are birds? Answer: Yes\n\nDo you think $word are a $hypernym? Answer:"
-            ).substitute(word=item.noun1, hypernym=item.noun2)
+            ).substitute(word=item.noun1, hypernym=cur_hypernym)
             completion = " " + item.taxonomic.capitalize()
     else:
         raise ValueError("!?")
@@ -582,6 +587,27 @@ def get_final_logit_prob(prompt, model, tokenizer, device = 'cuda', is_chat=Fals
     # print(f"max token--{tokenizer.decode([max_ind])}--")
     # print(torch.sum(torch.exp(model_log_probs)))
     return torch.exp(model_log_probs)
+
+def get_response(prompt, model, tokenizer, device = 'cuda', is_chat=False):
+
+    with torch.no_grad():
+        if is_chat:
+            message = [
+                {"role": "system", "content": "Answer directly without explanation."},
+                {"role": "user", "content": prompt},]
+            input_ids = tokenizer.apply_chat_template(message, add_generation_prompt=True,return_tensors="pt", tokenize=True, return_dict=False)[0].tolist()
+        else:
+            input_ids = tokenizer(prompt, return_tensors="pt")["input_ids"][0].tolist()
+        # outputs = model(torch.tensor([input_ids]).to(device), output_hidden_states=True)
+
+        response = model.generate(
+            input_ids=torch.tensor([input_ids]).to(device),
+            attention_mask=torch.ones(1,len(input_ids)).to(device),
+            max_new_tokens=10,do_sample=False,
+            pad_token_id=tokenizer.eos_token_id)
+        decoded_response = tokenizer.decode(response[0][len(input_ids):], skip_special_tokens=True)
+        # print(f"decoded_response::{decoded_response}::")
+    return decoded_response
 
 def get_L_prompt(task, split_type, seed):
     if task=='hypernym':
