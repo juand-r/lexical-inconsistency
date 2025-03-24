@@ -275,7 +275,7 @@ def main(args):
         raise ValueError("Task unsupported!")
 
     if with_chat:
-        ms = [ [ {"role": "system", "content": "Answer directly without explanation."},  {"role": "user", "content": i.prompt.strip()} ] for i in p_train_disc]
+        ms = [ [ {"role": "system", "content": "Answer directly without explanation."},  {"role": "user", "content": i.prompt.strip()} ] for i in p_train_tune]
         toks = tokenizer.apply_chat_template(ms, add_generation_prompt=True, padding=True, truncation=True, return_tensors='pt')
         max_context_length = toks.shape[1]
     else:
