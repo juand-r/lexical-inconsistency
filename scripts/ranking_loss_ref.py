@@ -46,6 +46,7 @@ def main(args):
     save_steps = args.save_steps
     use_all = args.all  # New flag for using all examples
     train_g_or_d = args.train_g_or_d
+    split_type = args.split_type
     #tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     WITH_REF = with_ref
@@ -100,7 +101,15 @@ def main(args):
 
     if task=='hypernym':
         L = utils.load_noun_pair_data()
-        L_train, L_test = utils.split_train_test(L, seed=0, subsample=False, num_train=3000)
+        if split_type=='hyper':
+            L_train, L_test = split_train_test_no_overlap(L, seed=0)
+        elif split_type=='random':
+            L_train, L_test = split_train_test(L, seed=0, subsample=False, num_train=3000)
+        elif split_type=='both':
+            L_train, L_test = split_train_test_no_overlap_both(L, seed=2)
+        else:
+            raise ValueError("Wrong value for split-type")
+        #L_train, L_test = utils.split_train_test(L, seed=0, subsample=False, num_train=3000)
         #L_train, L_test = utils.split_train_test_no_overlap(L, seed=0)
         #L_train, L_test = utils.split_train_test_no_overlap_both(L)
     elif task=='trivia-qa':
@@ -568,5 +577,6 @@ if __name__ == "__main__":
     parser.add_argument("--save_steps", type=int, default=1, help="Save steps")
     parser.add_argument("--all", default=False, action="store_true", help="Whether to use all examples or just positive ones")
     parser.add_argument("--train_g_or_d", type=str, default='d', choices=["d","g","iter"], help="Train generator or discriminator.")
+    parser.add_argument("--split_type", type=str, default='random', choices=["random","hyper","both"], help="How to do train/test split. Only applies to hypernymy.")
     args = parser.parse_args()
     main(args)
