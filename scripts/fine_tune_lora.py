@@ -142,6 +142,7 @@ def main():
     parser.add_argument(
         "--model", type=str, default="google/gemma-2-2b", help="model to train"
     )
+    parser.add_argument("--split_type", type=str, default='random', help="'random' vs 'hyper' vs 'both' ")
     parser.add_argument(
         "--task", type=str, default="hypernym", help="task to train on: hypernym, trivia-qa, swords, etc."
     )
@@ -245,7 +246,7 @@ def main():
     #     print("Training with negative data only\n")
     # else:
     #     raise ValueError("!")
-    L_train, L_test, make_prompt = get_L_prompt(args.task, 'random', seed)
+    L_train, L_test, make_prompt = get_L_prompt(args.task, args.split_type, seed)
     print(f"len L_train: {len(L_train)}")
     print(f"len L_test: {len(L_test)}")
 
@@ -279,7 +280,7 @@ def main():
         instruction_masking=instruction_mask,
         is_chat=model_is_chat
     )
-    print("!!!fine_tune_lora after pos filtering:")
+    print("!!!fine_tune_lora after pos filtering:") # 4514 -> 2010(1005); 3778 -> 838(419)
     print("Train dataset size: ", len(prompt_completion_train))
     print("Test dataset size: ", len(prompt_completion_test))
     # raise ValueError("STOP")
@@ -310,6 +311,8 @@ def main():
         output_dir = "ftmodel--{}--{}--{}--{}--{}{}".format(
             model_id.split("/")[-1], args.task, both, shots, train_filter, negstr
         )
+    if args.split_type != 'random':
+        output_dir += f"--{args.split_type}"
     output_dir = os.path.join("/datastor1/wenxuand/output/sft/", output_dir)
 
     #If this already exists, make sure not to overwrite it
@@ -384,4 +387,13 @@ CUDA_VISIBLE_DEVICES=6 python fine_tune_lora.py --epochs 2 --shots zero --both u
 
 CUDA_VISIBLE_DEVICES=2 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task trivia-qa --model google/gemma-2-2b
 CUDA_VISIBLE_DEVICES=7 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task swords --model meta-llama/Llama-3.2-3B-Instruct
+'''
+
+'''
+CUDA_VISIBLE_DEVICES=4 python fine_tune_lora.py --epochs 2 --shots zero --both union --split_type hyper --filter pos --task hypernym --model google/gemma-2-2b
+CUDA_VISIBLE_DEVICES=5 python fine_tune_lora.py --epochs 2 --shots zero --both union --split_type hyper --filter pos --task hypernym --model meta-llama/Llama-3.2-3B
+
+CUDA_VISIBLE_DEVICES=6 python fine_tune_lora.py --epochs 2 --shots zero --both union --split_type both --filter pos --task hypernym --model google/gemma-2-2b
+CUDA_VISIBLE_DEVICES=7 python fine_tune_lora.py --epochs 2 --shots zero --both union --split_type both --filter pos --task hypernym --model meta-llama/Llama-3.2-3B
+
 '''

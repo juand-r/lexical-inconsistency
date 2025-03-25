@@ -9,7 +9,7 @@ import torch
 import seaborn as sns
 import numpy as np
 import sklearn.metrics
-from scipy.stats import pearsonr
+from scipy.stats import pearsonr, spearmanr
 from tqdm import tqdm
 from sklearn.metrics import roc_curve, auc, roc_auc_score
 
@@ -185,18 +185,21 @@ def compute_metrics(task, L, logodds_gen, logodds_disc, ranks):
 
     print("correlation: zs gen, fs disc (more usual)")
     corr_all = pearsonr(logodds_gen, logodds_disc).statistic
-
+    spear_all = spearmanr(logodds_gen, logodds_disc).statistic
     logodds_gen_pos = [logodds_gen[i] for i in range(len(logodds_gen)) if golds[i] == 1]
     logodds_gen_neg = [logodds_gen[i] for i in range(len(logodds_gen)) if golds[i] == 0]
     logodds_disc_pos = [logodds_disc[i] for i in range(len(logodds_disc)) if golds[i] == 1]
     logodds_disc_neg = [logodds_disc[i] for i in range(len(logodds_disc)) if golds[i] == 0]
     corr_pos = pearsonr(logodds_gen_pos, logodds_disc_pos).statistic
+    spear_pos = spearmanr(logodds_gen_pos, logodds_disc_pos).statistic
     if len(logodds_gen_neg) == 0:
         corr_neg = np.nan
+        spear_neg = np.nan
     else:
         corr_neg = pearsonr(logodds_gen_neg, logodds_disc_neg).statistic
+        spear_neg = spearmanr(logodds_gen_neg, logodds_disc_neg).statistic
     print(f"correlation: all = {corr_all}, pos = {corr_pos}, neg = {corr_neg}")
-
+    print(f"spearman: all = {spear_all}, pos = {spear_pos}, neg = {spear_neg}")
     disc_acc, disc_roc = compute_disc_accuracy(golds, logodds_disc)
     print(f"disc_acc: {disc_acc}, disc_roc: {disc_roc}")
 
@@ -214,6 +217,9 @@ def compute_metrics(task, L, logodds_gen, logodds_disc, ranks):
         'gen_acc_dict': gen_acc_dict,
         'gen_mrr_pos': gen_mrr_pos,
         'gen_mrr_neg': gen_mrr_neg,
+        'spear_all': spear_all,
+        'spear_pos': spear_pos,
+        'spear_neg': spear_neg
     }
 
 

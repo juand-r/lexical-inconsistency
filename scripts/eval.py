@@ -210,9 +210,10 @@ def main(args):
     with open(summary_file, 'a') as f:
         # if file is empty:
         if os.stat(summary_file).st_size == 0:
-            f.write("model,task,corr_all,corr_pos,corr_neg,disc_acc,disc_roc, gen_acc_5, gen_acc_10, gen_acc_40, gen_acc_100, gen_acc_1000,gen_mrr_pos, gen_mrr_neg, gen_shots,disc_shots,split,split_type,seed\n")
+            f.write("model,task,corr_all,corr_pos,corr_neg,disc_acc,disc_roc, gen_acc_5, gen_acc_10, gen_acc_40, gen_acc_100, gen_acc_1000,gen_mrr_pos, gen_mrr_neg, gen_shots,disc_shots,split,split_type,seed,spear_all,spear_pos,spear_neg,\n")
         split = "train" if args.train else "test"
-        f.write(f"{modelname},{task},{res_dict['corr_all']},{res_dict['corr_pos']},{res_dict['corr_neg']},{res_dict['disc_acc']},{res_dict['disc_roc']},{res_dict['gen_acc_dict'][5]},{res_dict['gen_acc_dict'][10]},{res_dict['gen_acc_dict'][40]},{res_dict['gen_acc_dict'][100]},{res_dict['gen_acc_dict'][1000]},{res_dict['gen_mrr_pos']},{res_dict['gen_mrr_neg']},{gen_shots},{disc_shots},{split},{split_type},{seed}\n")
+        f.write(f"{modelname},{task},{res_dict['corr_all']},{res_dict['corr_pos']},{res_dict['corr_neg']},{res_dict['disc_acc']},{res_dict['disc_roc']},{res_dict['gen_acc_dict'][5]},{res_dict['gen_acc_dict'][10]},{res_dict['gen_acc_dict'][40]},{res_dict['gen_acc_dict'][100]},{res_dict['gen_acc_dict'][1000]},{res_dict['gen_mrr_pos']},{res_dict['gen_mrr_neg']},{gen_shots},{disc_shots},{split},{split_type},{seed}")
+        f.write(f",{res_dict['spear_all']},{res_dict['spear_pos']},{res_dict['spear_neg']},\n")
 
 
 
@@ -232,6 +233,9 @@ if __name__ == "__main__":
 
 '''
 get data for dpo...
+
+CUDA_VISIBLE_DEVICES=7 python eval.py  --task hypernym --disc-shots zero --gen-shots zero --split_type both --model {}
+
 CUDA_VISIBLE_DEVICES=5 python eval.py --model google/gemma-3-4b-pt --train --task hypernym
 CUDA_VISIBLE_DEVICES=6 python eval.py --model google/gemma-2-2b --train --task trivia-qa
 
