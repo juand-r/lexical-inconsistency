@@ -46,6 +46,7 @@ def main(args):
     save_steps = args.save_steps
     use_all = args.all  # New flag for using all examples
     train_g_or_d = args.train_g_or_d
+    split_type = args.split_type
     #tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     WITH_REF = with_ref
@@ -100,7 +101,15 @@ def main(args):
 
     if task=='hypernym':
         L = utils.load_noun_pair_data()
-        L_train, L_test = utils.split_train_test(L, seed=0, subsample=False, num_train=3000)
+        if split_type=='hyper':
+            L_train, L_test = split_train_test_no_overlap(L, seed=0)
+        elif split_type=='random':
+            L_train, L_test = split_train_test(L, seed=0, subsample=False, num_train=3000)
+        elif split_type=='both':
+            L_train, L_test = split_train_test_no_overlap_both(L, seed=2)
+        else:
+            raise ValueError("Wrong value for split-type")
+        #L_train, L_test = utils.split_train_test(L, seed=0, subsample=False, num_train=3000)
         #L_train, L_test = utils.split_train_test_no_overlap(L, seed=0)
         #L_train, L_test = utils.split_train_test_no_overlap_both(L)
     elif task=='trivia-qa':
@@ -275,7 +284,7 @@ def main(args):
         raise ValueError("Task unsupported!")
 
     if with_chat:
-        ms = [ [ {"role": "system", "content": "Answer directly without explanation."},  {"role": "user", "content": i.prompt.strip()} ] for i in p_train_disc]
+        ms = [ [ {"role": "system", "content": "Answer directly without explanation."},  {"role": "user", "content": i.prompt.strip()} ] for i in p_train_tune]
         toks = tokenizer.apply_chat_template(ms, add_generation_prompt=True, padding=True, truncation=True, return_tensors='pt')
         max_context_length = toks.shape[1]
     else:
@@ -455,7 +464,9 @@ def main(args):
             else:
                 raise ValueError("not supported")
 
-            save_directory = "../models/v4-" + model_name.replace('/','--')  + "-delta"+str(delta)+"-epoch"+str(epoch) + "--" + task + with_ref_str + all_str + direction_str
+            split_type_str = "--"+ split_type
+
+            save_directory = "../models/v4-" + model_name.replace('/','--')  + "-delta"+str(delta)+"-epoch"+str(epoch) + "--" + task + with_ref_str + all_str + direction_str + split_type_str
             print("Saving to ", save_directory)
             model.save_pretrained(save_directory)
             tokenizer.save_pretrained(save_directory)
@@ -568,5 +579,6 @@ if __name__ == "__main__":
     parser.add_argument("--save_steps", type=int, default=1, help="Save steps")
     parser.add_argument("--all", default=False, action="store_true", help="Whether to use all examples or just positive ones")
     parser.add_argument("--train_g_or_d", type=str, default='d', choices=["d","g","iter"], help="Train generator or discriminator.")
+    parser.add_argument("--split_type", type=str, default='random', choices=["random","hyper","both"], help="How to do train/test split. Only applies to hypernymy.")
     args = parser.parse_args()
     main(args)
