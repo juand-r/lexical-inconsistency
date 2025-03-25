@@ -174,7 +174,7 @@ def compute_metrics(task, L, logodds_gen, logodds_disc, ranks):
         golds = [1 if i.taxonomic.strip().capitalize() == 'Yes' else 0 for i in L]
     elif task=="trivia-qa":
         #TODO will need to do this differently if include negative examples
-        golds = [1 for i in L]
+        golds = [1 if i['correct'] == 'Yes' else 0 for i in L]
     elif task=='swords':
         golds = [1 if i.synonym.capitalize() == 'Yes' else 0 for i in L]
     elif task=='lambada':
@@ -231,7 +231,7 @@ def compute_accuracy_and_correlations(task, L, logodds_gen, logodds_disc, ranks,
         gold = [i.taxonomic.capitalize() for i in L]
     elif task=="trivia-qa":
         #TODO will need to do this differently if include negative examples
-        gold = ['Yes' for i in L]
+        gold = [i['correct'] for i in L]
     elif task=='swords':
         gold = [i.synonym.capitalize() for i in L]
     elif task=='lambada':

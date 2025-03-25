@@ -34,6 +34,19 @@ import torch
 import numpy as np
 from find_disjoint_sets import partition_items_kernighan_lin
 
+def write_data(filename, data):
+    with open(filename, 'a') as fout:
+        for sample in data:
+            fout.write(json.dumps(sample))
+            fout.write('\n')
+
+def read_data(filename):
+    data = []
+    with open(filename, 'r') as f:
+        for line in f:
+            data.append(json.loads(line))
+    return data
+
 def filtering_hypernym(item, pos=True):
     if pos:
         return item.taxonomic == "yes"
@@ -234,7 +247,7 @@ def make_prompt_triviaqa(item, with_context=False, style='generator', shots='zer
             prompt = example + query
     else: #discriminator
 
-        completion = "Yes"
+        completion = item['correct']
         example = "Is the correct answer to the question \"" + example_question + "\" given by \""+ example_answer + "\"? Answer Yes or No: " + completion + "\n\n"
         if with_context:
             example = "Context: " + example_context + "\n\n" + example + "\n\n"
@@ -251,8 +264,8 @@ def make_prompt_triviaqa(item, with_context=False, style='generator', shots='zer
     
     prompt = prompt.strip()
     completion = " " + completion.strip().capitalize()
-    Pt = namedtuple("PromptCompletion", ["prompt", "completion"])
-    return Pt(prompt, completion)
+    Pt = namedtuple("PromptCompletion", ["prompt", "completion", "answers"])
+    return Pt(prompt, completion, item['answers'])
 
 
 def make_prompt_swords(item, style="generator", shots="zero", neg=False, gen_response=None):
@@ -624,10 +637,12 @@ def get_L_prompt(task, split_type, seed):
         make_prompt = make_prompt_hypernymy
     elif task=='trivia-qa':
         # load data here
-        L = load_dataset('lucadiliello/triviaqa') #TODO check if this is correct version.
+        # L = load_dataset('lucadiliello/triviaqa') #TODO check if this is correct version.
         #USE SUBSET FOR NOW
-        L_train =  L['train'].shuffle(seed=42).select(range(3000)) 
-        L_test = L['validation'].shuffle(seed=42).select(range(1000))
+        # L_train =  L['train'].shuffle(seed=42).select(range(3000)) 
+        # L_test = L['validation'].shuffle(seed=42).select(range(1000))
+        L_train = read_data('../data/triviaqa_pn_train.jsonl')
+        L_test = read_data('../data/triviaqa_pn_test.jsonl')
         print("L_train:", len(L_train))
         print("L_test:", len(L_test))
         #NOTE assumes this takes same arguments in each case
