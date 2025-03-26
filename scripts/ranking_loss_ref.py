@@ -102,25 +102,28 @@ def main(args):
     if task=='hypernym':
         L = utils.load_noun_pair_data()
         if split_type=='hyper':
-            L_train, L_test = split_train_test_no_overlap(L, seed=0)
+            L_train, L_test = utils.split_train_test_no_overlap(L, seed=0)
         elif split_type=='random':
-            L_train, L_test = split_train_test(L, seed=0, subsample=False, num_train=3000)
+            L_train, L_test = utils.split_train_test(L, seed=0, subsample=False, num_train=3000)
         elif split_type=='both':
-            L_train, L_test = split_train_test_no_overlap_both(L, seed=2)
+            L_train, L_test = utils.split_train_test_no_overlap_both(L, seed=2)
         else:
             raise ValueError("Wrong value for split-type")
         #L_train, L_test = utils.split_train_test(L, seed=0, subsample=False, num_train=3000)
         #L_train, L_test = utils.split_train_test_no_overlap(L, seed=0)
         #L_train, L_test = utils.split_train_test_no_overlap_both(L)
     elif task=='trivia-qa':
-        L = load_dataset('lucadiliello/triviaqa') #TODO check if this is correct version.
+#        L = load_dataset('lucadiliello/triviaqa') #TODO check if this is correct version.
         #USE SUBSET FOR NOW
-        L_train =  L['train'].shuffle(seed=42).select(range(3000))
-        L_test = L['validation'].shuffle(seed=42).select(range(1000))
+#        L_train =  L['train'].shuffle(seed=42).select(range(3000))
+#        L_test = L['validation'].shuffle(seed=42).select(range(1000))
+        L_train, L_test, _ = utils.get_L_prompt('trivia-qa', split_type, seed=0)
     elif task=='swords':
         L_train, L_test = utils.load_swords_data(seed=0)
     elif task=='lambada':
-        L_train, L_test = utils.load_lambada_data(seed=0)
+        #L_train, L_test = utils.load_lambada_data(seed=0)
+        # experiment with negatives -- recent version of get_L_prompt does this
+        L_train, L_test, _ = utils.get_L_prompt('lambada', split_type, seed=0)
     else:
         raise NotImplementedError("Task not implemented!")
 
