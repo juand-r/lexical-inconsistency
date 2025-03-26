@@ -5,3 +5,10 @@ src/__pycache__
 outputs/logodds
 scripts/eval_test.ipynb
 outputs/eval_results.csv
+# data/gemma_dpo/
+# data/llama_dpo/
+# data/llama_instruct_dpo/
+data/negative_sample_dpo/
+data/
+data/*
+!data/dataset/

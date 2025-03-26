@@ -60,9 +60,15 @@ def filtering_swords(item, pos=True):
         return item.synonym == "no"
 
 def filtering_triviaqa(item):
-    return True
+    if 'correct' in item:
+        return item['correct'] == 'Yes'
+    else:
+        return True
 def filtering_lambada(item): 
-    return True
+    if 'correct' in item:
+        return item['correct'] == 'Yes'
+    else:
+        return True
 def load_noun_pair_data():
     """
     Load the noun pair (hypernymy) data, with information including whether

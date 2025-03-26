@@ -171,7 +171,9 @@ def main():
 
     parser.add_argument("--style", type=str, help="'discriminator' vs 'generator'")
     parser.add_argument("--lr", type=float, default=2e-5, help="Learning rate for training")
-    parser.add_argument("--shots", type=str, help="'zero' vs 'few'")
+    parser.add_argument("--shots", type=str, default = 'zero', help="'zero' vs 'few'")
+    parser.add_argument("--sample_negative", action="store_true", default=False, help="whether to sample negative examples when loading trivia-qa or lambada")
+
     parser.add_argument(
         "--both",
         type=str,
@@ -302,10 +304,18 @@ def main():
                             "generator-completion": prefix + item.noun2.strip(), "discriminator-gold-completion": prefix + item.taxonomic.strip().capitalize()})
         elif task == 'trivia-qa':
             # print(item.keys())
-            json_list.append({"question":item['question'], "answer":prefix + item['answers'][0].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
+            if args.sample_negative:
+                    json_list.append({"question":item['question'], "answer":prefix + item['answers'][0].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
+                                "generator-completion": prefix + item['answers'][0].strip(), "discriminator-gold-completion": prefix + item['correct']})
+            else:
+                json_list.append({"question":item['question'], "answer":prefix + item['answers'][0].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
                             "generator-completion": prefix + item['answers'][0].strip(), "discriminator-gold-completion": prefix + 'Yes'})
         elif task == 'lambada':
-            json_list.append({"context":item['context'], "completion":prefix + item['final_word'].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
+            if args.sample_negative:
+                    json_list.append({"context":item['context'], "completion":prefix + item['final_word'].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
+                                "generator-completion": prefix + item['final_word'].strip(), "discriminator-gold-completion": prefix + item['correct']})
+            else:
+                json_list.append({"context":item['context'], "completion":prefix + item['final_word'].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
                             "generator-completion": prefix + item['final_word'].strip(), "discriminator-gold-completion": prefix + 'Yes'})
         elif task == 'swords':
             json_list.append({"context":item.context, "target":item.target, "replacement":item.replacement, "synonym":item.synonym,
@@ -399,7 +409,7 @@ def main():
             model_id.split("/")[-1], args.task, both, shots, train_filter, negstr, len(L_train), len(consistent_LL)
         )
     output_dir = os.path.join("/datastor1/wenxuand/output/consistent_sft/", output_dir)
-
+    
     #If this already exists, make sure not to overwrite it
     if os.path.exists(output_dir):
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -473,5 +483,9 @@ CUDA_VISIBLE_DEVICES=6 python consistency_ft.py --epochs 2 --shots zero --both u
 CUDA_VISIBLE_DEVICES=2 python consistency_ft.py --epochs 2 --shots zero --both union --filter pos --task trivia-qa --model google/gemma-2-2b
 CUDA_VISIBLE_DEVICES=7 python consistency_ft.py --epochs 2 --shots zero --both union --filter pos --task swords --model meta-llama/Llama-3.2-3B-Instruct
 CUDA_VISIBLE_DEVICES=7 python consistency_ft.py --epochs 2 --shots zero --both union --filter pos --task swords --model meta-llama/Llama-3.2-3B
+
+
+CUDA_VISIBLE_DEVICES={} python consistency_ft.py --epochs 2 --shots zero --both union  --task trivia-qa --model {} --sample_negative
+CUDA_VISIBLE_DEVICES={} python consistency_ft.py --epochs 2 --shots zero --both union  --task lambada --model {} --sample_negative
 
 '''

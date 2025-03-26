@@ -162,10 +162,18 @@ def main(args):
                                 "generator-completion": prefix + item.noun2.strip(), "discriminator-gold-completion": prefix + item.taxonomic.strip().capitalize()})
             elif task == 'trivia-qa':
                 # print(item.keys())
-                json_list.append({"question":item['question'], "answer":prefix + item['answers'][0].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
+                if args.sample_negative:
+                    json_list.append({"question":item['question'], "answer":prefix + item['answers'][0].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
+                                "generator-completion": prefix + item['answers'][0].strip(), "discriminator-gold-completion": prefix + item['correct']})
+                else:
+                    json_list.append({"question":item['question'], "answer":prefix + item['answers'][0].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
                                 "generator-completion": prefix + item['answers'][0].strip(), "discriminator-gold-completion": prefix + 'Yes'})
             elif task == 'lambada':
-                json_list.append({"context":item['context'], "completion":prefix + item['final_word'].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
+                if args.sample_negative:
+                    json_list.append({"context":item['context'], "completion":prefix + item['final_word'].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
+                                "generator-completion": prefix + item['final_word'].strip(), "discriminator-gold-completion": prefix + item['correct']})
+                else:
+                    json_list.append({"context":item['context'], "completion":prefix + item['final_word'].strip(), "generator-prompt":prompt_gen, "discriminator-prompt":prompt_disc, "generator-log-prob":0, "discriminator-log-prob":0,
                                 "generator-completion": prefix + item['final_word'].strip(), "discriminator-gold-completion": prefix + 'Yes'})
             elif task == 'swords':
                 json_list.append({"context":item.context, "target":item.target, "replacement":item.replacement, "synonym":item.synonym,
@@ -250,4 +258,16 @@ CUDA_VISIBLE_DEVICES=3 python eval.py --model google/gemma-2-2b --train --task t
 CUDA_VISIBLE_DEVICES=3 python eval.py --model meta-llama/Llama-3.2-3B --train --task trivia-qa
 
 model = {'google/gemma-2-2b', 'google/gemma-3-4b-pt', 'meta-llama/Llama-3.2-3B'}
+'''
+
+'''
+CUDA_VISIBLE_DEVICES=0 python eval.py --model meta-llama/Llama-3.2-3B-Instruct --task trivia-qa --train --sample_negative --disc-shots zero
+CUDA_VISIBLE_DEVICES=0 python eval.py --model meta-llama/Llama-3.2-3B --task trivia-qa --train --sample_negative --disc-shots zero
+CUDA_VISIBLE_DEVICES=6 python eval.py --model google/gemma-2-2b --task trivia-qa --train --sample_negative --disc-shots zero
+
+CUDA_VISIBLE_DEVICES=0 python eval.py --model meta-llama/Llama-3.2-3B-Instruct --task lambada --train --sample_negative --disc-shots zero
+
+CUDA_VISIBLE_DEVICES=7 python eval.py --model meta-llama/Llama-3.2-3B --task lambada --train --sample_negative --disc-shots zero
+CUDA_VISIBLE_DEVICES=0 python eval.py --model google/gemma-2-2b --task lambada --train --sample_negative --disc-shots zero
+
 '''

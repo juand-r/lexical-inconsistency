@@ -168,6 +168,7 @@ def main():
     parser.add_argument("--style", type=str, help="'discriminator' vs 'generator'")
     parser.add_argument("--lr", type=float, default=2e-5, help="Learning rate for training")
     parser.add_argument("--shots", type=str, help="'zero' vs 'few'")
+    parser.add_argument("--sample_negative", action="store_true", default=False, help="whether to sample negative examples when loading trivia-qa or lambada")
     parser.add_argument(
         "--both",
         type=str,
@@ -246,7 +247,7 @@ def main():
     #     print("Training with negative data only\n")
     # else:
     #     raise ValueError("!")
-    L_train, L_test, make_prompt = get_L_prompt(args.task, args.split_type, seed)
+    L_train, L_test, make_prompt = get_L_prompt(args.task, args.split_type, seed, sample_negative=args.sample_negative)
     print(f"len L_train: {len(L_train)}")
     print(f"len L_test: {len(L_test)}")
 
@@ -313,6 +314,9 @@ def main():
         )
     if args.split_type != 'random':
         output_dir += f"--{args.split_type}"
+    if args.sample_negative:
+        output_dir += "--pn"
+    
     output_dir = os.path.join("/datastor1/wenxuand/output/sft/", output_dir)
 
     #If this already exists, make sure not to overwrite it
@@ -396,4 +400,6 @@ CUDA_VISIBLE_DEVICES=5 python fine_tune_lora.py --epochs 2 --shots zero --both u
 CUDA_VISIBLE_DEVICES=6 python fine_tune_lora.py --epochs 2 --shots zero --both union --split_type both --filter pos --task hypernym --model google/gemma-2-2b
 CUDA_VISIBLE_DEVICES=7 python fine_tune_lora.py --epochs 2 --shots zero --both union --split_type both --filter pos --task hypernym --model meta-llama/Llama-3.2-3B
 
+CUDA_VISIBLE_DEVICES={} python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task trivia-qa --model {} --sample_negative
+CUDA_VISIBLE_DEVICES={} python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task lambada --model {} --sample_negative
 '''
