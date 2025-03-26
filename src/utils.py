@@ -82,34 +82,46 @@ def load_noun_pair_data():
     return out
 
 
-def load_lambada_data(seed=0): 
-    # dataset =  load_dataset("EleutherAI/lambada_openai", "en", split="test")
-    # # NOTE: this is the same version Jennifer Hu used, see also
-    # # https://github.com/jennhu/lm-task-demands/blob/d28b94b9d83a9ad855734dae44e7582029fcc13e/src/metrics/lambada.py#L24
-    # L = []
-    # for i, example in enumerate(dataset):
-    #     text = example["text"]
-    #     # Get final word to be predicted (by splitting on whitespace).
-    #     # NOTE: there's some debate about what the "true" Lambada task is:
-    #     # https://github.com/EleutherAI/lm-evaluation-harness/issues/350
-    #     splits = text.split(" ")
-    #     prefix = " ".join(splits[:-1])
-    #     final_word = splits[-1]
-    #     #TODO make this optional and uniform across data loaders
-    #     #prefix = prefix + " "
-    #     # Initialize meta information for this item
-    #     item = {"context": prefix, "final_word": final_word}
-    #     L.append(item)
-    random.seed(seed)
-    L = read_data('../data/lambada_pn.jsonl')
-    L_train = L[:6000]
-    L_test = L[6000:]
-    L_train = random.sample(L_train, 3000)
-    L_test = random.sample(L_test, 1000)
-    random.shuffle(L_train)
-    random.shuffle(L_test)
+def load_lambada_data(seed=0, sample_negative=True): 
+    if sample_negative:
+        L_train = read_data('../data/dataset/lambada_pn_train.jsonl')
+        L_test = read_data('../data/dataset/lambada_pn_test.jsonl')
+    else:
+        dataset =  load_dataset("EleutherAI/lambada_openai", "en", split="test")
+        # NOTE: this is the same version Jennifer Hu used, see also
+        # https://github.com/jennhu/lm-task-demands/blob/d28b94b9d83a9ad855734dae44e7582029fcc13e/src/metrics/lambada.py#L24
+        L = []
+        for i, example in enumerate(dataset):
+            text = example["text"]
+            # Get final word to be predicted (by splitting on whitespace).
+            # NOTE: there's some debate about what the "true" Lambada task is:
+            # https://github.com/EleutherAI/lm-evaluation-harness/issues/350
+            splits = text.split(" ")
+            prefix = " ".join(splits[:-1])
+            final_word = splits[-1]
+            #TODO make this optional and uniform across data loaders
+            #prefix = prefix + " "
+            # Initialize meta information for this item
+            item = {"context": prefix, "final_word": final_word}
+            L.append(item)
+        random.seed(seed)
+        random.shuffle(L)
+        L_train, L_test = L[:4153], L[4153:]
     return L_train, L_test
 
+def load_triviaqa_data(seed=0, sample_negative=True):
+    if sample_negative:
+        L_train = read_data('../data/dataset/triviaqa_pn_train.jsonl')
+        L_test = read_data('../data/dataset/triviaqa_pn_test.jsonl')
+    else:
+        # load data here
+        L = load_dataset('lucadiliello/triviaqa') #TODO check if this is correct version.
+        #USE SUBSET FOR NOW
+        L_train =  L['train'].shuffle(seed=42).select(range(3000)) 
+        L_test = L['validation'].shuffle(seed=42).select(range(1000))
+    print("L_train:", len(L_train))
+    print("L_test:", len(L_test))
+    return L_train, L_test
 def load_swords_data(seed=0):
     """Load the swords dataset, and makes positive and negative pairs from it."""
     #NOTE for now pick the top highest ranked item in list of substitutes as positive case
@@ -198,7 +210,10 @@ def make_prompt_lambada(item, style='generator', shots='zero', neg=False, gen_re
 
         cur_final_word = gen_response if gen_response else item['final_word']
 
-        completion = " " + item['correct']
+        if 'correct' in item:
+            completion = " " + item['correct']
+        else:
+            completion = " Yes"
         if shots == 'zero':
             prompt = Template(
                 instruction + template_string
@@ -251,8 +266,10 @@ def make_prompt_triviaqa(item, with_context=False, style='generator', shots='zer
         else:
             prompt = example + query
     else: #discriminator
-
-        completion = item['correct']
+        if 'correct' in item:
+            completion = item['correct']
+        else:
+            completion = 'Yes'
         example = "Is the correct answer to the question \"" + example_question + "\" given by \""+ example_answer + "\"? Answer Yes or No: " + completion + "\n\n"
         if with_context:
             example = "Context: " + example_context + "\n\n" + example + "\n\n"
@@ -628,7 +645,7 @@ def get_response(prompt, model, tokenizer, device = 'cuda', is_chat=False):
         # print(f"decoded_response::{decoded_response}::")
     return decoded_response
 
-def get_L_prompt(task, split_type, seed):
+def get_L_prompt(task, split_type, seed, sample_negative=True):
     if task=='hypernym':
         L = load_noun_pair_data()
         if split_type=='hyper':
@@ -641,22 +658,15 @@ def get_L_prompt(task, split_type, seed):
             raise ValueError("Wrong value for split-type")
         make_prompt = make_prompt_hypernymy
     elif task=='trivia-qa':
-        # load data here
-        # L = load_dataset('lucadiliello/triviaqa') #TODO check if this is correct version.
-        #USE SUBSET FOR NOW
-        # L_train =  L['train'].shuffle(seed=42).select(range(3000)) 
-        # L_test = L['validation'].shuffle(seed=42).select(range(1000))
-        L_train = read_data('../data/triviaqa_pn_train.jsonl')
-        L_test = read_data('../data/triviaqa_pn_test.jsonl')
-        print("L_train:", len(L_train))
-        print("L_test:", len(L_test))
-        #NOTE assumes this takes same arguments in each case
+        
+        
+        L_train, L_test = load_triviaqa_data(seed=seed, sample_negative=sample_negative)
         make_prompt = make_prompt_triviaqa
     elif task=='swords':
         L_train, L_test = load_swords_data(seed=0)
         make_prompt = make_prompt_swords
     elif task=='lambada':
-        L_train, L_test = load_lambada_data(seed=0)
+        L_train, L_test = load_lambada_data(seed=0, sample_negative=sample_negative)
         make_prompt = make_prompt_lambada
     else:
         raise NotImplementedError("Not a task")

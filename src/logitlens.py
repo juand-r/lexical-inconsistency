@@ -173,11 +173,17 @@ def compute_metrics(task, L, logodds_gen, logodds_disc, ranks):
     if task=='hypernym':
         golds = [1 if i.taxonomic.strip().capitalize() == 'Yes' else 0 for i in L]
     elif task=="trivia-qa":
-        golds = [1 if i['correct'] == 'Yes' else 0 for i in L]
+        if 'correct' in L[0]:
+            golds = [1 if i['correct'] == 'Yes' else 0 for i in L]
+        else:
+            golds = [1  for i in L]
     elif task=='swords':
         golds = [1 if i.synonym.capitalize() == 'Yes' else 0 for i in L]
     elif task=='lambada':
-        golds = [1 if i['correct'] == 'Yes' else 0 for i in L]
+        if 'correct' in L[0]:
+            golds = [1 if i['correct'] == 'Yes' else 0 for i in L]
+        else:
+            golds = [1  for i in L]
     else:
         raise ValueError("!")
 
@@ -228,11 +234,17 @@ def compute_accuracy_and_correlations(task, L, logodds_gen, logodds_disc, ranks,
     if task=='hypernym':
         gold = [i.taxonomic.capitalize() for i in L]
     elif task=="trivia-qa":
-        gold = [i['correct'] for i in L]
+        if 'correct' in L[0]:
+            gold = [i['correct'] for i in L]
+        else:
+            gold = ['Yes' for i in L]
     elif task=='swords':
         gold = [i.synonym.capitalize() for i in L]
     elif task=='lambada':
-        gold = [i['correct'] for i in L]
+        if 'correct' in L[0]:
+            gold = [i['correct'] for i in L]
+        else:
+            gold = ['Yes' for i in L]
     else:
         raise ValueError("!")
 

@@ -97,8 +97,8 @@ def main(args):
     train_flag = args.train
     split_type = args.split_type
 
-    L_train, L_test, make_prompt = get_L_prompt(task, split_type, seed)
-
+    L_train, L_test, make_prompt = get_L_prompt(task, split_type, seed, sample_negative = args.sample_negative)
+    print("Loaded data with negative_sample = {}!".format(args.sample_negative))
     device = "cuda"
 
     init_model(modelname, device)
@@ -227,6 +227,7 @@ if __name__ == "__main__":
     parser.add_argument("--train", action="store_true", default=False, help="log-odds of train or test set?")
     parser.add_argument("--split_type", type=str, default='random', help="'random' vs 'hyper' vs 'both' ")
     parser.add_argument("--task", type=str, default='hypernym', help="hypernym, trivia-qa, etc")
+    parser.add_argument("--sample_negative", action="store_true", default=False, help="whether to sample negative examples when loading trivia-qa or lambada")
 
     args = parser.parse_args()
     main(args)
