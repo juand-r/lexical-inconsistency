@@ -105,9 +105,6 @@ def load_lambada_data(seed=0, sample_negative=True):
             splits = text.split(" ")
             prefix = " ".join(splits[:-1])
             final_word = splits[-1]
-            #TODO make this optional and uniform across data loaders
-            #prefix = prefix + " "
-            # Initialize meta information for this item
             item = {"context": prefix, "final_word": final_word}
             L.append(item)
         random.seed(seed)
@@ -128,10 +125,10 @@ def load_triviaqa_data(seed=0, sample_negative=True):
     print("L_train:", len(L_train))
     print("L_test:", len(L_test))
     return L_train, L_test
+
 def load_swords_data(seed=0):
     """Load the swords dataset, and makes positive and negative pairs from it."""
     #NOTE for now pick the top highest ranked item in list of substitutes as positive case
-    #TODO generalize later!
 
     with open("../data/swords-data-v1.1_test.json", "r") as fd:
         test = json.load(fd)
@@ -546,18 +543,7 @@ def make_and_format_data(
         items = items_disc + items_gen
         random.shuffle(items)
 
-    # items = [make_prompt(i, style=style, shots=shots, neg=neg) for i in L]
-    # items = [make_prompt(i, style=style, shots=shots) for i in L]
 
-    # if both == "union":
-    #     items1 = [
-    #         #make_prompt(i, style="discriminator", shots="zero", neg=False) for i in L
-    #         make_prompt(i, style="discriminator", shots="zero") for i in L
-    #     ]
-    #     items2 = [make_prompt(i, style="generator", shots="zero") for i in L]
-    #     #items2 = [make_prompt(i, style="generator", shots="zero", neg=True) for i in L]
-    #     items = items1 + items2
-    #     random.shuffle(items)
 
     elif both == "joint":
         items1 = [

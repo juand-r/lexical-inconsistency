@@ -315,7 +315,7 @@ if __name__ == "__main__":
     for d in dataset:
         print(d)
         break
-    # raise ValueError("Stop here")
+
     output_dir = os.path.join(args.output_dir, args.task, args.model.split('/')[-1].strip(), f"dpo_{args.direction}_{time_string}")
     os.makedirs(output_dir, exist_ok=True)
     training_args = DPOConfig(
@@ -350,25 +350,9 @@ if __name__ == "__main__":
     trainer.train()
 
 '''
-CUDA_VISIBLE_DEVICES=5 python dpo.py --model meta-llama/Llama-3.2-3B --task hypernym --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/hypernym-train-Llama-3.2-3B.json [ing] 
-CUDA_VISIBLE_DEVICES=6 python dpo.py --model meta-llama/Llama-3.2-3B --task hypernym --direction g2d --lr 2e-6 --epochs 2 --dataset_dir ../data/hypernym-train-Llama-3.2-3B.json [ing]
+example usage:
 
-CUDA_VISIBLE_DEVICES=5 python dpo.py --model meta-llama/Llama-3.2-3B --task trivia-qa --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/trivia-qa-train-Llama-3.2-3B.json
-
-#TODO:
-rerun gemma-2-2b on hypernym
-
-CUDA_VISIBLE_DEVICES=0 python dpo.py --model google/gemma-2-2b --task trivia-qa --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/trivia-qa-train-gemma-2-2b.json [ing]
-CUDA_VISIBLE_DEVICES=1 python dpo.py --model meta-llama/Llama-3.2-3B --task trivia-qa --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/trivia-qa-train-Llama-3.2-3B.json
-
-CUDA_VISIBLE_DEVICES=2 python dpo.py --model  google/gemma-2-2b --task hypernym --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/hypernym-train-gemma-2-2b.json 
-CUDA_VISIBLE_DEVICES=6 python dpo.py --model  google/gemma-2-2b --task hypernym --direction g2d --lr 2e-6 --epochs 2 --dataset_dir ../data/hypernym-train-gemma-2-2b.json 
-
-CUDA_VISIBLE_DEVICES=2 python dpo.py --model google/gemma-2-2b --task lambada --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/lambada-train-gemma-2-2b.json
-CUDA_VISIBLE_DEVICES=3 python dpo.py --model meta-llama/Llama-3.2-3B --task lambada --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/lambada-train-Llama-3.2-3B.json
-
-CUDA_VISIBLE_DEVICES=1 python dpo.py --model meta-llama/Llama-3.2-3B-Instruct --task trivia-qa --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/trivia-qa-train-Llama-3.2-3B-Instruct.json
-CUDA_VISIBLE_DEVICES=2 python dpo.py --model  meta-llama/Llama-3.2-3B-Instruct --task swords --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/swords-train-Llama-3.2-3B-Instruct.json 
-CUDA_VISIBLE_DEVICES=0 python dpo.py --model  meta-llama/Llama-3.2-3B-Instruct --task swords --direction g2d --lr 2e-6 --epochs 2 --dataset_dir ../data/swords-train-Llama-3.2-3B-Instruct.json
+CUDA_VISIBLE_DEVICES=0 python dpo.py --model meta-llama/Llama-3.2-3B --task hypernym --direction d2g --lr 1e-5 --epochs 1 --dataset_dir ../data/hypernym-train-Llama-3.2-3B.json 
+CUDA_VISIBLE_DEVICES=0 python dpo.py --model meta-llama/Llama-3.2-3B --task hypernym --direction g2d --lr 2e-6 --epochs 2 --dataset_dir ../data/hypernym-train-Llama-3.2-3B.json 
 
 '''

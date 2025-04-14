@@ -50,89 +50,87 @@ filtering_function_map = {
     "lambada": filtering_lambada
     }
 
-# NOTE: this is currently too slow to be useful, but leaving in in case
-# I want to troubleshoot this again later.
-def accuracy_metrics_disc(p: EvalPrediction):
 
-    predictions = p.predictions  # logits [batch_size, seq_len, vocab]
-    labels = p.label_ids  # [batch_size, seq_len]
+# def accuracy_metrics_disc(p: EvalPrediction):
 
-    # get batch_len size array with index of last entry before padding (-100)
-    mask = labels == -100
-    has_neg_100 = np.any(mask, axis=1)
-    first_neg_100 = np.argmax(mask, axis=1)
-    last_valid_index = np.where(has_neg_100, first_neg_100 - 1, labels.shape[1] - 1)
+#     predictions = p.predictions  # logits [batch_size, seq_len, vocab]
+#     labels = p.label_ids  # [batch_size, seq_len]
 
-    # get batch_size x vocab array containing the vocabs for the last valid index in each batch
-    batch_size = predictions.shape[0]
-    selected_predictions = predictions[np.arange(batch_size), last_valid_index, :]
+#     # get batch_len size array with index of last entry before padding (-100)
+#     mask = labels == -100
+#     has_neg_100 = np.any(mask, axis=1)
+#     first_neg_100 = np.argmax(mask, axis=1)
+#     last_valid_index = np.where(has_neg_100, first_neg_100 - 1, labels.shape[1] - 1)
 
-    assert all(
-        [
-            tokenizer.decode(labels[ii, last_valid_index[ii]]) in [" Yes", " No"]
-            for ii in range(len(last_valid_index))
-        ]
-    )
+#     # get batch_size x vocab array containing the vocabs for the last valid index in each batch
+#     batch_size = predictions.shape[0]
+#     selected_predictions = predictions[np.arange(batch_size), last_valid_index, :]
 
-    yesind = tokenizer.encode(" Yes")[-1]
-    noind = tokenizer.encode(" No")[-1]
-    ygn = selected_predictions[:, yesind] - selected_predictions[:, noind] > 0
+#     assert all(
+#         [
+#             tokenizer.decode(labels[ii, last_valid_index[ii]]) in [" Yes", " No"]
+#             for ii in range(len(last_valid_index))
+#         ]
+#     )
 
-    gold = labels[np.arange(batch_size), last_valid_index] == yesind
+#     yesind = tokenizer.encode(" Yes")[-1]
+#     noind = tokenizer.encode(" No")[-1]
+#     ygn = selected_predictions[:, yesind] - selected_predictions[:, noind] > 0
 
-    accuracy = sum(ygn == gold) / len(gold)
+#     gold = labels[np.arange(batch_size), last_valid_index] == yesind
 
-    return {"accuracy": accuracy}
+#     accuracy = sum(ygn == gold) / len(gold)
+
+#     return {"accuracy": accuracy}
 
 
-# NOTE: using wandb callbacks is slightly faster, but still too slow to iterate quickly!
-class AccuracyCallback(WandbCallback):
-    def __init__(
-        self, trainer, eval_dataset, tokenizer, yes_token=" Yes", no_token=" No"
-    ):
-        super().__init__()
-        self.trainer = trainer
-        self.eval_dataset = eval_dataset
-        self.tokenizer = tokenizer
-        self.yes_token_id = self.tokenizer.encode(yes_token)[-1]
-        self.no_token_id = self.tokenizer.encode(no_token)[-1]
+# class AccuracyCallback(WandbCallback):
+#     def __init__(
+#         self, trainer, eval_dataset, tokenizer, yes_token=" Yes", no_token=" No"
+#     ):
+#         super().__init__()
+#         self.trainer = trainer
+#         self.eval_dataset = eval_dataset
+#         self.tokenizer = tokenizer
+#         self.yes_token_id = self.tokenizer.encode(yes_token)[-1]
+#         self.no_token_id = self.tokenizer.encode(no_token)[-1]
 
-    def on_evaluate(self, args, state, control, **kwargs):
-        # Call the superclass method to ensure proper Wandb state
-        super().on_evaluate(args, state, control, **kwargs)
+#     def on_evaluate(self, args, state, control, **kwargs):
+#         # Call the superclass method to ensure proper Wandb state
+#         super().on_evaluate(args, state, control, **kwargs)
 
-        # Run predictions on the evaluation dataset to get logits and labels
-        # predict() returns a namedtuple with .predictions and .label_ids
-        predictions_output = self.trainer.predict(self.eval_dataset)
-        predictions = (
-            predictions_output.predictions
-        )  # shape (batch_size, seq_len, vocab)
-        labels = predictions_output.label_ids  # shape (batch_size, seq_len)
+#         # Run predictions on the evaluation dataset to get logits and labels
+#         # predict() returns a namedtuple with .predictions and .label_ids
+#         predictions_output = self.trainer.predict(self.eval_dataset)
+#         predictions = (
+#             predictions_output.predictions
+#         )  # shape (batch_size, seq_len, vocab)
+#         labels = predictions_output.label_ids  # shape (batch_size, seq_len)
 
-        # NOTE careful, passing the entire input_ids, which includes the completion!
-        # so offset from last is -2, not -1
-        offset = 2
+#         # NOTE careful, passing the entire input_ids, which includes the completion!
+#         # so offset from last is -2, not -1
+#         offset = 2
 
-        # get batch_len size array with index of last entry before padding (-100)
-        mask = labels == -100
-        has_neg_100 = np.any(mask, axis=1)
-        first_neg_100 = np.argmax(mask, axis=1)
-        last_valid_index = np.where(
-            has_neg_100, first_neg_100 - offset, labels.shape[1] - offset
-        )
+#         # get batch_len size array with index of last entry before padding (-100)
+#         mask = labels == -100
+#         has_neg_100 = np.any(mask, axis=1)
+#         first_neg_100 = np.argmax(mask, axis=1)
+#         last_valid_index = np.where(
+#             has_neg_100, first_neg_100 - offset, labels.shape[1] - offset
+#         )
 
-        batch_size = predictions.shape[0]
-        selected_predictions = predictions[np.arange(batch_size), last_valid_index, :]
+#         batch_size = predictions.shape[0]
+#         selected_predictions = predictions[np.arange(batch_size), last_valid_index, :]
 
-        # Compute whether model predicts "Yes" over "No"
-        yes_scores = selected_predictions[:, self.yes_token_id]
-        no_scores = selected_predictions[:, self.no_token_id]
-        model_pred_yes = (yes_scores - no_scores) > 0
+#         # Compute whether model predicts "Yes" over "No"
+#         yes_scores = selected_predictions[:, self.yes_token_id]
+#         no_scores = selected_predictions[:, self.no_token_id]
+#         model_pred_yes = (yes_scores - no_scores) > 0
 
-        gold_yes = labels[np.arange(batch_size), last_valid_index] == self.yes_token_id
-        accuracy = np.mean(model_pred_yes == gold_yes)
+#         gold_yes = labels[np.arange(batch_size), last_valid_index] == self.yes_token_id
+#         accuracy = np.mean(model_pred_yes == gold_yes)
 
-        self._wandb.log({"accuracy": accuracy})
+#         self._wandb.log({"accuracy": accuracy})
 
 
 def main():
@@ -233,20 +231,6 @@ def main():
     ###########################################################
     # LOAD AND FORMAT DATA
     ###########################################################
-    # L = load_noun_pair_data()
-    # L_train, L_test = split_train_test(
-    #     L, seed=seed, subsample=subsample, num_train=num_train
-    # )
-    # if train_filter == "all":
-    #     print("Training with all data\n")
-    # elif train_filter == "pos":
-    #     L_train = [i for i in L_train if i.taxonomic == "yes"]
-    #     print("Training with positive data only\n")
-    # elif train_filter == "neg":
-    #     L_train = [i for i in L_train if i.taxonomic == "no"]
-    #     print("Training with negative data only\n")
-    # else:
-    #     raise ValueError("!")
     L_train, L_test, make_prompt = get_L_prompt(args.task, args.split_type, seed, sample_negative=args.sample_negative)
     print(f"len L_train: {len(L_train)}")
     print(f"len L_test: {len(L_test)}")
@@ -284,16 +268,15 @@ def main():
     print("!!!fine_tune_lora after pos filtering:") # 4514 -> 2010(1005); 3778 -> 838(419)
     print("Train dataset size: ", len(prompt_completion_train))
     print("Test dataset size: ", len(prompt_completion_test))
-    # raise ValueError("STOP")
+
     for i in range(10):
         print(prompt_completion_train[i])
         # print(tokenizer.apply_chat_template(prompt_completion_train[i]))
-    # raise ValueError("STOP")
+
     ################################################################
     # CONFIG FOR LoRA
     ################################################################
-    # LoRA config based on QLoRA paper & Sebastian Raschka experiment
-    # From: https://github.com/philschmid/deep-learning-pytorch-huggingface/blob/main/training/gemma-lora-example.ipynb
+
     peft_config = LoraConfig(
         lora_alpha=16,
         lora_dropout=0.05,
@@ -360,9 +343,6 @@ def main():
         # packing=False,
     )
 
-    # TODO this requires a little more tinkering to get working
-    # wandb_callback = AccuracyCallback(trainer, hf_test, tokenizer, yes_token=" Yes", no_token=" No")
-    # trainer.add_callback(wandb_callback)
 
     trainer.train()
     trainer.save_model()
@@ -385,21 +365,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-'''
-CUDA_VISIBLE_DEVICES=5 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task lambada --model google/gemma-2-2b
-CUDA_VISIBLE_DEVICES=6 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task lambada --model meta-llama/Llama-3.2-3B
-
-CUDA_VISIBLE_DEVICES=2 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task trivia-qa --model google/gemma-2-2b
-CUDA_VISIBLE_DEVICES=7 python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task swords --model meta-llama/Llama-3.2-3B-Instruct
-'''
-
-'''
-CUDA_VISIBLE_DEVICES=4 python fine_tune_lora.py --epochs 2 --shots zero --both union --split_type hyper --filter pos --task hypernym --model google/gemma-2-2b
-CUDA_VISIBLE_DEVICES=5 python fine_tune_lora.py --epochs 2 --shots zero --both union --split_type hyper --filter pos --task hypernym --model meta-llama/Llama-3.2-3B
-
-CUDA_VISIBLE_DEVICES=6 python fine_tune_lora.py --epochs 2 --shots zero --both union --split_type both --filter pos --task hypernym --model google/gemma-2-2b
-CUDA_VISIBLE_DEVICES=7 python fine_tune_lora.py --epochs 2 --shots zero --both union --split_type both --filter pos --task hypernym --model meta-llama/Llama-3.2-3B
-
-CUDA_VISIBLE_DEVICES={} python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task trivia-qa --model {} --sample_negative
-CUDA_VISIBLE_DEVICES={} python fine_tune_lora.py --epochs 2 --shots zero --both union --filter pos --task lambada --model {} --sample_negative
-'''

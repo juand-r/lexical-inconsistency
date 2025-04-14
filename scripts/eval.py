@@ -1,13 +1,3 @@
-# model, dataset
-# -> pearson correlation (all, pos, neg)
-# -> acc (disc, gen, threshold)
-# ROC for disc / gen accuract
-# MRR for 
-'''
-CUDA_VISIBLE_DEVICES=6 python eval.py --model meta-llama/Llama-3.2-3B-Instruct --task trivia-qa --train --disc_shots zero
-CUDA_VISIBLE_DEVICES=6 python eval.py --model meta-llama/Llama-3.2-3B-Instruct --task swords --train --disc_shots zero
-
-'''
 from pathlib import Path
 import os
 import sys
@@ -22,17 +12,14 @@ parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 src_path = os.path.join(parent_dir, "src")
 sys.path.append(src_path)
 from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
-#Gemma3ForCausalLM
 from utils import get_L_prompt, get_final_logit_prob
 from logitlens import compute_logodds_final_layer, get_logodds_gen, get_logodds_disc
-# from tunedlens import init_lens, obtain_prob_tensor
 
 device = "cuda"
 yes_words = ["Yes", " Yes", "YES", "yes", " yes"]
 no_words = ["No", " No", "NO", "no", " no"]
 
-# combine with logodds.py
-# and viz.py piece of code
+]
 
 def init_model(model_name, device):
     global model
@@ -52,48 +39,19 @@ def init_model(model_name, device):
     if "llama" in model_name:
         terminators = [tokenizer.eos_token_id, tokenizer.convert_tokens_to_ids("<|eot_id|>")]
 
-# def get_L_prompt(task, split_type, seed):
-#     if task=='hypernym':
-#         L = load_noun_pair_data()
-#         if split_type=='hyper':
-#             L_train, L_test = split_train_test_no_overlap(L, seed=seed)
-#         elif split_type=='random':
-#             L_train, L_test = split_train_test(L, seed=seed, subsample=False, num_train=3000)
-#         elif split_type=='both':
-#             L_train, L_test = split_train_test_no_overlap_both(L, seed=2)
-#         else:
-#             raise ValueError("Wrong value for split-type")
-#         make_prompt = make_prompt_hypernymy
-#     elif task=='trivia-qa':
-#         # load data here
-#         L = load_dataset('lucadiliello/triviaqa') #TODO check if this is correct version.
-#         #USE SUBSET FOR NOW
-#         L_train =  L['train'].shuffle(seed=42).select(range(3000))
-#         L_test = L['validation'].shuffle(seed=42).select(range(1000))
-
-#         #NOTE assumes this takes same arguments in each case
-#         make_prompt = make_prompt_triviaqa
-#     elif task=='swords':
-#         L_train, L_test = load_swords_data(seed=0)
-#         make_prompt = make_prompt_swords
-#     else:
-#         raise NotImplementedError("Not a task")
-#     return L_train, L_test, make_prompt
 
 def get_base_model_name(modelname):
-    # TODO: improve this
     modelname = modelname.split("output")[-1]
     return modelname.replace('/', '-')
 
 def main(args):
     task = args.task
     modelname = args.model
-    # do_tunedlens = args.tunedlens
     seed = args.seed
     gen_shots = args.gen_shots
     disc_shots = args.disc_shots
     print(f"gen_shots: {gen_shots}, disc_shots: {disc_shots}")
-    # raise ValueError("Check this!")
+
     train_flag = args.train
     split_type = args.split_type
 
@@ -103,13 +61,7 @@ def main(args):
 
     init_model(modelname, device)
     
-    # TODO: test with base model, check the values
-#    if "gpt" in modelname.lower():
-#        first_sw_token = 1
-#    elif "gemma" in modelname.lower() or "llama" in modelname.lower():
-#        first_sw_token = 2
-#    else:
-#        raise ValueError("!?")
+
 
     #NOTE assume we just do llama or gemma. Same situation in both:
     first_sw_token = 2
@@ -204,14 +156,6 @@ def main(args):
 
     
     basename = get_base_model_name(modelname)
-    # # os.path.basename(modeldir)
-    # tensordir_disc = os.path.join("../outputs/logodds", basename + "--" + task + "--disc-"+disc_shots + train_suffix + split_suffix + ".pt")
-    # tensordir_gen = os.path.join("../outputs/logodds", basename + "--" + task + "--gen-"+gen_shots + train_suffix + split_suffix + ".pt")
-    # torch.save(logodds_disc, tensordir_disc)
-    # torch.save(logodds_gen, tensordir_gen)
-    # ranks_gen = os.path.join("../outputs/logodds", basename + "--" + task + "--gen-"+gen_shots + train_suffix + split_suffix + "--ranks.json")
-    # with open(ranks_gen, 'w') as f:
-    #     json.dump(ranks, f, indent=4)
 
 
     summary_file = os.path.join("../outputs/eval_results.csv")
@@ -239,36 +183,3 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     main(args)
-
-'''
-get data for dpo...
-
-CUDA_VISIBLE_DEVICES=7 python eval.py  --task hypernym --disc-shots zero --gen-shots zero --split_type both --model {}
-
-CUDA_VISIBLE_DEVICES=5 python eval.py --model google/gemma-3-4b-pt --train --task hypernym
-CUDA_VISIBLE_DEVICES=7 python eval.py --model google/gemma-2-2b --train --task trivia-qa
-
-CUDA_VISIBLE_DEVICES=3 python eval.py --model google/gemma-2-2b --train --task lambada
-CUDA_VISIBLE_DEVICES=3 python eval.py --model meta-llama/Llama-3.2-3B --train --task lambada
-
-CUDA_VISIBLE_DEVICES=3 python eval.py --model google/gemma-2-2b --train --task swords
-CUDA_VISIBLE_DEVICES=3 python eval.py --model meta-llama/Llama-3.2-3B --train --task swords
-
-CUDA_VISIBLE_DEVICES=3 python eval.py --model google/gemma-2-2b --train --task trivia-qa
-CUDA_VISIBLE_DEVICES=3 python eval.py --model meta-llama/Llama-3.2-3B --train --task trivia-qa
-
-model = {'google/gemma-2-2b', 'google/gemma-3-4b-pt', 'meta-llama/Llama-3.2-3B'}
-'''
-
-'''
-CUDA_VISIBLE_DEVICES=7 python eval.py --model meta-llama/Llama-3.2-3B-Instruct --task trivia-qa --train --sample_negative --disc-shots zero
-CUDA_VISIBLE_DEVICES=7 python eval.py --model meta-llama/Llama-3.2-3B --task trivia-qa --train --sample_negative --disc-shots zero
-CUDA_VISIBLE_DEVICES=7 python eval.py --model google/gemma-2-2b --task trivia-qa --train --sample_negative --disc-shots zero
-
-# CUDA_VISIBLE_DEVICES=0 python eval.py --model meta-llama/Llama-3.2-3B-Instruct --task lambada --train --sample_negative --disc-shots zero
-
-# to run the following 2
-CUDA_VISIBLE_DEVICES=7 python eval.py --model meta-llama/Llama-3.2-3B --task lambada --train --sample_negative --disc-shots zero
-CUDA_VISIBLE_DEVICES=7 python eval.py --model google/gemma-2-2b --task lambada --train --sample_negative --disc-shots zero
-
-'''
