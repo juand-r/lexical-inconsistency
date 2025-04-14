@@ -352,6 +352,21 @@ def make_prompt_hypernymy(item, style="generator", shots="zero", neg=False, gen_
     """
     Make a prompt based on the item.
     """
+
+    #TODO do this better later
+    variation=0 # 0 for original
+    if variation==0:
+        gtemplate = "Complete the sentence: $word are a kind of"
+    elif variation==1:
+        gtemplate = "$word are a kind of"
+    elif variation==2:
+        gtemplate = "I love $word and other"
+    elif variation ==3:
+        gtemplate = "Do you remember what our teacher used to tell us? She'd say that contrary to appearances, $word are actually"
+        #"Do you remember what our teacher used to tell us? She'd say that contrary to appearances, $word are actually"
+    else:
+        raise ValueError("Wrong num")
+
     if style == "generator":
         if shots == "zero":
             if neg:
@@ -361,11 +376,24 @@ def make_prompt_hypernymy(item, style="generator", shots="zero", neg=False, gen_
                     ).substitute(word=item.noun1, hypernym=item.noun2)
                 else:
                     prompt = Template(
-                        "Complete the sentence: $word are a kind of"
+                        gtemplate
+                        #""
+                        #"Complete the sentence: $word have a tendency to"
+                        #"Do you remember what our teacher used to tell us? She'd say that contrary to appearances, $word are actually"
+                        #"I love $word and other"
+                        #"$word are a kind of"
+                        #"Complete the sentence: $word are a kind of"
+                        #NOTE
                     ).substitute(word=item.noun1, hypernym=item.noun2)
             else:
                 prompt = Template(
-                    "Complete the sentence: $word are a kind of"
+                        gtemplate
+                    #"Complete the sentence: $word are a kind of"
+                        #"$word are a kind of"
+                        #"I love $word and other"
+                        #"Do you remember what our teacher used to tell us? She'd say that contrary to appearances, $word are actually"
+                        #"Do you remember what our teacher used to tell us? She'd say that contrary to appearances, $word are actually"
+                        #"Complete the sentence: $word have a tendency to"
                 ).substitute(word=item.noun1, hypernym=item.noun2)
             completion = " " + item.noun2
         else:
@@ -386,14 +414,44 @@ def make_prompt_hypernymy(item, style="generator", shots="zero", neg=False, gen_
     elif style == "discriminator":
         cur_hypernym = gen_response if gen_response else item.noun2
         if shots == "zero":
-            prompt = Template("Do you think $word are a $hypernym? Answer:").substitute(
+#            prompt = Template("Do you think $word are a $hypernym? Answer:").substitute(
+#                word=item.noun1, hypernym=cur_hypernym
+#            )
+#           NOTE
+            prompt = Template("Is it the case that $word are a $hypernym? Answer:").substitute(
                 word=item.noun1, hypernym=cur_hypernym
             )
+#            prompt = Template("In your view, are $word a $hypernym? Answer:").substitute(
+#                word=item.noun1, hypernym=cur_hypernym
+#            )
+
             completion = " " + item.taxonomic.capitalize()
         else:
-            prompt = Template(
+            if variation==0:
+                prompt = Template(
                 "Do you think bees are furniture? Answer: No\n\nDo you think corgis are dogs? Answer: Yes\n\nDo you think trucks are a fruit? Answer: No\n\nDo you think robins are birds? Answer: Yes\n\nDo you think $word are a $hypernym? Answer:"
-            ).substitute(word=item.noun1, hypernym=cur_hypernym)
+                ).substitute(word=item.noun1, hypernym=cur_hypernym)
+            elif variation==1:
+                prompt = Template(
+                        #NOTE
+                    "Is it the case that bees are furniture? Answer: No\n\nIs it the case that corgis are dogs? Answer: Yes\n\nIs it the case that trucks are a fruit? Answer: No\n\nIs it the case that robins are birds? Answer: Yes\n\nIs it the case that $word are a $hypernym? Answer:"
+               ).substitute(word=item.noun1, hypernym=cur_hypernym)
+            elif variation==2:
+                prompt = Template(
+                        #NOTE
+                    "In your view, are bees furniture? Answer: No\n\nIn your view, are corgis dogs? Answer: Yes\n\nIn your view, are trucks a fruit? Answer: No\n\nIn your view, are robins birds? Answer: Yes\n\nIn your view, are $word a $hypernym? Answer:"
+                ).substitute(word=item.noun1, hypernym=cur_hypernym)
+            elif variation==3:
+                prompt = Template(
+                    "Deep down in your bones, do you believe that bees are furniture? Answer: No\n\nDeep down in your bones, do you believe that corgis are dogs? Answer: Yes\n\nDeep down in your bones, do you believe that trucks are a fruit? Answer: No\n\nDeep down in your bones, do you believe that robins are birds? Answer: Yes\n\nDeep down in your bones, do you believe that $word are a $hypernym? Answer:"
+               ).substitute(word=item.noun1, hypernym=cur_hypernym)
+            elif variation==4:
+                prompt = Template(
+                    "Deep down in your bones, do you believe that bees are furniture? Answer: No\n\nDeep down in your bones, do you believe that corgis are dogs? Answer: Yes\n\nDeep down in your bones, do you believe that trucks are a fruit? Answer: No\n\nDeep down in your bones, do you believe that robins are birds? Answer: Yes\n\nDeep down in your bones, do you believe that $word are a $hypernym? Answer:"
+                ).substitute(word=item.noun1, hypernym=cur_hypernym)
+            else:
+                raise ValueError("Wrong num!")
+
             completion = " " + item.taxonomic.capitalize()
     else:
         raise ValueError("!?")
