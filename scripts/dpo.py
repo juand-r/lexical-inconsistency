@@ -113,6 +113,34 @@ def load_triviaqa_disc_to_gen(file = "../data/triviaqa-train.json", threshold = 
     #     print(item)
     return dataset
 
+def load_triviaqa_gen_to_disc(file = "../data/triviaqa-train.json", threshold = None):
+    with open(file, 'r') as f:
+        data_triviaqa = json.load(f)
+    same_context = defaultdict(list)
+    for item in data_triviaqa:
+        same_context[item['question']].append(item)
+    prompts = []
+    chosen = []
+    rejected = []
+
+    for k, v in same_context.items():
+        if len(v) > 1:
+            prompts.append(v[0]['generator-prompt'])
+            a = v[0]
+            b = v[1]
+            if a['discriminator-log-prob'] >= b['discriminator-log-prob']:
+                chosen.append(a['generator-completion'])
+                rejected.append(b['generator-completion'])
+            else:
+                chosen.append(b['generator-completion'])
+                rejected.append(a['generator-completion'])
+    print(len(prompts))
+    print(len(chosen))
+    print(len(rejected))
+    dataset_dict = {"prompt": prompts, "chosen": chosen, "rejected": rejected}
+    dataset = Dataset.from_dict(dataset_dict)
+    return dataset
+
 def load_lambada_disc_to_gen(file = "../data/lambada-train.json", threshold = None):
     with open(file, 'r') as f:
         data_lambada = json.load(f)
@@ -135,6 +163,34 @@ def load_lambada_disc_to_gen(file = "../data/lambada-train.json", threshold = No
     dataset = Dataset.from_dict(dataset_dict)
     # for item in dataset:
     #     print(item)
+    return dataset
+
+def load_lambada_gen_to_disc(file = "../data/lambada-train.json", threshold = None):
+    with open(file, 'r') as f:
+        data_lambada = json.load(f)
+    same_context = defaultdict(list)
+    for item in data_lambada:
+        same_context[item['context']].append(item)
+    prompts = []
+    chosen = []
+    rejected = []
+
+    for k, v in same_context.items():
+        if len(v) > 1:
+            prompts.append(v[0]['generator-prompt'])
+            a = v[0]
+            b = v[1]
+            if a['discriminator-log-prob'] >= b['discriminator-log-prob']:
+                chosen.append(a['generator-completion'])
+                rejected.append(b['generator-completion'])
+            else:
+                chosen.append(b['generator-completion'])
+                rejected.append(a['generator-completion'])
+    print(len(prompts))
+    print(len(chosen))
+    print(len(rejected))
+    dataset_dict = {"prompt": prompts, "chosen": chosen, "rejected": rejected}
+    dataset = Dataset.from_dict(dataset_dict)
     return dataset
 
 def load_swords_disc_to_gen(file = "../data/swords-train.json", threshold = None):
@@ -206,9 +262,11 @@ data_loader = {'hypernym':
                {'d2g': load_hypernym_disc_to_gen,
                 'g2d': load_hypernym_gen_to_disc},
                 'trivia-qa':
-                {'d2g': load_triviaqa_disc_to_gen,},
+                {'d2g': load_triviaqa_disc_to_gen,
+                 'g2d': load_triviaqa_gen_to_disc},
                 'lambada':
-                {'d2g': load_lambada_disc_to_gen},
+                {'d2g': load_lambada_disc_to_gen,
+                 'g2d': load_lambada_gen_to_disc},
                 'swords':
                 {'d2g': load_swords_disc_to_gen,
                  'g2d': load_swords_gen_to_disc}

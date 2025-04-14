@@ -1,10 +1,12 @@
 models/*
 !models/.note.txt
 scripts/wandb/
+scripts/sampleNegativeCases.ipynb
 src/__pycache__
 outputs/logodds
 scripts/eval_test.ipynb
 outputs/eval_results.csv
+outputs/
 # data/gemma_dpo/
 # data/llama_dpo/
 # data/llama_instruct_dpo/

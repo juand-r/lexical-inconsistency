@@ -258,7 +258,7 @@ def main():
     #     print("Training with negative data only\n")
     # else:
     #     raise ValueError("!")
-    L_train, L_test, make_prompt = get_L_prompt(args.task, 'random', seed)
+    L_train, L_test, make_prompt = get_L_prompt(args.task, 'random', seed, sample_negative=args.sample_negative)
     print(f"len L_train: {len(L_train)}")
     print(f"len L_test: {len(L_test)}")
 
@@ -335,7 +335,7 @@ def main():
     for jj, item in tqdm(enumerate(LL)):
         score_gen = logodds_gen[jj]
         score_disc = logodds_disc[jj]
-        if (score_gen > gen_threshold) == (score_disc > disc_threshold):
+        if (score_gen > gen_threshold) and (score_disc > disc_threshold):
             consistent_LL.append(item)
     if type(LL) != list:
         consistent_LL = Dataset.from_list(consistent_LL)
@@ -409,6 +409,8 @@ def main():
             model_id.split("/")[-1], args.task, both, shots, train_filter, negstr, len(L_train), len(consistent_LL)
         )
     output_dir = os.path.join("/datastor1/wenxuand/output/consistent_sft/", output_dir)
+    if args.sample_negative:
+        output_dir += "--pn"
     
     #If this already exists, make sure not to overwrite it
     if os.path.exists(output_dir):
