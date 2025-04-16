@@ -4,13 +4,6 @@ This script is used to train a model to rank discriminator prompts to match the 
 Usage:
 python ranking_loss_ref.py --model google/gemma-2-2b --task hypernym --with_ref --num_epochs 10 --learning_rate 1e-5 --delta 5 --total_samples 5110 --save_steps 1
 
-TODO
-- Currently this is using the ground truth ranking from the generator.
-  We should also try to use the ranking from the discriminator to align the generator.
-
-- Also, currently we are using the log-probabilities of the last layer.
-  We should also try to use the log-probabilities of the second to last layer.
-
 """
 import os
 import sys
@@ -34,7 +27,6 @@ import utils
 from utils import make_prompt_triviaqa, make_prompt_hypernymy, make_prompt_swords, make_prompt_lambada, get_final_logit_prob
 
 def main(args):
-    #TODO load model also, use function above
     model_name = args.model
     task = args.task
     with_ref = args.with_ref
@@ -56,7 +48,6 @@ def main(args):
         print(f"Detected instruct model: {model_name}")
         print("Using chat template formatting for prompts")
         disc_shots = "zero"
-        #TODO understand this properly:
         space_prefix = ""
     else:
         with_chat = False
@@ -64,7 +55,6 @@ def main(args):
         space_prefix = " "
         print(f"Using standard formatting for model: {model_name}")
 
-    #TODO generalize to other models other than llama!
 
     # Define device first
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -75,7 +65,6 @@ def main(args):
         if 'gemma' in model_name.lower():
             model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="eager", torch_dtype=torch.bfloat16)
         else:
-            #TODO check if bfloat16 was default for llama-3.2-3B
             model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16)
         if tokenizer.pad_token is None:
             tokenizer.pad_token = tokenizer.eos_token
@@ -113,7 +102,6 @@ def main(args):
         #L_train, L_test = utils.split_train_test_no_overlap(L, seed=0)
         #L_train, L_test = utils.split_train_test_no_overlap_both(L)
     elif task=='trivia-qa':
-#        L = load_dataset('lucadiliello/triviaqa') #TODO check if this is correct version.
         #USE SUBSET FOR NOW
 #        L_train =  L['train'].shuffle(seed=42).select(range(3000))
 #        L_test = L['validation'].shuffle(seed=42).select(range(1000))
@@ -186,7 +174,13 @@ def main(args):
         #prompts_pos = [i.prompt for i in p_train]
 
     elif task=='trivia-qa':
-        L_train_all = L_train  # Already using all examples for trivia-qa
+        if use_all:
+            L_train_all = L_train
+        else:
+            L_train_all = [i for i in L_train if i['correct']=='yes']
+
+        breakpoint()
+        #L_train_all = L_train  # Already using all examples for trivia-qa
         # Generate generator prompts
         #p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style='generator', shots='zero', both=None)
         #prompts_gen = [i.prompt for i in p_train_gen]
@@ -216,6 +210,7 @@ def main(args):
         # Generate discriminator prompts
         #p_train_disc, hf_train, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
         #prompts_pos = [i.prompt for i in p_train]
+        #breakpoint()
         p_train_tune, hf_train, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style=tune_prompt_style, shots=tune_prompt_shots, neg=False, both=None)
 
     elif task=='swords':
@@ -253,7 +248,14 @@ def main(args):
         #prompts_pos = [i.prompt for i in p_train]
 
     elif task=='lambada':
-        L_train_all = L_train  # Already using all examples for lambada
+        if use_all:
+            L_train_all = L_train
+        else:
+            L_train_all = [i for i in L_train if i['correct']=='yes']
+
+        breakpoint()
+
+        #L_train_all = L_train  # Already using all examples for lambada
         # Generate generator prompts
         p_train_gold, hf_train_gen, _ = utils.make_and_format_data(make_prompt_lambada, L_train_all, tokenizer, style=gold_prompt_style, shots=gold_prompt_shots, both=None)
         prompts_gold = [i.prompt for i in p_train_gold]
@@ -336,8 +338,6 @@ def main(args):
             pairs = [((pair[0][0].prompt ,pair[1][0].prompt),  (token_id, token_id) ) for pair in pairs_
                 if pair[1][1] - pair[0][1] > delta]
     elif train_g_or_d=='g':
-        #TODO ISSUE HERE!!
-        #token_id = tokenizer.encode(space_prefix +"Yes")[-1]
         #NOTE in this case the ranking is derived from the log-probs of Yes under both prompts but we are targetting
         # the log-odds (hopefully log-prob is fine here) of the *generator completion*, so not the same in each item of the pair!
         if with_chat:
@@ -469,7 +469,7 @@ def main(args):
 
             split_type_str = "--"+ split_type
 
-            save_directory = "../models/v4-" + model_name.replace('/','--')  + "-delta"+str(delta)+"-epoch"+str(epoch) + "--" + task + with_ref_str + all_str + direction_str + split_type_str
+            save_directory = "../models/v5-" + model_name.replace('/','--')  + "-delta"+str(delta)+"-epoch"+str(epoch) + "--" + task + with_ref_str + all_str + direction_str + split_type_str
             print("Saving to ", save_directory)
             model.save_pretrained(save_directory)
             tokenizer.save_pretrained(save_directory)
