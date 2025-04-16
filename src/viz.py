@@ -14,6 +14,91 @@ def f(L1, L2, c):
     """Filter subset of L1 where entries of L2 have taxonomic==c"""
     return [i for ii, i in enumerate(L1) if L2[ii].taxonomic == c]
 
+def plot_correlations2(L, gen, disc):
+    taxonomic = [i.taxonomic for i in L]
+    df = pd.DataFrame(
+        {
+            "generator": [i[-1].tolist() for i in gen[:]],
+            "discriminator": [i[-1].tolist() for i in disc[:]],
+            "taxonomic": taxonomic,
+        }
+    )
+
+
+    plt.figure(figsize=(10, 8))
+
+    # Adjust the color palette for better contrast
+    g = sns.jointplot(
+        data=df,
+        x="generator",
+        y="discriminator",
+        hue="taxonomic",
+        #palette={"yes": "blue", "no": "red"}
+        #palette="coolwarm",  # or choose a different color palette
+        kind="scatter", #scatter, kde or hist
+        height=8,  # This controls the size of the jointplot
+        alpha=0.9,
+        #contour_kws={"levels": 15, "colors": ["blue", "orange"], "alpha": 0.7},
+        #fill=True
+        s=50,
+        #marginal_kws={'bw': 2.0}
+    )
+    
+    g.ax_joint.grid(True, linestyle='--', linewidth=0.7)  # Grid with dashed lines
+    # Customize axis labels and title
+    g.set_axis_labels("Generator log odds", "Validator log odds", fontsize=23)
+    #g.ax_joint.legend(fontsize=14)  # Set legend font size
+# Customize the legend
+    handles, labels = g.ax_joint.get_legend_handles_labels()
+    #custom_order = ["yes", "no"]  # Modify this list to control the order
+
+    # Reorder handles and labels based on the custom order
+    #reordered_handles = [handles[labels.index(label)] for label in custom_order]
+    #reordered_labels = custom_order
+    custom_labels = {"yes": "Positive", "no": "Negative"}
+
+    # Replace the original labels with custom ones
+    new_labels = [custom_labels[label] if label in custom_labels else label for label in labels]
+
+    custom_order = ["yes", "no"]  # Modify this list to control the order
+
+# Reorder handles and labels based on the custom order
+    reordered_handles = [handles[labels.index(label)] for label in custom_order]
+    reordered_labels = [custom_labels[label] if label in custom_labels else label for label in custom_order]
+
+
+
+    # Define custom labels
+    custom_labels = {"yes": "Positive", "no": "Negative"}
+    new_labels = [custom_labels[label] if label in custom_labels else label for label in labels]
+    #plt.tick_params(axis='both', which='both', length=7, width=2, labelsize=14)
+    plt.tick_params(axis='both', which='both', labelsize=16)
+
+
+    g.ax_joint.legend(
+        handles=reordered_handles,
+        labels=reordered_labels,
+        title="Class",  # Set legend title
+        fontsize=16,  # Set font size for legend labels
+        title_fontsize=18,  # Set font size for legend title
+        loc='upper left',  # Position the legend
+        #bbox_to_anchor=(1, 1),  # Adjust position outside the plot
+        markerscale=1.5,  # Scale the size of the markers in the legend
+        frameon=True,  # Add a frame around the legend
+        fancybox=True,  # Round corners for the legend frame
+        edgecolor='black',  # Set the border color of the legend
+        facecolor='lightgray',  # Set the background color of the legend
+    )
+
+
+    #g.fig.suptitle("Discriminator vs Generator with Taxonomic Classification", fontsize=16, weight='bold')
+    #g.fig.subplots_adjust(top=0.95)
+
+    # Optional: Adjust axis limits if necessary
+    g.ax_joint.set_xlim(-35, 10.3)
+    g.ax_joint.set_ylim(-7, 4.2)
+
+    plt.show()
 
 def plot_correlations(L, gen, disc):
     """
