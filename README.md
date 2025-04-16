@@ -14,8 +14,8 @@ Citation:
 ```
 
 
-Details
--------
+The Generator-Validator Gap
+---------------------------
 
 Language models can be inconsistent when prompted with generator and validator forms of the same question. For example, to probe knowledge of hypernymy, we can prompt:
 
