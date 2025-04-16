@@ -36,5 +36,5 @@ Repo organization
        * Use `fine_tune_lora.py` to SFT models with LoRA on variations of our prompts.
        * Use `dpo.py` to run the DPO baselines.
        * Use `consistency_ft.py` to run the consistency fine-tuning baseline.
-- `models` and `outputs` is where model checkpoint and eval results are saved, respectively.
+- `models/` and `outputs/` is where model checkpoint and eval results are saved, respectively.
 
