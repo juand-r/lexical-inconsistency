@@ -1,41 +1,40 @@
-Discriminator-Generator Gap in LM knowledge of lexical semantics
-================================================================
+RankAlign
+==========
 
-This repository contains code for experiments to analyze the generator/discriminator gap, attempt to fix it, and (ideally) analyze this mechanistically.
+This repository contains code for experiments to analyze the Generator-Validator gap and methods to fix from our paper [RankAlign: A Ranking View of the Generator-Validator Gap in Large Language Models](https://arxiv.org/abs/2504.11381)
 
-**Work in progress.**
+Citation:
+```
+@article{rodriguez2025rankalign,
+  title={RankAlign: A Ranking View of the Generator-Validator Gap in Large Language Models},
+  author={Rodriguez, Juan Diego and Ding, Wenxuan and Erk, Katrin and Durrett, Greg},
+  journal={arXiv preprint arXiv:2504.11381},
+  year={2025}
+}
+```
+
 
 Details
 -------
 
-Language models have slight inconsistencies between generator and discriminator versions of questions. This is a more specific problem than inconsistency between prompt variations (refs:...). For example, to probe knowledge of hypernymy, we can prompt:
+Language models can be inconsistent when prompted with generator and validator forms of the same question. For example, to probe knowledge of hypernymy, we can prompt:
 
 - (Generator)  "A bee is a kind of"  [look at next token predictions]
 
 - (Discriminator)   "Do you think a bee is a kind of furniture? Answer:" [Yes/No]
 
-We can look at the degree of confidence/certainty of the answer by looking at log-odds, for both generator and discriminator. (Sanity check: for the generator, these correlate with -log(rank), but should re-test this with every new model).
+We can look at the degree of model confidence/certainty of the answer by looking at log-odds, for both generator and discriminator, and quantify the Generator-Validator gap through the correlation of these log-odds. This repo contains code to evaluate the Generator-Validator gap, and to run our method, **RankAlign**, and other baselines from our paper.
 
-Goals
------
-
-- Characterize and describe the gap
--  Devise method(s) to close the gap
-    - Fine-tuning
-    - Model-surgery
-- Evaluation
-    - (important) Does the language model still function well, or have we specialized it so much that it’s damaged in some way? ("relation specificity" in Knowledge Editing literature)
-
-    - (important) Evaluate whether gap is closed (graded notion)
-    - (good to have) Mechanistically, is the LM using a different computational pathway after the modification?
 
 Repo organization
 -----------------
 
-- `src/` contains visualization code, an implementation of logitlens, and utilities for loading and formatting the text
-- `data/` contains the hypernymy dataset.
+- `data/` contains the hypernymy dataset from [Rodriguez et al., 2025](https://arxiv.org/abs/2410.22590), and versions of the SWORDS lexical substitution dataset, LAMBADA, and TriviaQA.
 - `scripts/`:
-    - Use `fine_tune_lora.py` to SFT models with LoRA on variations of our prompts. Models will be saved in `models/`.
-    - Use `logodds.py` to run logitlens on the test set, save the log-odds at the last position across layers, and compute accuracy and correlations. Log-odds will be saved in `outputs`.
-- `notebooks`: Jupyter notebooks to look plot some of the results.
+    - RankAlign is contained in `ranking_loss_ref.py`
+    - Other baselines:
+       * Use `fine_tune_lora.py` to SFT models with LoRA on variations of our prompts.
+       * Use `dpo.py` to run the DPO baselines.
+       * Use `consistency_ft.py` to run the consistency fine-tuning baseline.
+- `models` and `outputs` is where model checkpoint and eval results are saved, respectively.
 
