@@ -464,6 +464,8 @@ def main(args):
                 direction_str = '--d2g'
             elif train_g_or_d == 'iter':
                 direction_str = '--iter'
+            elif train_g_or_d == 'both':
+                direction_str = '--both'
             else:
                 raise ValueError("not supported")
 
@@ -581,7 +583,7 @@ if __name__ == "__main__":
     parser.add_argument("--total_samples", type=int, default=5110, help="Total samples")
     parser.add_argument("--save_steps", type=int, default=1, help="Save steps")
     parser.add_argument("--all", default=False, action="store_true", help="Whether to use all examples or just positive ones")
-    parser.add_argument("--train_g_or_d", type=str, default='d', choices=["d","g","iter"], help="Train generator or discriminator.")
+    parser.add_argument("--train_g_or_d", type=str, default='d', choices=["d","g","iter","both"], help="Train generator or discriminator.")
     parser.add_argument("--split_type", type=str, default='random', choices=["random","hyper","both"], help="How to do train/test split. Only applies to hypernymy.")
     args = parser.parse_args()
     main(args)
