@@ -26,6 +26,34 @@ sys.path.append(src_path)
 import utils
 from utils import make_prompt_triviaqa, make_prompt_hypernymy, make_prompt_swords, make_prompt_lambada, get_final_logit_prob
 
+# good_pair, alpha_fun_1, get_alpha are used for "both" mode
+def good_pair(log_prob_i, log_prob_j, label_i, label_j):
+    """Determine if a pair is good based on log probabilities and labels."""
+    if log_prob_i > log_prob_j and label_i == 1 and label_j == 0:
+        return True
+    elif log_prob_i <= log_prob_j and label_i == 0 and label_j == 1:
+        return True
+    else:
+        return False
+
+def alpha_fun_1(gen_log_prob_i, gen_log_prob_j, disc_log_prob_i, disc_log_prob_j, label_i, label_j):
+    """Determine alpha based on which model has the good pair."""
+    if good_pair(gen_log_prob_i, gen_log_prob_j, label_i, label_j) and not good_pair(disc_log_prob_i, disc_log_prob_j, label_i, label_j):
+        return 1.0  # g->v direction
+    elif good_pair(disc_log_prob_i, disc_log_prob_j, label_i, label_j) and not good_pair(gen_log_prob_i, gen_log_prob_j, label_i, label_j):
+        return 0.0  # v->g direction
+    else:
+        return 0.5  # equal weighting
+
+def get_alpha(alpha_arg, gen_log_prob_i, gen_log_prob_j, disc_log_prob_i, disc_log_prob_j, label_i, label_j):
+    """Get alpha value based on argument and sample characteristics."""
+    if isinstance(alpha_arg, (int, float)):
+        return float(alpha_arg)
+    elif alpha_arg == "alpha_fun_1":
+        return alpha_fun_1(gen_log_prob_i, gen_log_prob_j, disc_log_prob_i, disc_log_prob_j, label_i, label_j)
+    else:
+        raise ValueError(f"Unknown alpha function: {alpha_arg}")
+
 def main(args):
     model_name = args.model
     task = args.task
@@ -39,6 +67,7 @@ def main(args):
     use_all = args.all  # New flag for using all examples
     train_g_or_d = args.train_g_or_d
     split_type = args.split_type
+    alpha = args.alpha  # New alpha parameter
     #tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     WITH_REF = with_ref
@@ -134,10 +163,19 @@ def main(args):
         tune_prompt_style = 'generator'
         tune_prompt_shots = 'zero'
 
+    elif train_g_or_d == 'both':
+        # For this mode, we train on a combination of generator and discriminator prompts
+        # NOTE: gold_prompt_style and tune_prompt_style might be misleading in this setting.
+        gold_prompt_style = 'generator'
+        gold_prompt_shots = 'zero'
+        
+        tune_prompt_style = 'discriminator'
+        tune_prompt_shots = disc_shots
+
     elif train_g_or_d == 'i':
         raise NotImplementedError("TODO implement this")
     else:
-        raise NotImplementedError("train_g_or_d needs to be 'g', 'd', or 'i'.")
+        raise NotImplementedError("train_g_or_d needs to be 'g', 'd', 'both', or 'i'.")
 
 
     if task=='hypernym':
@@ -162,12 +200,27 @@ def main(args):
             elif train_g_or_d=='g':
                 target_text = space_prefix +"Yes"
                 target_tokens = tokenizer.encode(target_text)
+            elif train_g_or_d=='both':
+                # For both mode, we use the same target as discriminator mode
+                target_text_d = space_prefix + L_train_all[idx].noun2
+                target_tokens_d = tokenizer.encode(target_text_d)
+
+                target_text_g = space_prefix + "Yes"
+                target_tokens_g = tokenizer.encode(target_text_g)
             else:
                 raise ValueError("No.")
             # Use the first token after the space
-            ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
-            log_prob = math.log(probs[ind].item() + 1e-12)
-            logprobs_last_layer.append(log_prob)
+            if train_g_or_d == 'both':
+                ind_d = target_tokens_d[0] if len(target_tokens_d) == 1 else target_tokens_d[1]
+                ind_g = target_tokens_g[0] if len(target_tokens_g) == 1 else target_tokens_g[1]
+                log_prob_d = math.log(probs[ind_d].item() + 1e-12)
+                log_prob_g = math.log(probs[ind_g].item() + 1e-12)
+                logprobs_last_layer.append((log_prob_d, log_prob_g))
+                #NOTE careful these contain tuples of (log_prob_d, log_prob_g)
+            else:
+                ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
+                log_prob = math.log(probs[ind].item() + 1e-12)
+                logprobs_last_layer.append(log_prob)
 
         # Generate discriminator prompts if train_g_or_d == 'd'.  Previously was p_train_disc
         p_train_tune, hf_train, _ = utils.make_and_format_data(make_prompt_hypernymy, L_train_all, tokenizer, style=tune_prompt_style, shots=tune_prompt_shots, neg=False, both=None)
@@ -292,31 +345,61 @@ def main(args):
         ms = [ [ {"role": "system", "content": "Answer directly without explanation."},  {"role": "user", "content": i.prompt.strip()} ] for i in p_train_tune]
         toks = tokenizer.apply_chat_template(ms, add_generation_prompt=True, padding=True, truncation=True, return_tensors='pt')
         max_context_length = toks.shape[1]
+        raise ValueError("Careful, need to fix this in case where mode is 'both'")
     else:
         #TODO later should make this cleaner in utils.make_and_format_data
         max_context_length = len(hf_train[0]['input_ids'])
+        if train_g_or_d == 'both':
+            max_context_length = max(len(hf_train_gold[0]['input_ids']), max_context_length)
     print("MAX CONTEXT LENGTH: ", max_context_length)
 
-    #Z = list(zip(prompts_pos, gen_logprobs_last_layer))
-    Z = list(zip(p_train_tune, logprobs_last_layer))
-    Z = sorted(Z, key = lambda i: i[-1])
+    if train_g_or_d == 'both':
+        # Create tuples of (discriminator_prompt, generator_prompt, logprobs)
+        # Note: logprobs_last_layer contains tuples of (log_prob_d, log_prob_g)
+        Z = list(zip(p_train_tune, p_train_gold, logprobs_last_layer))
+        
+        # Sort based on discriminator logprob (first element of the logprobs tuple)
+        Z = sorted(Z, key=lambda i: i[2][0])  # Using i[2][0] to get the discriminator logprob
 
-    # Calculate delta based on range of logprobs
-    min_logprob = Z[0][1]
-    max_logprob = Z[-1][1]
+        # Calculate delta based on range of discriminator logprobs
+        min_logprob = Z[0][2][0]  # Minimum discriminator logprob
+        max_logprob = Z[-1][2][0]  # Maximum discriminator logprob
 
-    print(f"Delta (minimum separation): {delta}")
-    if delta!=0:
-        NN = (max_logprob - min_logprob) / delta
-        print(f"NN: {NN}")
-    print(f"Min logprob: {min_logprob}")
-    print(f"Max logprob: {max_logprob}")
+        print(f"Delta (minimum separation): {delta}")
+        if delta!=0:
+            NN = (max_logprob - min_logprob) / delta
+            print(f"NN: {NN}")
+        print(f"Min logprob: {min_logprob}")
+        print(f"Max logprob: {max_logprob}")
 
-    indices = range(len(Z))
-    pair_inds = list(itertools.product(indices, repeat=2))
-    pair_inds = [i for i in pair_inds if i[0] < i[1]]
-    pair_inds = random.sample(pair_inds, total_samples)
-    pairs_ = [(Z[i[0]], Z[i[1]]) for i in pair_inds]
+        indices = range(len(Z))
+        pair_inds = list(itertools.product(indices, repeat=2))
+        pair_inds = [i for i in pair_inds if i[0] < i[1]]
+        pair_inds = random.sample(pair_inds, total_samples)
+        
+        # Create pairs with all the information
+        pairs_ = [(Z[i[0]], Z[i[1]]) for i in pair_inds]
+    else:
+        #Z = list(zip(prompts_pos, gen_logprobs_last_layer))
+        Z = list(zip(p_train_tune, logprobs_last_layer))
+        Z = sorted(Z, key = lambda i: i[-1])
+
+        # Calculate delta based on range of logprobs
+        min_logprob = Z[0][1]
+        max_logprob = Z[-1][1]
+
+        print(f"Delta (minimum separation): {delta}")
+        if delta!=0:
+            NN = (max_logprob - min_logprob) / delta
+            print(f"NN: {NN}")
+        print(f"Min logprob: {min_logprob}")
+        print(f"Max logprob: {max_logprob}")
+
+        indices = range(len(Z))
+        pair_inds = list(itertools.product(indices, repeat=2))
+        pair_inds = [i for i in pair_inds if i[0] < i[1]]
+        pair_inds = random.sample(pair_inds, total_samples)
+        pairs_ = [(Z[i[0]], Z[i[1]]) for i in pair_inds]
 
 
     def format_with_inst(prompt):
@@ -345,6 +428,22 @@ def main(args):
                 if pair[1][1] - pair[0][1] > delta]
         else:
             pairs = [(   (pair[0][0].prompt, pair[1][0].prompt) , (tokenizer.encode(pair[0][0].completion)[1], tokenizer.encode(pair[1][0].completion)[1] )   ) for pair in pairs_  if pair[1][1] - pair[0][1] > delta]
+    elif train_g_or_d == 'both':
+        # For both mode, we create pairs for both generator and discriminator training
+        # First create discriminator pairs (targeting "Yes" tokens)
+        token_id = tokenizer.encode(space_prefix +"Yes")[-1]
+        if with_chat:
+            raise ValueError("Careful, need to fix this in case where mode is 'both'")
+        else:
+            # Create pairs with both discriminator and generator prompts
+            pairs = [
+                (
+                    ((pair[0][0].prompt, pair[1][0].prompt), (token_id, token_id)),  # discriminator pair
+                    ((pair[0][1].prompt, pair[1][1].prompt), (tokenizer.encode(pair[0][1].completion)[1], tokenizer.encode(pair[1][1].completion)[1])),  # generator pair
+                    (pair[0][0].completion.strip().lower()   , pair[1][0].completion.strip().lower()   )
+                ) for pair in pairs_ if pair[1][-1][0] - pair[0][-1][0] > delta
+            ]
+
     else:
         raise ValueError("TODO!")
 
@@ -383,38 +482,96 @@ def main(args):
             return len(self.pairs)
 
         def __getitem__(self, idx):
-            (prompt_i, prompt_j), (token_i, token_j) = self.pairs[idx]
+            if train_g_or_d == 'both':
+                ((prompt_i_disc, prompt_j_disc), (token_i_disc, token_j_disc)), ((prompt_i_gen, prompt_j_gen), (token_i_gen, token_j_gen)), (label_i, label_j) = self.pairs[idx]
+            else:
+                (prompt_i, prompt_j), (token_i, token_j) = self.pairs[idx]
             # Debug print
             #print(f"\nProcessing item {idx}:")
             #print("Token types:", type(token_i), type(token_j))
             #print("Tokens:", token_i, token_j)
+            if train_g_or_d == 'both':
+                # Tokenize discriminator prompts
+                enc_i_disc = self.tokenizer(
+                    prompt_i_disc,
+                    padding='max_length',
+                    truncation=True,
+                    max_length=self.max_length,
+                    return_tensors='pt'
+                )
+                enc_j_disc = self.tokenizer(
+                    prompt_j_disc,
+                    padding='max_length',
+                    truncation=True,
+                    max_length=self.max_length,
+                    return_tensors='pt'
+                )
+                
+                # Tokenize generator prompts
+                enc_i_gen = self.tokenizer(
+                    prompt_i_gen,
+                    padding='max_length',
+                    truncation=True,
+                    max_length=self.max_length,
+                    return_tensors='pt'
+                )
+                enc_j_gen = self.tokenizer(
+                    prompt_j_gen,
+                    padding='max_length',
+                    truncation=True,
+                    max_length=self.max_length,
+                    return_tensors='pt'
+                )
+            # Get labels from prompts
+            #    label_i = "yes" if "yes" in prompt_i.lower() else "no"
+            #    label_j = "yes" if "yes" in prompt_j.lower() else "no"
 
-            # Tokenize prompt i
-            enc_i = self.tokenizer(
-                prompt_i,
-                padding='max_length',
-                truncation=True,
-                max_length=self.max_length,
-                return_tensors='pt'
-            )
-            # Tokenize prompt j
-            enc_j = self.tokenizer(
-                prompt_j,
-                padding='max_length',
-                truncation=True,
-                max_length=self.max_length,
-                return_tensors='pt'
-            )
 
-            # Squeeze to remove the batch dimension (shape: [seq_len])
-            item = {
-                'input_ids_i': enc_i['input_ids'].squeeze(0),
-                'attention_mask_i': enc_i['attention_mask'].squeeze(0),
-                'token_id_i': torch.tensor(token_i, dtype=torch.long),
-                'input_ids_j': enc_j['input_ids'].squeeze(0),
-                'attention_mask_j': enc_j['attention_mask'].squeeze(0),
-                'token_id_j': torch.tensor(token_j, dtype=torch.long),
-                'label': torch.tensor(1.0, dtype=torch.float)
+
+            else:
+                # Tokenize prompt i
+                enc_i = self.tokenizer(
+                    prompt_i,
+                    padding='max_length',
+                    truncation=True,
+                    max_length=self.max_length,
+                    return_tensors='pt'
+                )
+                # Tokenize prompt j
+                enc_j = self.tokenizer(
+                    prompt_j,
+                    padding='max_length',
+                    truncation=True,
+                    max_length=self.max_length,
+                    return_tensors='pt'
+                )
+
+            if train_g_or_d != 'both':
+                item = {
+                    'input_ids_i': enc_i_disc['input_ids'].squeeze(0),
+                    'attention_mask_i': enc_i_disc['attention_mask'].squeeze(0),
+                    'token_id_i': torch.tensor(token_i_disc, dtype=torch.long),
+                    'input_ids_j': enc_j_disc['input_ids'].squeeze(0),
+                    'attention_mask_j': enc_j_disc['attention_mask'].squeeze(0),
+                    'token_id_j': torch.tensor(token_j_disc, dtype=torch.long),
+                    'label': torch.tensor(1.0, dtype=torch.float)
+                }
+            else:
+                item = {
+                    'input_ids_i_disc': enc_i_disc['input_ids'].squeeze(0),
+                    'attention_mask_i_disc': enc_i_disc['attention_mask'].squeeze(0),
+                    'token_id_i_disc': torch.tensor(token_i_disc, dtype=torch.long),
+                    'input_ids_j_disc': enc_j_disc['input_ids'].squeeze(0),
+                    'attention_mask_j_disc': enc_j_disc['attention_mask'].squeeze(0),
+                    'token_id_j_disc': torch.tensor(token_j_disc, dtype=torch.long),
+                    'input_ids_i_gen': enc_i_gen['input_ids'].squeeze(0),
+                    'attention_mask_i_gen': enc_i_gen['attention_mask'].squeeze(0),
+                    'token_id_i_gen': torch.tensor(token_i_gen, dtype=torch.long),
+                    'input_ids_j_gen': enc_j_gen['input_ids'].squeeze(0),
+                    'attention_mask_j_gen': enc_j_gen['attention_mask'].squeeze(0),
+                    'token_id_j_gen': torch.tensor(token_j_gen, dtype=torch.long),
+                    'label_i': torch.tensor(1.0 if label_i == "yes" else 0.0, dtype=torch.float),
+                    'label_j': torch.tensor(1.0 if label_j == "yes" else 0.0, dtype=torch.float)
             }
             return item
 
@@ -439,7 +596,7 @@ def main(args):
         elif task=='lambada':
             batch_size = 6
         elif task =='hypernym':
-            batch_size = 32
+            batch_size = 8 #$32
         else:
             raise ValueError("define batch size for this case")
 
@@ -471,7 +628,8 @@ def main(args):
 
             split_type_str = "--"+ split_type
 
-            save_directory = "../models/v5-" + model_name.replace('/','--')  + "-delta"+str(delta)+"-epoch"+str(epoch) + "--" + task + with_ref_str + all_str + direction_str + split_type_str
+            alpha_str = "--alpha" + str(alpha) if isinstance(alpha, (int, float)) else "--alpha-" + str(alpha)
+            save_directory = "../models/v5-" + model_name.replace('/','--')  + "-delta"+str(delta)+"-epoch"+str(epoch) + "--" + task + with_ref_str + all_str + direction_str + split_type_str + alpha_str
             print("Saving to ", save_directory)
             model.save_pretrained(save_directory)
             tokenizer.save_pretrained(save_directory)
@@ -480,94 +638,173 @@ def main(args):
             optimizer.zero_grad()
 
             # Move all inputs to device
-            input_ids_i = batch["input_ids_i"].to(device)
-            attention_mask_i = batch["attention_mask_i"].to(device)
-            token_id_i = batch["token_id_i"].to(device)
+            if train_g_or_d == 'both':
+                # Get discriminator inputs
+                input_ids_i_disc = batch["input_ids_i_disc"].to(device)
+                attention_mask_i_disc = batch["attention_mask_i_disc"].to(device)
+                token_id_i_disc = batch["token_id_i_disc"].to(device)
+                input_ids_j_disc = batch["input_ids_j_disc"].to(device)
+                attention_mask_j_disc = batch["attention_mask_j_disc"].to(device)
+                token_id_j_disc = batch["token_id_j_disc"].to(device)
 
-            input_ids_j = batch["input_ids_j"].to(device)
-            attention_mask_j = batch["attention_mask_j"].to(device)
-            token_id_j = batch["token_id_j"].to(device)
+                # Get generator inputs
+                input_ids_i_gen = batch["input_ids_i_gen"].to(device)
+                attention_mask_i_gen = batch["attention_mask_i_gen"].to(device)
+                token_id_i_gen = batch["token_id_i_gen"].to(device)
+                input_ids_j_gen = batch["input_ids_j_gen"].to(device)
+                attention_mask_j_gen = batch["attention_mask_j_gen"].to(device)
+                token_id_j_gen = batch["token_id_j_gen"].to(device)
 
-            label = batch["label"].to(device)
+                label_i = batch["label_i"].to(device)
+                label_j = batch["label_j"].to(device)
 
-            # Forward pass for prompt i
-            outputs_i = model(input_ids=input_ids_i, attention_mask=attention_mask_i)
-            # logits_i: [batch_size, seq_len, vocab_size]
-            logits_i = outputs_i.logits
+                # Forward pass for discriminator prompts
+                outputs_i_disc = model(input_ids=input_ids_i_disc, attention_mask=attention_mask_i_disc)
+                outputs_j_disc = model(input_ids=input_ids_j_disc, attention_mask=attention_mask_j_disc)
+                
+                # Forward pass for generator prompts
+                outputs_i_gen = model(input_ids=input_ids_i_gen, attention_mask=attention_mask_i_gen)
+                outputs_j_gen = model(input_ids=input_ids_j_gen, attention_mask=attention_mask_j_gen)
 
-            last_idx_i = attention_mask_i.size(1) - 1
+                # Get logits for discriminator
+                last_idx_disc = attention_mask_i_disc.size(1) - 1
+                selected_logits_i_disc = torch.cat([outputs_i_disc.logits[b, last_idx_disc, :].unsqueeze(0) for b in range(outputs_i_disc.logits.size(0))], dim=0)
+                selected_logits_j_disc = torch.cat([outputs_j_disc.logits[b, last_idx_disc, :].unsqueeze(0) for b in range(outputs_j_disc.logits.size(0))], dim=0)
+                
+                # Get logits for generator
+                last_idx_gen = attention_mask_i_gen.size(1) - 1
+                selected_logits_i_gen = torch.cat([outputs_i_gen.logits[b, last_idx_gen, :].unsqueeze(0) for b in range(outputs_i_gen.logits.size(0))], dim=0)
+                selected_logits_j_gen = torch.cat([outputs_j_gen.logits[b, last_idx_gen, :].unsqueeze(0) for b in range(outputs_j_gen.logits.size(0))], dim=0)
 
-            # Gather the logits for the chosen position and compute log-softmax
-            # shape [B, vocab_size]
-            selected_logits_i = []
-            for b in range(logits_i.size(0)):
-                #selected_logits_i.append(logits_i[b, last_idx_i[b], :].unsqueeze(0))
-                selected_logits_i.append(logits_i[b, last_idx_i, :].unsqueeze(0))
-            selected_logits_i = torch.cat(selected_logits_i, dim=0)
+                # Compute log probabilities
+                log_probs_i_disc = F.log_softmax(selected_logits_i_disc, dim=-1)
+                log_probs_j_disc = F.log_softmax(selected_logits_j_disc, dim=-1)
+                log_probs_i_gen = F.log_softmax(selected_logits_i_gen, dim=-1)
+                log_probs_j_gen = F.log_softmax(selected_logits_j_gen, dim=-1)
 
-            log_probs_i = F.log_softmax(selected_logits_i, dim=-1)  # [B, vocab_size]
+                # Get scores
+                score_i_disc = log_probs_i_disc[torch.arange(log_probs_i_disc.size(0), device=device), token_id_i_disc]
+                score_j_disc = log_probs_j_disc[torch.arange(log_probs_j_disc.size(0), device=device), token_id_j_disc]
+                score_i_gen = log_probs_i_gen[torch.arange(log_probs_i_gen.size(0), device=device), token_id_i_gen]
+                score_j_gen = log_probs_j_gen[torch.arange(log_probs_j_gen.size(0), device=device), token_id_j_gen]
 
-            # Score for example i is the log-prob of token_id_i
-            # shape [B]
-            #score_i = log_probs_i[torch.arange(log_probs_i.size(0)), token_id_i]
-            score_i = log_probs_i[torch.arange(log_probs_i.size(0), device=device), token_id_i]
+                # Use frozen reference model if needed
+                if WITH_REF:
+                    raise ValueError("Do LATER")
+                else:
+                    diff_ref = 0
 
-            # Forward pass for prompt j
-            outputs_j = model(input_ids=input_ids_j, attention_mask=attention_mask_j)
-            logits_j = outputs_j.logits
+                # Compute both G->V and V->G losses
+                g2v_diff = score_j_disc - score_i_disc - diff_ref
+                v2g_diff = score_i_gen - score_j_gen - diff_ref
 
-            #last_idx_j = attention_mask_j.sum(dim=1) - 1
-            last_idx_j = attention_mask_j.size(1) - 1 # assumes LEFT padding
-            #print(last_idx_i)
-            #print(last_idx_j)
+                # Get alpha for each sample in the batch
+                alphas = []
+                for b in range(batch["input_ids_i_disc"].size(0)):
+                    alpha_val = get_alpha(alpha, 
+                                    score_i_gen[b].item(), score_j_gen[b].item(),
+                                    score_i_disc[b].item(), score_j_disc[b].item(),
+                                    label_i[b].item(), label_j[b].item())
+                    alphas.append(alpha_val)
+                alphas = torch.tensor(alphas, device=device)
 
-            selected_logits_j = []
-            for b in range(logits_j.size(0)):
-                #selected_logits_j.append(logits_j[b, last_idx_j[b], :].unsqueeze(0))
-                selected_logits_j.append(logits_j[b, last_idx_j, :].unsqueeze(0))
+                # Compute weighted loss
+                g2v_loss = -torch.log(torch.sigmoid(g2v_diff) + 1e-12)
+                v2g_loss = -torch.log(torch.sigmoid(v2g_diff) + 1e-12)
+                loss = (alphas * g2v_loss + (1 - alphas) * v2g_loss).mean()
 
-            selected_logits_j = torch.cat(selected_logits_j, dim=0)
-            log_probs_j = F.log_softmax(selected_logits_j, dim=-1)  # [B, vocab_size]
-            #score_j = log_probs_j[torch.arange(log_probs_j.size(0)), token_id_j]
-            score_j = log_probs_j[torch.arange(log_probs_j.size(0), device=device), token_id_j]
-
-            # Use frozen reference model
-            if WITH_REF:
-                with torch.no_grad():
-                    outputs_i_ref = model_ref(input_ids=input_ids_i, attention_mask=attention_mask_i)
-                    # logits_i: [batch_size, seq_len, vocab_size]
-                    logits_i_ref = outputs_i_ref.logits
-                    last_idx_i = attention_mask_i.size(1) - 1
-                    selected_logits_i_ref = []
-                    for b in range(logits_i_ref.size(0)):
-                        selected_logits_i_ref.append(logits_i_ref[b, last_idx_i, :].unsqueeze(0))
-                    selected_logits_i_ref = torch.cat(selected_logits_i_ref, dim=0)
-                    log_probs_i_ref = F.log_softmax(selected_logits_i_ref, dim=-1)  # [B, vocab_size]
-                    #score_i_ref = log_probs_i_ref[torch.arange(log_probs_i_ref.size(0)), token_id_i]
-                    score_i_ref = log_probs_i_ref[torch.arange(log_probs_i_ref.size(0), device=device), token_id_i]
-
-                    # Forward pass for prompt j
-                    outputs_j_ref = model_ref(input_ids=input_ids_j, attention_mask=attention_mask_j)
-                    logits_j_ref = outputs_j_ref.logits
-
-                    last_idx_j = attention_mask_j.size(1) - 1 # assumes LEFT padding
-                    selected_logits_j_ref = []
-                    for b in range(logits_j_ref.size(0)):
-                        selected_logits_j_ref.append(logits_j_ref[b, last_idx_j, :].unsqueeze(0))
-                    selected_logits_j_ref = torch.cat(selected_logits_j_ref, dim=0)
-                    log_probs_j_ref = F.log_softmax(selected_logits_j_ref, dim=-1)  # [B, vocab_size]
-                    #score_j_ref = log_probs_j_ref[torch.arange(log_probs_j_ref.size(0)), token_id_j]
-                    score_j_ref = log_probs_j_ref[torch.arange(log_probs_j_ref.size(0), device=device), token_id_j]
-                diff_ref = score_j_ref - score_i_ref
+                loss.backward()
+                optimizer.step()
+                total_loss += loss.item()
             else:
-                diff_ref = 0
+                input_ids_i = batch["input_ids_i"].to(device)
+                attention_mask_i = batch["attention_mask_i"].to(device)
+                token_id_i = batch["token_id_i"].to(device)
 
-            # Pairwise logistic loss: - log( sigmoid( (score_j) - (score_i) ) )
-            diff = score_j - score_i - diff_ref
-            loss = -torch.log(torch.sigmoid(diff) + 1e-12).mean()
-            loss.backward()
-            optimizer.step()
-            total_loss += loss.item()
+                input_ids_j = batch["input_ids_j"].to(device)
+                attention_mask_j = batch["attention_mask_j"].to(device)
+                token_id_j = batch["token_id_j"].to(device)
+
+                label = batch["label"].to(device)
+
+                # Forward pass for prompt i
+                outputs_i = model(input_ids=input_ids_i, attention_mask=attention_mask_i)
+                # logits_i: [batch_size, seq_len, vocab_size]
+                logits_i = outputs_i.logits
+
+                last_idx_i = attention_mask_i.size(1) - 1
+
+                # Gather the logits for the chosen position and compute log-softmax
+                # shape [B, vocab_size]
+                selected_logits_i = []
+                for b in range(logits_i.size(0)):
+                    #selected_logits_i.append(logits_i[b, last_idx_i[b], :].unsqueeze(0))
+                    selected_logits_i.append(logits_i[b, last_idx_i, :].unsqueeze(0))
+                selected_logits_i = torch.cat(selected_logits_i, dim=0)
+
+                log_probs_i = F.log_softmax(selected_logits_i, dim=-1)  # [B, vocab_size]
+
+                # Score for example i is the log-prob of token_id_i
+                # shape [B]
+                #score_i = log_probs_i[torch.arange(log_probs_i.size(0)), token_id_i]
+                score_i = log_probs_i[torch.arange(log_probs_i.size(0), device=device), token_id_i]
+
+                # Forward pass for prompt j
+                outputs_j = model(input_ids=input_ids_j, attention_mask=attention_mask_j)
+                logits_j = outputs_j.logits
+
+                #last_idx_j = attention_mask_j.sum(dim=1) - 1
+                last_idx_j = attention_mask_j.size(1) - 1 # assumes LEFT padding
+                #print(last_idx_i)
+                #print(last_idx_j)
+
+                selected_logits_j = []
+                for b in range(logits_j.size(0)):
+                    #selected_logits_j.append(logits_j[b, last_idx_j[b], :].unsqueeze(0))
+                    selected_logits_j.append(logits_j[b, last_idx_j, :].unsqueeze(0))
+
+                selected_logits_j = torch.cat(selected_logits_j, dim=0)
+                log_probs_j = F.log_softmax(selected_logits_j, dim=-1)  # [B, vocab_size]
+                #score_j = log_probs_j[torch.arange(log_probs_j.size(0)), token_id_j]
+                score_j = log_probs_j[torch.arange(log_probs_j.size(0), device=device), token_id_j]
+
+                # Use frozen reference model
+                if WITH_REF:
+                    with torch.no_grad():
+                        outputs_i_ref = model_ref(input_ids=input_ids_i, attention_mask=attention_mask_i)
+                        # logits_i: [batch_size, seq_len, vocab_size]
+                        logits_i_ref = outputs_i_ref.logits
+                        last_idx_i = attention_mask_i.size(1) - 1
+                        selected_logits_i_ref = []
+                        for b in range(logits_i_ref.size(0)):
+                            selected_logits_i_ref.append(logits_i_ref[b, last_idx_i, :].unsqueeze(0))
+                        selected_logits_i_ref = torch.cat(selected_logits_i_ref, dim=0)
+                        log_probs_i_ref = F.log_softmax(selected_logits_i_ref, dim=-1)  # [B, vocab_size]
+                        #score_i_ref = log_probs_i_ref[torch.arange(log_probs_i_ref.size(0)), token_id_i]
+                        score_i_ref = log_probs_i_ref[torch.arange(log_probs_i_ref.size(0), device=device), token_id_i]
+
+                        # Forward pass for prompt j
+                        outputs_j_ref = model_ref(input_ids=input_ids_j, attention_mask=attention_mask_j)
+                        logits_j_ref = outputs_j_ref.logits
+
+                        last_idx_j = attention_mask_j.size(1) - 1 # assumes LEFT padding
+                        selected_logits_j_ref = []
+                        for b in range(logits_j_ref.size(0)):
+                            selected_logits_j_ref.append(logits_j_ref[b, last_idx_j, :].unsqueeze(0))
+                        selected_logits_j_ref = torch.cat(selected_logits_j_ref, dim=0)
+                        log_probs_j_ref = F.log_softmax(selected_logits_j_ref, dim=-1)  # [B, vocab_size]
+                        #score_j_ref = log_probs_j_ref[torch.arange(log_probs_j_ref.size(0)), token_id_j]
+                        score_j_ref = log_probs_j_ref[torch.arange(log_probs_j_ref.size(0), device=device), token_id_j]
+                    diff_ref = score_j_ref - score_i_ref
+                else:
+                    diff_ref = 0
+
+                # Pairwise logistic loss: - log( sigmoid( (score_j) - (score_i) ) )
+                diff = score_j - score_i - diff_ref
+                loss = -torch.log(torch.sigmoid(diff) + 1e-12).mean()
+                loss.backward()
+                optimizer.step()
+                total_loss += loss.item()
         avg_loss = total_loss / len(train_loader)
         losses.append(avg_loss)
         print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {avg_loss:.4f}")
@@ -585,5 +822,16 @@ if __name__ == "__main__":
     parser.add_argument("--all", default=False, action="store_true", help="Whether to use all examples or just positive ones")
     parser.add_argument("--train_g_or_d", type=str, default='d', choices=["d","g","iter","both"], help="Train generator or discriminator.")
     parser.add_argument("--split_type", type=str, default='random', choices=["random","hyper","both"], help="How to do train/test split. Only applies to hypernymy.")
+    parser.add_argument("--alpha", type=str, default='1.0', help="Alpha value or function name. Can be a number between 0 and 1, or 'alpha_fun_1'")
     args = parser.parse_args()
+    
+    # Convert alpha to float if it's a number
+    try:
+        alpha_val = float(args.alpha)
+        if 0 <= alpha_val <= 1:
+            args.alpha = alpha_val
+    except ValueError:
+        if args.alpha not in ["alpha_fun_1"]:
+            raise ValueError("Alpha must be a number between 0 and 1, or one of: alpha_fun_1")
+    
     main(args)
