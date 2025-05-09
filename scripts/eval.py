@@ -19,7 +19,7 @@ device = "cuda"
 yes_words = ["Yes", " Yes", "YES", "yes", " yes"]
 no_words = ["No", " No", "NO", "no", " no"]
 
-]
+
 
 def init_model(model_name, device):
     global model
