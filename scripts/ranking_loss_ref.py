@@ -696,7 +696,7 @@ def main(args):
 
                 # Compute both G->V and V->G losses
                 g2v_diff = score_j_disc - score_i_disc - diff_ref
-                v2g_diff = score_i_gen - score_j_gen - diff_ref
+                v2g_diff = score_j_gen - score_i_gen - diff_ref
 
                 # Get alpha for each sample in the batch
                 alphas = []
