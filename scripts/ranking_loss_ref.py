@@ -232,7 +232,6 @@ def main(args):
         else:
             L_train_all = [i for i in L_train if i['correct']=='yes']
 
-        breakpoint()
         #L_train_all = L_train  # Already using all examples for trivia-qa
         # Generate generator prompts
         #p_train_gen, hf_train_gen, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style='generator', shots='zero', both=None)
@@ -252,18 +251,31 @@ def main(args):
             elif train_g_or_d=='g':
                 target_text = space_prefix +"Yes"
                 target_tokens = tokenizer.encode(target_text)
+            elif train_g_or_d=='both':
+                # For both mode, we use the same target as discriminator mode
+                target_text_d = space_prefix + L_train_all[idx]['answers'][0].capitalize()
+                target_tokens_d = tokenizer.encode(target_text_d)
+
+                target_text_g = space_prefix + "Yes"
+                target_tokens_g = tokenizer.encode(target_text_g)
             else:
                 raise ValueError("No.")
-
             # Use the first token after the space
-            ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
-            log_prob = math.log(probs[ind].item() + 1e-12)
-            logprobs_last_layer.append(log_prob)
+            if train_g_or_d == 'both':
+                ind_d = target_tokens_d[0] if len(target_tokens_d) == 1 else target_tokens_d[1]
+                ind_g = target_tokens_g[0] if len(target_tokens_g) == 1 else target_tokens_g[1]
+                log_prob_d = math.log(probs[ind_d].item() + 1e-12)
+                log_prob_g = math.log(probs[ind_g].item() + 1e-12)
+                logprobs_last_layer.append((log_prob_d, log_prob_g))
+                #NOTE careful these contain tuples of (log_prob_d, log_prob_g)
+            else:
+                ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
+                log_prob = math.log(probs[ind].item() + 1e-12)
+                logprobs_last_layer.append(log_prob)
 
         # Generate discriminator prompts
         #p_train_disc, hf_train, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style='discriminator', shots=disc_shots, neg=False, both=None)
         #prompts_pos = [i.prompt for i in p_train]
-        #breakpoint()
         p_train_tune, hf_train, _ = utils.make_and_format_data(make_prompt_triviaqa, L_train_all, tokenizer, style=tune_prompt_style, shots=tune_prompt_shots, neg=False, both=None)
 
     elif task=='swords':
@@ -288,14 +300,27 @@ def main(args):
             elif train_g_or_d=='g':
                 target_text = space_prefix +"Yes"
                 target_tokens = tokenizer.encode(target_text)
+            elif train_g_or_d=='both':
+                # For both mode, we use the same target as discriminator mode
+                target_text_d = space_prefix + L_train_all[idx].replacement
+                target_tokens_d = tokenizer.encode(target_text_d)
+
+                target_text_g = space_prefix + "Yes"
+                target_tokens_g = tokenizer.encode(target_text_g)
             else:
                 raise ValueError("No.")
-
             # Use the first token after the space
-            ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
-            log_prob = math.log(probs[ind].item() + 1e-12)
-            logprobs_last_layer.append(log_prob)
-
+            if train_g_or_d == 'both':
+                ind_d = target_tokens_d[0] if len(target_tokens_d) == 1 else target_tokens_d[1]
+                ind_g = target_tokens_g[0] if len(target_tokens_g) == 1 else target_tokens_g[1]
+                log_prob_d = math.log(probs[ind_d].item() + 1e-12)
+                log_prob_g = math.log(probs[ind_g].item() + 1e-12)
+                logprobs_last_layer.append((log_prob_d, log_prob_g))
+                #NOTE careful these contain tuples of (log_prob_d, log_prob_g)
+            else:
+                ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
+                log_prob = math.log(probs[ind].item() + 1e-12)
+                logprobs_last_layer.append(log_prob)
         # Generate discriminator prompts
         p_train_tune, hf_train, _ = utils.make_and_format_data(make_prompt_swords, L_train_all, tokenizer, style=tune_prompt_style, shots=tune_prompt_shots, neg=False, both=None)
         #prompts_pos = [i.prompt for i in p_train]
@@ -306,7 +331,6 @@ def main(args):
         else:
             L_train_all = [i for i in L_train if i['correct']=='yes']
 
-        breakpoint()
 
         #L_train_all = L_train  # Already using all examples for lambada
         # Generate generator prompts
@@ -326,15 +350,27 @@ def main(args):
             elif train_g_or_d=='g':
                 target_text = space_prefix +"Yes"
                 target_tokens = tokenizer.encode(target_text)
+            elif train_g_or_d=='both':
+                # For both mode, we use the same target as discriminator mode
+                target_text_d = space_prefix + L_train_all[idx]['final_word']
+                target_tokens_d = tokenizer.encode(target_text_d)
+
+                target_text_g = space_prefix + "Yes"
+                target_tokens_g = tokenizer.encode(target_text_g)
             else:
                 raise ValueError("No.")
             # Use the first token after the space
-
-            # Use the first token after the space
-            ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
-            log_prob = math.log(probs[ind].item() + 1e-12)
-            logprobs_last_layer.append(log_prob)
-
+            if train_g_or_d == 'both':
+                ind_d = target_tokens_d[0] if len(target_tokens_d) == 1 else target_tokens_d[1]
+                ind_g = target_tokens_g[0] if len(target_tokens_g) == 1 else target_tokens_g[1]
+                log_prob_d = math.log(probs[ind_d].item() + 1e-12)
+                log_prob_g = math.log(probs[ind_g].item() + 1e-12)
+                logprobs_last_layer.append((log_prob_d, log_prob_g))
+                #NOTE careful these contain tuples of (log_prob_d, log_prob_g)
+            else:
+                ind = target_tokens[0] if len(target_tokens) == 1 else target_tokens[1]
+                log_prob = math.log(probs[ind].item() + 1e-12)
+                logprobs_last_layer.append(log_prob)
         # Generate discriminator prompts
         p_train_tune, hf_train, _ = utils.make_and_format_data(make_prompt_lambada, L_train_all, tokenizer, style=tune_prompt_style, shots=tune_prompt_shots, neg=False, both=None)
         #prompts_pos = [i.prompt for i in p_train]
