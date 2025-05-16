@@ -284,7 +284,7 @@ def main(args):
         else:
             L_train_all = [i for i in L_train if i.synonym=='yes']
         # Generate generator prompts
-        p_train_gold, hf_train_gen, _ = utils.make_and_format_data(make_prompt_swords, L_train_all, tokenizer, style=gold_prompt_style, shots=gold_prompt_shots, neg=False, both=None)
+        p_train_gold, hf_train_gold, _ = utils.make_and_format_data(make_prompt_swords, L_train_all, tokenizer, style=gold_prompt_style, shots=gold_prompt_shots, neg=False, both=None)
         prompts_gold = [i.prompt for i in p_train_gold]
 
         # Compute log-probabilities for generator prompts
@@ -334,7 +334,8 @@ def main(args):
 
         #L_train_all = L_train  # Already using all examples for lambada
         # Generate generator prompts
-        p_train_gold, hf_train_gen, _ = utils.make_and_format_data(make_prompt_lambada, L_train_all, tokenizer, style=gold_prompt_style, shots=gold_prompt_shots, both=None)
+        p_train_gold, hf_train_gold, _ = utils.make_and_format_data(make_prompt_lambada, L_train_all, tokenizer, style=gold_prompt_style, shots=gold_prompt_shots, both=None)
+ 
         prompts_gold = [i.prompt for i in p_train_gold]
 
         # Compute log-probabilities for generator prompts
