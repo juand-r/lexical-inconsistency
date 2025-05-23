@@ -627,11 +627,11 @@ def main(args):
             raise ValueError("define batch size for this case")
     else:
         if task=='swords':
-            batch_size = 6
+            batch_size = 2 #6
         elif task=='trivia-qa':
-            batch_size = 6
+            batch_size = 3
         elif task=='lambada':
-            batch_size = 6
+            batch_size = 3#6
         elif task =='hypernym':
             batch_size = 8 #$32
         else:
