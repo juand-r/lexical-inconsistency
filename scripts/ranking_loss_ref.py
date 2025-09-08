@@ -14,6 +14,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 from transformers import AutoTokenizer, AutoModelForCausalLM, AdamW
+from peft import LoraConfig, get_peft_model
 import math
 import random
 import argparse
@@ -68,6 +69,8 @@ def main(args):
     train_g_or_d = args.train_g_or_d
     split_type = args.split_type
     alpha = args.alpha  # New alpha parameter
+    use_lora = args.lora
+    gradient_checkpointing = args.gradient_checkpointing
     #tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     WITH_REF = with_ref
@@ -91,21 +94,91 @@ def main(args):
 
     def load_model_tokenizer(model_name):
         tokenizer = AutoTokenizer.from_pretrained(model_name)
+        
+        # Use memory-efficient loading for large models
         if 'gemma' in model_name.lower():
-            model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="eager", torch_dtype=torch.bfloat16)
+            model = AutoModelForCausalLM.from_pretrained(
+                model_name, 
+                attn_implementation="eager", 
+                torch_dtype=torch.bfloat16,
+                device_map="auto",
+                low_cpu_mem_usage=True
+            )
+        elif 'llama' in model_name.lower() or '8B' in model_name or '7B' in model_name:
+            # For large Llama models, use more aggressive memory optimization
+            model = AutoModelForCausalLM.from_pretrained(
+                model_name, 
+                torch_dtype=torch.bfloat16,
+                device_map="auto",
+                low_cpu_mem_usage=True
+                # Note: flash_attention_2 requires separate installation
+            )
         else:
-            model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16)
+            model = AutoModelForCausalLM.from_pretrained(
+                model_name, 
+                torch_dtype=torch.bfloat16,
+                device_map="auto",
+                low_cpu_mem_usage=True
+            )
+            
         if tokenizer.pad_token is None:
             tokenizer.pad_token = tokenizer.eos_token
         #tokenizer.pad_token = tokenizer.eos_token
         return tokenizer, model
 
     tokenizer, model = load_model_tokenizer(model_name)
-    model.to(device)  # Move model to device right after creation
+    # Note: device_map="auto" in load_model_tokenizer handles device placement
+    
+    # Conditionally add LoRA for memory-efficient fine-tuning
+    if use_lora:
+        print("Setting up LoRA for memory-efficient fine-tuning...")
+        lora_config = LoraConfig(
+            r=16,  # Low-rank dimension
+            lora_alpha=32,  # LoRA scaling parameter
+            target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],  # Llama target modules
+            lora_dropout=0.1,
+            bias="none",
+            task_type="CAUSAL_LM"
+        )
+        model = get_peft_model(model, lora_config)
+        model.print_trainable_parameters()  # Show how many parameters we're actually training
+    else:
+        print("Using full model fine-tuning (no LoRA)")
+        # For full model fine-tuning, ensure model is on correct device if device_map didn't handle it
+        if not hasattr(model, 'hf_device_map'):
+            model.to(device)
+    
+    # Enable gradient checkpointing to save memory (optional)
+    if gradient_checkpointing and hasattr(model, 'gradient_checkpointing_enable'):
+        model.gradient_checkpointing_enable()
+        print("Gradient checkpointing enabled")
+    else:
+        print("Gradient checkpointing disabled")
 
     if WITH_REF:
-        model_ref = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="eager", torch_dtype=torch.bfloat16)
-        model_ref.to(device)  # Move model_ref to the same device as model
+        print("Loading reference model with memory optimizations...")
+        if 'gemma' in model_name.lower():
+            model_ref = AutoModelForCausalLM.from_pretrained(
+                model_name, 
+                attn_implementation="eager", 
+                torch_dtype=torch.bfloat16,
+                device_map="auto",
+                low_cpu_mem_usage=True
+            )
+        elif 'llama' in model_name.lower() or '8B' in model_name or '7B' in model_name:
+            model_ref = AutoModelForCausalLM.from_pretrained(
+                model_name, 
+                torch_dtype=torch.bfloat16,
+                device_map="auto",
+                low_cpu_mem_usage=True
+            )
+        else:
+            model_ref = AutoModelForCausalLM.from_pretrained(
+                model_name, 
+                torch_dtype=torch.bfloat16,
+                device_map="auto",
+                low_cpu_mem_usage=True
+            )
     else:
         model_ref = None
 
@@ -379,10 +452,16 @@ def main(args):
         raise ValueError("Task unsupported!")
 
     if with_chat:
-        ms = [ [ {"role": "system", "content": "Answer directly without explanation."},  {"role": "user", "content": i.prompt.strip()} ] for i in p_train_tune]
-        toks = tokenizer.apply_chat_template(ms, add_generation_prompt=True, padding=True, truncation=True, return_tensors='pt')
-        max_context_length = toks.shape[1]
-        raise ValueError("Careful, need to fix this in case where mode is 'both'")
+        # Process discriminator prompts (p_train_tune)
+        ms_tune = [ [ {"role": "system", "content": "Answer directly without explanation."},  {"role": "user", "content": i.prompt.strip()} ] for i in p_train_tune]
+        toks_tune = tokenizer.apply_chat_template(ms_tune, add_generation_prompt=True, padding=True, truncation=True, return_tensors='pt')
+        max_context_length = toks_tune.shape[1]
+        
+        # If mode is 'both', also process generator prompts (p_train_gold) and take the maximum
+        if train_g_or_d == 'both':
+            ms_gold = [ [ {"role": "system", "content": "Answer directly without explanation."},  {"role": "user", "content": i.prompt.strip()} ] for i in p_train_gold]
+            toks_gold = tokenizer.apply_chat_template(ms_gold, add_generation_prompt=True, padding=True, truncation=True, return_tensors='pt')
+            max_context_length = max(max_context_length, toks_gold.shape[1])
     else:
         #TODO later should make this cleaner in utils.make_and_format_data
         max_context_length = len(hf_train[0]['input_ids'])
@@ -470,7 +549,15 @@ def main(args):
         # First create discriminator pairs (targeting "Yes" tokens)
         token_id = tokenizer.encode(space_prefix +"Yes")[-1]
         if with_chat:
-            raise ValueError("Careful, need to fix this in case where mode is 'both'")
+            # Create pairs with both discriminator and generator prompts, applying chat formatting
+            # NOTE verify fixed
+            pairs = [
+                (
+                    ((format_with_inst(pair[0][0].prompt), format_with_inst(pair[1][0].prompt)), (token_id, token_id)),  # discriminator pair
+                    ((format_with_inst(pair[0][1].prompt), format_with_inst(pair[1][1].prompt)), (tokenizer.encode(pair[0][1].completion)[1], tokenizer.encode(pair[1][1].completion)[1])),  # generator pair
+                    (pair[0][0].completion.strip().lower()   , pair[1][0].completion.strip().lower()   )
+                ) for pair in pairs_ if pair[1][-1][0] - pair[0][-1][0] > delta
+            ]
         else:
             # Create pairs with both discriminator and generator prompts
             pairs = [
@@ -584,13 +671,14 @@ def main(args):
                 )
 
             if train_g_or_d != 'both':
+                # Squeeze to remove the batch dimension (shape: [seq_len])
                 item = {
-                    'input_ids_i': enc_i_disc['input_ids'].squeeze(0),
-                    'attention_mask_i': enc_i_disc['attention_mask'].squeeze(0),
-                    'token_id_i': torch.tensor(token_i_disc, dtype=torch.long),
-                    'input_ids_j': enc_j_disc['input_ids'].squeeze(0),
-                    'attention_mask_j': enc_j_disc['attention_mask'].squeeze(0),
-                    'token_id_j': torch.tensor(token_j_disc, dtype=torch.long),
+                    'input_ids_i': enc_i['input_ids'].squeeze(0),
+                    'attention_mask_i': enc_i['attention_mask'].squeeze(0),
+                    'token_id_i': torch.tensor(token_i, dtype=torch.long),
+                    'input_ids_j': enc_j['input_ids'].squeeze(0),
+                    'attention_mask_j': enc_j['attention_mask'].squeeze(0),
+                    'token_id_j': torch.tensor(token_j, dtype=torch.long),
                     'label': torch.tensor(1.0, dtype=torch.float)
                 }
             else:
@@ -627,15 +715,18 @@ def main(args):
             raise ValueError("define batch size for this case")
     else:
         if task=='swords':
-            batch_size = 2 #6
+            batch_size = 1#6
         elif task=='trivia-qa':
-            batch_size = 3
+            batch_size = 2#6
         elif task=='lambada':
-            batch_size = 3#6
+            batch_size = 2#6
         elif task =='hypernym':
-            batch_size = 8 #$32
+            batch_size = 2#6#1  # Reduced from 32 to 1 for large models
         else:
             raise ValueError("define batch size for this case")
+
+    if max_context_length > 90:
+        max_context_length = 90
 
     dataset = PairwiseDataset(pairs, tokenizer, max_length=max_context_length, device=device)
     train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
@@ -668,8 +759,31 @@ def main(args):
             alpha_str = "--alpha" + str(alpha) if isinstance(alpha, (int, float)) else "--alpha-" + str(alpha)
             save_directory = "../models/v5-" + model_name.replace('/','--')  + "-delta"+str(delta)+"-epoch"+str(epoch) + "--" + task + with_ref_str + all_str + direction_str + split_type_str + alpha_str
             print("Saving to ", save_directory)
-            model.save_pretrained(save_directory)
-            tokenizer.save_pretrained(save_directory)
+            
+            if use_lora:
+                # For LoRA: Save adapters first, then merge and save full model
+                print("Saving LoRA adapters...")
+                model.save_pretrained(save_directory)
+                
+                print("Loading saved LoRA model...")
+                from peft import AutoPeftModelForCausalLM
+                model_peft = AutoPeftModelForCausalLM.from_pretrained(save_directory)
+                
+                print("Merging LoRA into base model...")
+                merged_model = model_peft.merge_and_unload()
+                
+                merge_dir = save_directory + "_merged"
+                print(f"Saving merged full model to {merge_dir}")
+                merged_model.save_pretrained(merge_dir, safe_serialization=True, max_shard_size="2GB")
+                tokenizer.save_pretrained(merge_dir)
+                
+                # Clean up merged model from memory
+                del model_peft, merged_model
+                torch.cuda.empty_cache()
+            else:
+                # For full model fine-tuning: Save normally
+                model.save_pretrained(save_directory)
+                tokenizer.save_pretrained(save_directory)
 
         for batch in tqdm(train_loader):
             optimizer.zero_grad()
@@ -753,6 +867,9 @@ def main(args):
                 loss.backward()
                 optimizer.step()
                 total_loss += loss.item()
+                
+                # Clear cache to prevent memory accumulation
+                torch.cuda.empty_cache()
             else:
                 input_ids_i = batch["input_ids_i"].to(device)
                 attention_mask_i = batch["attention_mask_i"].to(device)
@@ -842,6 +959,9 @@ def main(args):
                 loss.backward()
                 optimizer.step()
                 total_loss += loss.item()
+                
+                # Clear cache to prevent memory accumulation
+                torch.cuda.empty_cache()
         avg_loss = total_loss / len(train_loader)
         losses.append(avg_loss)
         print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {avg_loss:.4f}")
@@ -860,6 +980,8 @@ if __name__ == "__main__":
     parser.add_argument("--train_g_or_d", type=str, default='d', choices=["d","g","iter","both"], help="Train generator or discriminator.")
     parser.add_argument("--split_type", type=str, default='random', choices=["random","hyper","both"], help="How to do train/test split. Only applies to hypernymy.")
     parser.add_argument("--alpha", type=str, default='1.0', help="Alpha value or function name. Can be a number between 0 and 1, or 'alpha_fun_1'")
+    parser.add_argument("--lora", action='store_true', help="Use LoRA for memory-efficient fine-tuning")
+    parser.add_argument("--gradient_checkpointing", action='store_true', help="Enable gradient checkpointing to save memory (trades compute for memory)")
     args = parser.parse_args()
     
     # Convert alpha to float if it's a number
